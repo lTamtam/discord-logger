@@ -20,7 +20,6 @@ const command: BotSlashCommand = {
             .setColor(0x2DFA60)
             .setDescription(`🎉 All your messages were deleted from the database`)
             .setFooter({ text: `ID: ${uuid}` });
-
         await ctx.reply({ embeds: [embed], ephemeral: true });
     }
 };
