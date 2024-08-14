@@ -97,7 +97,7 @@ const event: BotEvent = {
         }
 
         messageUpdateEvent.embeds[messageUpdateEvent.embeds.length - 1].fields.push(
-            { name: 'ID', value: `\`\`\`ini\nUser=${userId}\nMessage=${message.id}\nChannel=${message.channel.id}\`\`\`` }
+            { name: 'ID', value: `\`\`\`ini\nAuthor=${userId}\nMessage=${message.id}\nChannel=${message.channel.id}\`\`\`` }
         );
 
         await webhookSend(messageUpdateEvent);

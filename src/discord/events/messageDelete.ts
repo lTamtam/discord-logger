@@ -44,7 +44,7 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(cachedMessage.createdAt.getTime() / 1000)}:F>` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831
+                color: 0xFE544A
             }]
         };
 

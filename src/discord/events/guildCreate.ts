@@ -18,7 +18,7 @@ const event: BotEvent = {
             uuid: uuid,
             guild: guild.name,
             guildId: guild.id
-        }, `${guild.name} was created`);
+        }, `${guild.name} was created or the bot was added to that server`);
     }
 };
 

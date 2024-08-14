@@ -41,7 +41,7 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(role.createdTimestamp! / 1000)}:F>` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0x65FDF1
             }]
         };
         const addField = (name: string, value: string) => guildRoleUpdateEvent.embeds[0].fields.push({ name: name, value: value });
@@ -58,7 +58,7 @@ const event: BotEvent = {
         }
         if (guildRoleUpdateEvent.embeds[0].fields.length < 2) return;
 
-        addField('ID', `\`\`\`ini\nRole=${role.id ?? '???'}\nExecutor=${user?.id ?? '???'}\`\`\``);
+        addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nRole=${role.id ?? '???'}\`\`\``);
         await webhookSend(guildRoleUpdateEvent);
     }
 };

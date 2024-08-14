@@ -34,7 +34,7 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x1BE9A3
+                color: 0x74FD77
             }]
         };
 
@@ -45,7 +45,7 @@ const event: BotEvent = {
             const executor = log.executor;
             guildMemberAddEvent.embeds[0].fields[3] = { name: 'Added by', value: `${executor} | **${executor?.tag}**` };
             guildMemberAddEvent.embeds[0].fields[4] = { name: 'Guild members count', value: `\`${member.guild.memberCount}\`` };
-            guildMemberAddEvent.embeds[0].fields.push({ name: 'ID', value: `\`\`\`ini\nBot=${member?.id ?? '???'}\nExecutor=${executor?.id ?? '???'}\`\`\`` })
+            guildMemberAddEvent.embeds[0].fields.push({ name: 'ID', value: `\`\`\`ini\nUser=${executor?.id ?? '???'}\nBot=${member?.id ?? '???'}\`\`\`` })
         }
 
         await webhookSend(guildMemberAddEvent);

@@ -38,7 +38,7 @@ const event: BotEvent = {
                     { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name ?? '???'})` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0xFCA82A
             }]
         };
         const addField = (name: string, value: string) => threadUpdateEvent.embeds[0].fields.push({ name: name, value: value });

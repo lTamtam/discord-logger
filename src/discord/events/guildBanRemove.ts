@@ -38,7 +38,7 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nExecutor=${executor?.id ?? '???'}\nUser=${user?.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x1BE9A3
+                color: 0x74FD77
             }]
         };
 

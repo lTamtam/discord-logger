@@ -39,7 +39,7 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nThread=${thread.id}\nParent=${thread.parent?.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831
+                color: 0xFE544A
             }]
         };
 

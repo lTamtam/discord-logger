@@ -34,7 +34,7 @@ const event: BotEvent = {
                 description: `Guild was updated`,
                 fields: [],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0xA463FF
             }]
         };
         const addField = (name: string, value: string) => guildUpdateEvent.embeds[0].fields.push({ name: name, value: value });

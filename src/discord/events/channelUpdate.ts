@@ -78,7 +78,7 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(channel.createdTimestamp! / 1000)}:F>` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0xFD963A
             }]
         };
         const addField = (name: string, value: string) => channelUpdateEvent.embeds[0].fields.push({ name: name, value: value });
@@ -96,8 +96,7 @@ const event: BotEvent = {
         else {
             permissionOverwritesChanges.map(o => {
                 addField(`${o.type === 0 ? `Role @${channel.guild.roles.cache.get(o.id)?.name ?? ''} (${o.id})` : `User @${channel.client.users.cache.get(o.id)?.tag ?? ''} (${o.id})`}`, `${o.added.map(a => `✅ ALLOW ${a}`).join('\n')}\n${o.denied.map(d => `❌ DENY ${d}`).join('\n')}\n${o.removed.map(r => `⚖️ NEUTRAL ${r}`).join('\n')}`);
-            })
-            channelUpdateEvent.embeds[0].color = 0xFA4649;
+            });
         }
 
         addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id ?? '???'}\`\`\``);

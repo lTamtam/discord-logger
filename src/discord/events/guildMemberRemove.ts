@@ -36,7 +36,7 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(user.createdTimestamp! / 1000)}:F>`, inline: true }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831
+                color: 0xFE544A
             }]
         };
         if (member.joinedTimestamp) guildMemberRemoveEvent.embeds[0].fields.push({ name: 'Joined at', value: `<t:${Math.round(member.joinedTimestamp / 1000)}:F>`, inline: true });

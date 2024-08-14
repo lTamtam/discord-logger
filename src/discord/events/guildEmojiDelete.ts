@@ -37,7 +37,7 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nEmoji=${emoji.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831,
+                color: 0xFE544A,
                 thumbnail: { url: emoji.imageURL() }
             }],
         };

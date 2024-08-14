@@ -34,19 +34,19 @@ const event: BotEvent = {
                 description: ``,
                 fields: [],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0x74FD77
             }]
         };
         const addField = (name: string, value: string) => voiceStateUpdateEvent.embeds[0].fields.push({ name: name, value: value });
 
         if (!oldState.channel && newState.channel) {
-            voiceStateUpdateEvent.embeds[0].color = 0x1BE9A3;
+            voiceStateUpdateEvent.embeds[0].color = 0x74FD77;
             voiceStateUpdateEvent.embeds[0].description = `**${user}** ${member && member.nickname ? `(${member.nickname})` : ''} joined a voice channel`;
             addField('Channel', `${newState.channel} (#${newState.channel.name})`);
             addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${newState.channel.id}\`\`\``);
         }
         else if (oldState.channel && !newState.channel) {
-            voiceStateUpdateEvent.embeds[0].color = 0xF54831;
+            voiceStateUpdateEvent.embeds[0].color = 0xFE544A;
             voiceStateUpdateEvent.embeds[0].description = `**${user}** ${member && member.nickname ? `(${member.nickname})` : ''} left a voice channel`;
             addField('Channel', `${oldState.channel} (#${oldState.channel.name})`);
             addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${oldState.channel.id}\`\`\``);
@@ -59,14 +59,14 @@ const event: BotEvent = {
 
         if (log) log.changes.forEach(c => {
             if (c.key === 'mute') {
-                voiceStateUpdateEvent.embeds[0].color = 0xF5AD49;
+                voiceStateUpdateEvent.embeds[0].color = 0xFE544A;
                 voiceStateUpdateEvent.embeds[0].description = `**${user}** was ${c.new === true ? 'muted' : 'unmuted'}`;
-                addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nExecutor=${executor?.id ?? '???'}\nChannel=${newState.channel?.id ?? '???'}\`\`\``);
+                addField('ID', `\`\`\`ini\nExecutor=${executor?.id ?? '???'}\nUser=${user?.id ?? '???'}\nChannel=${newState.channel?.id ?? '???'}\`\`\``);
             }
             if (c.key === 'deaf') {
-                voiceStateUpdateEvent.embeds[0].color = 0xF5AD49;
+                voiceStateUpdateEvent.embeds[0].color = 0xFE544A;
                 voiceStateUpdateEvent.embeds[0].description = `**${user}** was ${c.new === true ? 'deafened' : 'undeafened'}`;
-                addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nExecutor=${executor?.id ?? '???'}\nChannel=${newState.channel?.id ?? '???'}\`\`\``);
+                addField('ID', `\`\`\`ini\nExecutor=${executor?.id ?? '???'}\nUser=${user?.id ?? '???'}\nChannel=${newState.channel?.id ?? '???'}\`\`\``);
             }
         });
 

@@ -35,7 +35,7 @@ const event: BotEvent = {
                     { name: 'Name', value: rule.name }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831
+                color: 0xFE544A
             }]
         };
         const addField = (name: string, value: string) => automoderationRuleDeleteEvent.embeds[0].fields.push({ name: name, value: value });

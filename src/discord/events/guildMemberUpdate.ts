@@ -45,7 +45,7 @@ const event: BotEvent = {
                     { name: 'Joined at', value: `<t:${Math.round(member.joinedTimestamp! / 1000)}:F>` },
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0x6FFBCB
             }]
         };
         const addField = (name: string, value: string) => guildMemberUpdateEvent.embeds[0].fields.push({ name: name, value: value });
@@ -59,7 +59,6 @@ const event: BotEvent = {
         }
         else {
             addField(`Roles`, `${addedRoles.map(a => `➕ <@&${a}> (${a})`).join('\n')}\n${removedRoles.map(r => `❌ <@&${r}> (${r})`).join('\n')}`);
-            guildMemberUpdateEvent.embeds[0].color = 0x0F63F9;
         }
 
         addField('ID', `\`\`\`ini\nMember=${member.id ?? '???'}${user !== executor ? `\nExecutor=${executor?.id ?? '???'}` : ''}\`\`\``);

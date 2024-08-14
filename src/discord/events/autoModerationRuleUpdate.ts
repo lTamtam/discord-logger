@@ -34,7 +34,7 @@ const event: BotEvent = {
                 description: `${AUTOMOD_TRIGGER_TYPE_MAP[rule.triggerType]} automod rule was updated`,
                 fields: [],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x42BFF5
+                color: 0x8DBCBE
             }]
         };
         const addField = (name: string, value: string) => automoderationRuleUpdateEvent.embeds[0].fields.push({ name: name, value: value });

@@ -38,7 +38,7 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nSticker=${sticker.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x1BE9A3,
+                color: 0xD3FA89,
                 thumbnail: { url: sticker.url }
             }]
         };
