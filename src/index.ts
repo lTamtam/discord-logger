@@ -19,6 +19,7 @@ export const discordClient = new Client({
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildEmojisAndStickers,
         GatewayIntentBits.AutoModerationConfiguration
     ]
 });
