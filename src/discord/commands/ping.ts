@@ -17,7 +17,7 @@ const command: BotSlashCommand = {
             .setColor(0x7393B3)
             .setTitle(':ping_pong: Pong !')
             .setDescription(`:stopwatch: Uptime: **${Math.round(ctx.client.uptime / 60000)}** minutes\n:sparkling_heart: Websocket heartbeat: \`${ctx.client.ws.ping}\`ms\n:round_pushpin: Rountrip Latency: \`${sent.createdTimestamp - ctx.createdTimestamp}\`ms`)
-            .setFooter({ text: uuid });
+            .setFooter({ text: `ID: ${uuid}` });
         await ctx.editReply({ content: null, embeds: [embed] });
     }
 };
