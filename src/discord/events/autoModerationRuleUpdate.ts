@@ -1,0 +1,83 @@
+import { APIAuditLogChangeKeyExemptChannels, APIAuditLogChangeKeyExemptRoles, AuditLogChange, AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
+import short from 'short-uuid';
+import { ActionsRawtype, AllowRawType, BotEvent, KeywordRawType, RegexRawType, TriggerRawtype, WebhookEvent } from '../../types';
+import { AUTOMOD_TRIGGER_TYPE_MAP } from '../../utils/events-typemaps';
+import { getMember } from '../../utils/helpers';
+import { webhookSend } from '../../utils/webhooks';
+
+const eventName = 'autoModerationRuleUpdate';
+
+const event: BotEvent = {
+    name: Events.AutoModerationRuleUpdate,
+
+    execute: async (oldRule: AutoModerationRule, rule: AutoModerationRule) => {
+        const logs = await rule.guild.fetchAuditLogs({ type: AuditLogEvent.AutoModerationRuleUpdate, limit: 5 }).catch(err => { });
+        let log = logs?.entries.find(e => e.targetId === rule.id && new Date().getTime() - e.createdTimestamp < 3000);
+        if (!log || !log.changes) return;
+
+        const suuid = short();
+        const uuid = suuid.new();
+        const user = log.executor;
+        const member = await getMember(rule.guild, user?.id);
+        const extendedLog = logs?.entries.filter(e => e.targetId === rule.id && e.executorId === user?.id && new Date().getTime() - e.createdTimestamp < 3000).map(l => l.changes).flat();
+
+        const automoderationRuleUpdateEvent: WebhookEvent = {
+            id: uuid,
+            guild: rule.guild,
+            eventName: eventName,
+            timestamp: new Date(),
+            embeds: [{
+                author: {
+                    name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
+                    iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
+                },
+                description: `${AUTOMOD_TRIGGER_TYPE_MAP[rule.triggerType]} automod rule was updated`,
+                fields: [],
+                footer: { text: `ID: ${uuid}` },
+                color: 0x42BFF5
+            }]
+        };
+        const addField = (name: string, value: string) => automoderationRuleUpdateEvent.embeds[0].fields.push({ name: name, value: value });
+
+        extendedLog?.forEach((c: AuditLogChange | KeywordRawType | RegexRawType | AllowRawType) => {
+            if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
+            if (c.key === 'actions') {
+                let actions = (c as ActionsRawtype).new.map(a => a.type === 1 ? '• Block message' : a.type === 2 ? `• Send alert in <#${a.metadata.channel_id}>` : `• Set timeout for **${a.metadata.duration_seconds}**s`);
+                if (!actions.length) actions = ['\`<None>\`'];
+                let oldActions = (c as ActionsRawtype).new.map(a => a.type === 1 && a.metadata.custom_message !== undefined ? '• Block message' : a.type === 2 && a.metadata.channel_id !== undefined ? `• Send alert in <#${a.metadata.channel_id}>` : a.type === 3 && a.metadata.duration_seconds !== undefined ? `• Set timeout for **${a.metadata.duration_seconds}**s` : '');
+                if (!oldActions.length) actions = ['\`<None>\`'];
+                if (actions.toString() !== oldActions.toString()) addField('Actions', `**Now**\n${actions.join('\n')}\n**Was**\n${oldActions.join('\n')}`);
+            }
+            if (c.key === '$add_keyword_filter' && c.new) {
+                addField(`Added keywords`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === '$remove_keyword_filter') {
+                addField(`Removed keywords`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === '$add_regex_patterns') {
+                addField(`Added regexes`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === '$remove_regex_patterns') {
+                addField(`Removed regexes`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === '$add_allow_list') {
+                addField(`Added allowed words`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === '$remove_allow_list') {
+                addField(`Removed allowed words`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+            }
+            if (c.key === 'trigger_metadata') {
+                if ((c as TriggerRawtype).new.mention_total_limit !== (c as TriggerRawtype).old.mention_total_limit) addField('Mentions limit', `**Now: ${(c as TriggerRawtype).new.mention_total_limit}**\n**Was: ${(c as TriggerRawtype).old.mention_total_limit}**`);
+                if ((c as TriggerRawtype).new.mention_raid_protection_enabled !== (c as TriggerRawtype).old.mention_raid_protection_enabled) addField('Mentions raid protection', `${(c as TriggerRawtype).new.mention_raid_protection_enabled ? '✅ Enabled' : '❌ Disabled'}`);
+            }
+            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptRoles[]).length ? '\`<None>\`' : (c.new as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptRoles[]).length ? '\`<None>\`' : (c.old as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptChannels[]).length ? '\`<None>\`' : (c.new as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptChannels[]).length ? '\`<None>\`' : (c.old as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}`);
+        });
+        if (!automoderationRuleUpdateEvent.embeds[0].fields.length) return;
+
+        addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nRule=${rule.id ?? '???'}\`\`\``);
+        await webhookSend(automoderationRuleUpdateEvent);
+    }
+};
+
+export default event;

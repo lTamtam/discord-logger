@@ -1,0 +1,50 @@
+import { AnyThreadChannel, AuditLogEvent, ChannelType, Events } from 'discord.js';
+import short from 'short-uuid';
+import { BotEvent, WebhookEvent } from '../../types';
+import { CHANNEL_TYPE_MAP } from '../../utils/events-typemaps';
+import { getMember } from '../../utils/helpers';
+import { webhookSend } from '../../utils/webhooks';
+
+const eventName = 'threadDelete';
+
+const event: BotEvent = {
+    name: Events.ThreadDelete,
+
+    execute: async (thread: AnyThreadChannel) => {
+        if (thread.type !== ChannelType.AnnouncementThread && thread.type !== ChannelType.PublicThread && thread.type !== ChannelType.PrivateThread) return;
+
+        const logs = await thread.guild.fetchAuditLogs({ type: AuditLogEvent.ThreadDelete, limit: 5 }).catch(err => { });
+        const log = logs?.entries.find(e => e.targetId === thread.id && new Date().getTime() - e.createdTimestamp < 3000);
+        if (!log) return;
+
+        const suuid = short();
+        const uuid = suuid.new();
+        const user = log.executor;
+        const member = await getMember(thread.guild, user?.id);
+
+        const threadDeleteEvent: WebhookEvent = {
+            id: uuid,
+            guild: thread.guild,
+            eventName: eventName,
+            timestamp: new Date(),
+            embeds: [{
+                author: {
+                    name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
+                    iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!,
+                },
+                description: `${CHANNEL_TYPE_MAP[thread.type]} #${thread.name} was deleted`,
+                fields: [
+                    { name: 'Name', value: thread.name },
+                    { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name})` },
+                    { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nThread=${thread.id}\nParent=${thread.parent?.id}\`\`\`` }
+                ],
+                footer: { text: `ID: ${uuid}` },
+                color: 0xF54831
+            }]
+        };
+
+        await webhookSend(threadDeleteEvent);
+    }
+};
+
+export default event;
