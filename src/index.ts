@@ -6,8 +6,8 @@ import { init } from "./utils/helpers";
 
 init();
 
-const TOKEN = Bun.env.TOKEN;
-const dir = import.meta.dir
+const TOKEN = Bun.env.TOKEN!;
+const dir = import.meta.dir;
 
 export const discordClient = new Client({
     intents: [
