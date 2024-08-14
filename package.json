@@ -1,0 +1,30 @@
+{
+  "name": "discord-logger",
+  "version": "1.0.0",
+  "author": "tam.tam",
+  "description": "",
+  "module": "index.ts",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "bot": "bun run src/index.ts",
+    "refresh": "bun run src/utils/deploy-commands.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "prisma": "^5.9.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.9.1",
+    "axios": "^1.6.8",
+    "cron": "^3.1.7",
+    "discord.js": "^14.14.1",
+    "ioredis": "^5.3.2",
+    "pino": "^8.19.0",
+    "pino-pretty": "^11.0.0",
+    "short-uuid": "^4.2.2"
+  }
+}
