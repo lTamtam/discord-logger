@@ -17,7 +17,7 @@ const event: BotEvent = {
             event: eventName,
             uuid: uuid,
             err: error
-        }, error.message);
+        });
     }
 };
 
