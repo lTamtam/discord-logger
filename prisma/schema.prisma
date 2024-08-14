@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Guild {
+  id       String    @id
+  webhooks Webhook[]
+  messages Message[]
+}
+
+model Webhook {
+  id        String   @id
+  guild     Guild    @relation(fields: [guildId], references: [id])
+  guildId   String   @unique
+  token     String
+  channelId String
+  events    String[]
+}
+
+model Message {
+  id             String   @id
+  createdAt      DateTime @default(now())
+  guild          Guild    @relation(fields: [guildId], references: [id])
+  guildId        String
+  authorId       String
+  content        String?
+  attachmentsB64 String[]
+}
