@@ -11,7 +11,7 @@ import logger from "./pino-logger";
  * @returns {Promise<Webhook | null>}
  */
 export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditOptions): Promise<Webhook | null> {
-    if (!webhook || (options.channel as Channel).type !== ChannelType.GuildText) return null;
+    if ((options.channel as Channel).type !== ChannelType.GuildText) return null;
     try {
         await webhook.edit(options);
         return webhook;
@@ -33,7 +33,7 @@ export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditO
  * @returns {Promise<StoredWebhook | null>}
  */
 export async function editDbWebhook(webhook: Webhook, newChannel: Channel): Promise<StoredWebhook | null> {
-    if (!webhook || !newChannel || newChannel.type !== ChannelType.GuildText) return null;
+    if (newChannel.type !== ChannelType.GuildText) return null;
     try {
         await prisma.webhook.update({
             where: {
@@ -149,7 +149,7 @@ export async function deleteWebhook(guild: Guild): Promise<void> {
  * @returns {Promise<Webhook | null>}
  */
 export async function createWebhook(channel: Channel): Promise<Webhook | null> {
-    if (!channel || channel.type !== ChannelType.GuildText) return null;
+    if (channel.type !== ChannelType.GuildText) return null;
     await deleteWebhook(channel.guild);
     try {
         const webhook = await channel.createWebhook({
