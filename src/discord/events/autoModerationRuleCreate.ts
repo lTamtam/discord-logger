@@ -43,10 +43,10 @@ const event: BotEvent = {
         const actions = rule.actions.map(a => a.type === 1 ? '• Block message' : a.type === 2 ? `• Send alert in <#${a.metadata.channelId}>` : `• Set timeout for **${a.metadata.durationSeconds}**s`);
         if (actions.length) addField('Actions', `${actions.join('\n')}`);
 
-        if (rule.triggerMetadata.keywordFilter.length) addField('Keywords', `${rule.triggerMetadata.keywordFilter.join(', ')}`);
-        if (rule.triggerMetadata.regexPatterns.length) addField('Regex patterns', `**${rule.triggerMetadata.regexPatterns.map(r => `\`\`\`${r}\`\`\``).join(' ')}**`);
+        if (rule.triggerMetadata.keywordFilter.length) addField('Keywords', `\`\`\`${rule.triggerMetadata.keywordFilter.join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
+        if (rule.triggerMetadata.regexPatterns.length) addField('Regex patterns', `**${rule.triggerMetadata.regexPatterns.map(r => `\`${r}\``).join(' ').replace(/\"/g, '"').replace(/`/g, '')}**`);
         if (rule.triggerMetadata.presets.length) addField('Preset keywords', `**Categories:** ${rule.triggerMetadata.presets.map(p => p === 1 ? 'Profanity' : p === 2 ? 'Sexual content' : p === 3 ? 'Slurs' : '').join(', ')}`);
-        if (rule.triggerMetadata.allowList.length) addField('Allowed keywords', `\`${rule.triggerMetadata.allowList.join(', ')}\``);
+        if (rule.triggerMetadata.allowList.length) addField('Allowed keywords', `\`\`\`${rule.triggerMetadata.allowList.join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
         if (rule.triggerMetadata.mentionTotalLimit) addField('Mentions limit', `**${rule.triggerMetadata.mentionTotalLimit}**`);
         if (rule.triggerMetadata.mentionRaidProtectionEnabled) addField('Mentions raid protection', `✅ Enabled`);
 

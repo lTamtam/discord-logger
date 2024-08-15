@@ -86,7 +86,7 @@ const event: BotEvent = {
         if (auditLogId === 11) {
             log.changes.forEach(c => {
                 if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
-                if (c.key === 'topic') addField('Topic', `**Now:** \`${c.new === '' || !c.new ? '<None>' : c.new}\`\n**Was:** \`${c.old ?? '<None>'}\``);
+                if (c.key === 'topic') addField('Topic', `**Now:** \`${c.new ? (c.new as string).replace(/\"/g, '"').replace(/`/g, '') : '`<None>`'}\`\n**Was:** \`${c.old ? (c.old as string).replace(/\"/g, '"').replace(/`/g, '') : '`<None>`'}\``);
                 if (c.key === 'rate_limit_per_user') addField('Cooldown', `**Now:** **${c.new}** second${parseInt(c.new as string) > 1 ? 's' : ''}\n**Was:** **${c.old}** second${parseInt(c.old as string) > 1 ? 's' : ''}`);
                 if (c.key === 'nsfw') addField('Nsfw', `**Now:** ${c.new}\n**Was:** ${c.old}`);
                 if (c.key === 'bitrate') addField('Bitrate', `**Now:** **${c.new}** kbps\n**Was:** **${c.old}** kbps`);

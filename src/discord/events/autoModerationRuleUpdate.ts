@@ -49,22 +49,22 @@ const event: BotEvent = {
                 if (actions.toString() !== oldActions.toString()) addField('Actions', `**Now**\n${actions.join('\n')}\n**Was**\n${oldActions.join('\n')}`);
             }
             if (c.key === '$add_keyword_filter' && c.new) {
-                addField(`Added keywords`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Added keywords`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$remove_keyword_filter') {
-                addField(`Removed keywords`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Removed keywords`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$add_regex_patterns') {
-                addField(`Added regexes`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Added regexes`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$remove_regex_patterns') {
-                addField(`Removed regexes`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Removed regexes`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$add_allow_list') {
-                addField(`Added allowed words`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Added allowed words`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$remove_allow_list') {
-                addField(`Removed allowed words`, `\`\`\`${c.new.map(k => k).join(', ')}\`\`\``);
+                addField(`Removed allowed words`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === 'trigger_metadata') {
                 if ((c as TriggerRawtype).new.mention_total_limit !== (c as TriggerRawtype).old.mention_total_limit) addField('Mentions limit', `**Now: ${(c as TriggerRawtype).new.mention_total_limit}**\n**Was: ${(c as TriggerRawtype).old.mention_total_limit}**`);
