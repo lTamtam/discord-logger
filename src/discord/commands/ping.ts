@@ -14,7 +14,7 @@ const command: BotSlashCommand = {
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const sent = await ctx.reply({ content: 'Pinging...', fetchReply: true, ephemeral: true });
         const embed = new EmbedBuilder()
-            .setColor(0x7393B3)
+            .setColor(0x2DFA60)
             .setTitle(':ping_pong: Pong !')
             .setDescription(`:stopwatch: Uptime: **${Math.round(ctx.client.uptime / 60000)}** minutes\n:sparkling_heart: Websocket heartbeat: \`${ctx.client.ws.ping}\`ms\n:round_pushpin: Rountrip Latency: \`${sent.createdTimestamp - ctx.createdTimestamp}\`ms`)
             .setFooter({ text: `ID: ${uuid}` });
