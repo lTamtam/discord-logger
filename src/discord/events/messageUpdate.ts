@@ -27,7 +27,7 @@ const event: BotEvent = {
             guildId: message.guild.id,
             authorId: oldMessage.author.id,
             createdAt: oldMessage.createdAt,
-            content: oldMessage.content ?? '`<No content>`',
+            content: oldMessage.content ?? '`<None>`',
             attachmentsB64: []
         };
 
@@ -73,14 +73,14 @@ const event: BotEvent = {
                 }
                 else newChunks.push(message.content);
             }
-            else newChunks.push('\`<No content>\`');
+            else newChunks.push('\`<None>\`');
             if (cachedMessage.content) {
                 if (cachedMessage.content.length > MAX_EMBED_FIELD_VALUE) {
                     oldChunks = chunkify(cachedMessage.content.replace(/\"/g, '"').replace(/`/g, ''));
                 }
                 else oldChunks.push(cachedMessage.content);
             }
-            else oldChunks.push('\`<No content>\`');
+            else oldChunks.push('\`<None>\`');
 
             newChunks.forEach((c: string, i) => {
                 messageUpdateEvent.embeds[0].fields.push({

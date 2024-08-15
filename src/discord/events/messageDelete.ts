@@ -55,7 +55,7 @@ const event: BotEvent = {
             }
             else chunks.push(cachedMessage.content);
         }
-        else chunks.push('\`<No content>\`');
+        else chunks.push('\`<None>\`');
 
         chunks.forEach((c: string, i) => {
             messageDeleteEvent.embeds[0].fields.push({

@@ -23,7 +23,7 @@ export async function addMessage(messageArray: CacheMessageArray): Promise<void>
 export async function cacheMessage(message: Message) {
     if (!message.guild || message.webhookId) return;
     const extensions: { [key: string]: string[] } = await EXT_MAP.json();
-    const content = encrypt(message.content ?? '`<No content>`');
+    const content = encrypt(message.content ?? '`<None>`');
     const attachments = message.attachments.map(a => a);
     const b64Attachments: string[] = [];
     let totalSize = 0;
@@ -68,7 +68,7 @@ export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null
 export function updateCacheMessage(messageId: Snowflake, content: string): void {
     for (let m of batch) {
         if (m[3] === messageId) {
-            m[3] = encrypt(content ?? '`<No content>`');
+            m[3] = encrypt(content ?? '`<None>`');
             break;
         }
     }
