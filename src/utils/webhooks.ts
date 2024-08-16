@@ -1,4 +1,4 @@
-import { Channel, ChannelType, EmbedBuilder, Guild, Webhook, WebhookEditOptions } from "discord.js";
+import { Channel, ChannelType, EmbedBuilder, Guild, Snowflake, Webhook, WebhookEditOptions } from "discord.js";
 import prisma from "../clients/prisma";
 import redis from "../clients/redis";
 import { StoredWebhook, WebhookEvent } from "../types";
@@ -60,20 +60,20 @@ export async function editDbWebhook(webhook: Webhook, newChannel: Channel): Prom
  * @param guild 
  * @returns {Promise<StoredWebhook | null>}
  */
-export async function cacheWebhook(guild: Guild): Promise<StoredWebhook | null> {
+export async function cacheWebhook(guildId: Snowflake): Promise<StoredWebhook | null> {
     try {
-        const cache = await redis.get(`webhook-${guild.id}`);
+        const cache = await redis.get(`webhook-${guildId}`);
         if (cache?.split('|').length === 3) {
             const webhook = cache.split('|');
             return { id: webhook[0], token: webhook[1], channelId: webhook[2] };
         }
         const db = await prisma.webhook.findUnique({
             where: {
-                guildId: guild.id
+                guildId: guildId
             }
         });
         if (db) {
-            redis.set(`webhook-${guild.id}`, `${db.id}|${db.token}|${db.channelId}`);
+            redis.set(`webhook-${guildId}`, `${db.id}|${db.token}|${db.channelId}`);
             return { id: db.id, token: db.token, channelId: db.channelId };
         }
     }
@@ -191,7 +191,7 @@ export async function createWebhook(channel: Channel): Promise<Webhook | null> {
  * @returns {Promise<Webhook | null>}
  */
 export async function getWebhook(guild: Guild): Promise<Webhook | null> {
-    let cache = await cacheWebhook(guild);
+    let cache = await cacheWebhook(guild.id);
     if (!cache) return null;
     let webhook = await guild.client.fetchWebhook(cache.id, cache.token)
         .catch(err => null);
