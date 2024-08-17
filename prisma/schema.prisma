@@ -30,6 +30,7 @@ model Message {
   createdAt      DateTime @default(now())
   guild          Guild    @relation(fields: [guildId], references: [id])
   guildId        String
+  channelId      String
   authorId       String
   content        String?
   attachmentsB64 String[]
