@@ -13,7 +13,7 @@ const command: BotSlashCommand = {
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const embed = new EmbedBuilder()
-            .setColor(0x2DFA60)
+            .setColor(0x50EFFB)
             .setDescription(`📩 [**Invite link :)**](https://discord.com/oauth2/authorize?client_id=${Bun.env.APP_ID}&permissions=${Bun.env.BOT_PERMISSIONS}&integration_type=0&scope=bot+applications.commands)`)
             .setFooter({ text: `ID: ${uuid}` });
         await ctx.reply({ embeds: [embed], ephemeral: true });
