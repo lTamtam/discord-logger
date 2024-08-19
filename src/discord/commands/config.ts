@@ -21,6 +21,10 @@ const command: BotSlashCommand = {
                 )
         )
         .addSubcommand(subcommand =>
+            subcommand.setName('view-webhook')
+                .setDescription('Shows information about the log webhook')
+        )
+        .addSubcommand(subcommand =>
             subcommand.setName('delete-webhook')
                 .setDescription('Removes a webhook from the server and the database')
         ),
@@ -57,7 +61,25 @@ const command: BotSlashCommand = {
                 .setFooter({ text: `ID: ${uuid}` });
             await ctx.reply({ embeds: [embed] });
         }
-        else if (subcommand === 'remove-webhook') {
+
+        else if (subcommand === 'view-webhook') {
+            const webhook = await getWebhook(ctx.guild);
+            if (!webhook) return errorEmbed(ctx, `There is no webhook on this server`, uuid);
+
+            const embed = new EmbedBuilder()
+                .setColor(0x50EFFB)
+                .setDescription(`
+                    **Log webhook of ${ctx.guild.name}**
+                    \n**ID:** \`${webhook.id}\`
+                    **Channel:** <#${webhook.channelId}> \`${webhook.channelId}\`
+                    \n**Created on** <t:${Math.round(webhook.createdAt.getTime() / 1000)}>
+                    \n\* *To remove that webhook, use \`/config delete-webhook\`*
+                `)
+                .setFooter({ text: `ID: ${uuid}` });
+            await ctx.reply({ embeds: [embed] });
+        }
+
+        else if (subcommand === 'delete-webhook') {
             const webhook = await getWebhook(ctx.guild);
             if (!webhook) return errorEmbed(ctx, `There is no webhook on this server`, uuid);
 
@@ -65,7 +87,7 @@ const command: BotSlashCommand = {
 
             const embed = new EmbedBuilder()
                 .setColor(0x2DFA60)
-                .setDescription(`🗑️ Webhook deleted`)
+                .setDescription(`🗑️ Webhook \`${webhook.id}\` deleted`)
                 .setFooter({ text: `ID: ${uuid}` });
             await ctx.reply({ embeds: [embed] });
         }
