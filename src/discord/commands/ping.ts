@@ -13,6 +13,7 @@ const command: BotSlashCommand = {
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const sent = await ctx.reply({ content: 'Pinging...', fetchReply: true, ephemeral: true });
+
         const embed = new EmbedBuilder()
             .setColor(0x2DFA60)
             .setTitle(':ping_pong: Pong !')

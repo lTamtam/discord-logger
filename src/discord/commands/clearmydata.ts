@@ -16,6 +16,7 @@ const command: BotSlashCommand = {
         const user = ctx.user;
         deleteCacheUserMessages(user.id);
         await deleteDbUserMessages(user.id);
+
         const embed = new EmbedBuilder()
             .setColor(0x2DFA60)
             .setDescription(`🎉 All your messages were deleted from the database`)
