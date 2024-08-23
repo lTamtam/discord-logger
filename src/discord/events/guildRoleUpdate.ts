@@ -20,7 +20,6 @@ const event: BotEvent = {
         const uuid = suuid.new();
         const user = log.executor;
         const member = await getMember(role.guild, user?.id);
-
         const oldPermissions = Object.keys(PermissionsBitField.Flags).filter(p => new PermissionsBitField(oldRole.permissions).has(p as PermissionResolvable));
         const newPermissions = Object.keys(PermissionsBitField.Flags).filter(p => new PermissionsBitField(role.permissions).has(p as PermissionResolvable));
         const added = getDifference(oldPermissions, newPermissions);

@@ -15,6 +15,12 @@ const event: BotEvent = {
     execute: async (oldMessage: Message | PartialMessage, message: Message) => {
         if (message.content === oldMessage.content || message.author.bot || !message.guild || message.channel.type === ChannelType.DM) return;
 
+        const suuid = short();
+        const uuid = suuid.new();
+        const user = message.author;
+        const userId = user.id;
+        const member = await getMember(message.guild, user?.id);
+
         let cachedMessage = getCacheMessage(message.id);
         if (cachedMessage) updateCacheMessage(message.id, message.content);
         else {
@@ -33,12 +39,6 @@ const event: BotEvent = {
             };
             await cacheMessage(message);
         }
-
-        const suuid = short();
-        const uuid = suuid.new();
-        const user = message.author;
-        const userId = user.id;
-        const member = await getMember(message.guild, user?.id);
 
         const messageUpdateEvent: WebhookEvent = {
             id: uuid,

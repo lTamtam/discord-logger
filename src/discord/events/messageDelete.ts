@@ -15,9 +15,6 @@ const event: BotEvent = {
     execute: async (message: Message | PartialMessage) => {
         if (!message.author || message.author.bot || !message.guild || message.channel.type === ChannelType.DM) return;
 
-        let cachedMessage = getCacheMessage(message.id);
-        if (!cachedMessage) cachedMessage = await getDbMessage(message.id);
-        if (!cachedMessage) return;
         const user = message.author;
         if (!user) return;
 
@@ -28,6 +25,10 @@ const event: BotEvent = {
         const uuid = suuid.new();
         const member = await getMember(message.guild, user?.id);
         const executor = log?.executor ?? user;
+
+        let cachedMessage = getCacheMessage(message.id);
+        if (!cachedMessage) cachedMessage = await getDbMessage(message.id);
+        if (!cachedMessage) return;
 
         const messageDeleteEvent: WebhookEvent = {
             id: uuid,

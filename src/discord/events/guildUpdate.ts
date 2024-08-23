@@ -12,7 +12,6 @@ const event: BotEvent = {
 
     execute: async (oldGuild: Guild, guild: Guild) => {
         const logs = await guild.fetchAuditLogs({ type: AuditLogEvent.GuildUpdate, limit: 1 }).catch(err => { });
-        if (!logs) return;
         const log = logs?.entries.find(e => new Date().getTime() - e.createdTimestamp < 3000);
         if (!log || !log.changes) return;
 

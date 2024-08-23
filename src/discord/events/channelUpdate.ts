@@ -11,14 +11,10 @@ const event: BotEvent = {
     name: Events.ChannelUpdate,
 
     execute: async (oldChannel: Channel, channel: Channel) => {
-        if (oldChannel.type === ChannelType.DM || oldChannel.type === ChannelType.GroupDM || oldChannel.isThread()) return;
-        if (channel.type === ChannelType.DM || channel.type === ChannelType.GroupDM || channel.isThread()) return;
-        if (channel.position !== oldChannel.position) return;
+        if (oldChannel.type === ChannelType.DM || oldChannel.type === ChannelType.GroupDM || oldChannel.isThread() || channel.type === ChannelType.DM || channel.type === ChannelType.GroupDM || channel.isThread() || channel.position !== oldChannel.position) return;
 
         // 0 | AuditLogEvent.ChannelUpdate | AuditLogEvent.ChannelOverwriteUpdate
         let auditLogId: 0 | 11 | 14 = 0;
-        const suuid = short();
-        const uuid = suuid.new();
 
         /**https://gist.github.com/jaw0r3k/b4befbad76142f324ab90719a9595b8c*/
         const permissionOverwritesChanges = [...oldChannel.permissionOverwrites.cache.keys(), ...channel.permissionOverwrites.cache.keys()]
@@ -60,6 +56,8 @@ const event: BotEvent = {
         const log = logs?.entries.find(e => e.targetId === channel.id);
         if (!log || !log?.changes) return;
 
+        const suuid = short();
+        const uuid = suuid.new();
         const user = log.executor;
         const member = await getMember(channel.guild, user?.id);
 

@@ -16,13 +16,6 @@ const event: BotEvent = {
     execute: async (messages: Collection<Snowflake, Message | PartialMessage>, channel: GuildTextBasedChannel) => {
         if (!channel.guild) return;
 
-        let cacheMessages: CacheMessageObject[] = [];
-        messages.forEach(async m => {
-            let msg = getCacheMessage(m.id);
-            if (!msg) msg = await getDbMessage(m.id);
-            if (msg) cacheMessages.push(msg);
-        });
-
         const logs = await channel.guild.fetchAuditLogs({ type: AuditLogEvent.MessageBulkDelete, limit: 5 }).catch(err => { });
         const log = logs?.entries.find(e => e.targetId === channel.id && new Date().getTime() - e.createdTimestamp < 5000);
         if (!log) return;
@@ -31,6 +24,13 @@ const event: BotEvent = {
         const uuid = suuid.new();
         const user = log.executor;
         const member = await getMember(channel.guild, user?.id);
+
+        let cacheMessages: CacheMessageObject[] = [];
+        messages.forEach(async m => {
+            let msg = getCacheMessage(m.id);
+            if (!msg) msg = await getDbMessage(m.id);
+            if (msg) cacheMessages.push(msg);
+        });
 
         const messageBulkDeleteEvent: WebhookEvent = {
             id: uuid,

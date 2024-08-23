@@ -12,15 +12,16 @@ const event: BotEvent = {
     execute: async (oldState: VoiceState, newState: VoiceState) => {
         if (oldState.channel === newState.channel && oldState.serverMute === newState.serverMute && oldState.serverDeaf === newState.serverDeaf) return;
 
+        const member = newState.member;
+        const user = await getUser(newState.guild, member);
+        if (!user) return;
+
         const logs = await newState.guild.fetchAuditLogs({ type: AuditLogEvent.MemberUpdate, limit: 5 }).catch(err => { });
         const log = logs?.entries.find(e => e.targetId === newState.id && new Date().getTime() - e.createdTimestamp < 3000);
 
         const suuid = short();
         const uuid = suuid.new();
         const executor = log?.executor;
-        const member = newState.member;
-        const user = await getUser(newState.guild, member);
-        if (!user) return;
 
         const voiceStateUpdateEvent: WebhookEvent = {
             id: uuid,

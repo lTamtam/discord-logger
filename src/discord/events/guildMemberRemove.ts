@@ -12,13 +12,12 @@ const event: BotEvent = {
         const user = await member.client.users.fetch(member).catch(err => null);
         if (!user) return;
 
+        const suuid = short();
+        const uuid = suuid.new();
         const logs = await member.guild.fetchAuditLogs({ type: AuditLogEvent.MemberKick, limit: 1 }).catch(err => { });
         const log = logs?.entries.find(e => e.targetId === user.id && new Date().getTime() - e.createdTimestamp < 3000);
         const kick = !!log;
         const executor = log?.executor;
-
-        const suuid = short();
-        const uuid = suuid.new();
 
         const guildMemberRemoveEvent: WebhookEvent = {
             id: uuid,
