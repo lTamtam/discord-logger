@@ -11,7 +11,7 @@ import logger from "./pino-logger";
  * @returns {Promise<Webhook | null>}
  */
 export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditOptions): Promise<Webhook | null> {
-    if ((options.channel as Channel).type !== ChannelType.GuildText) return null;
+    if (options.channel && (options.channel as Channel).type !== ChannelType.GuildText) return null;
     try {
         await webhook.edit(options);
         return webhook;
@@ -127,9 +127,8 @@ export async function deleteWebhook(guild: Guild): Promise<void> {
         });
     }
     try {
-        const webhook = await guild.fetchWebhooks()
-            .then(ws => ws.find(w => w.owner?.id === Bun.env.APP_ID))
-            .catch(err => null);
+        const webhooks = await guild.fetchWebhooks();
+        const webhook = webhooks.find(w => w.owner?.id === Bun.env.APP_ID);
         if (webhook) {
             await webhook.delete();
         }
