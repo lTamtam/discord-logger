@@ -17,9 +17,10 @@ const event: BotEvent = {
 
         const suuid = short();
         const uuid = suuid.new();
+        const executor = log?.executor;
         const member = newState.member;
         const user = await getUser(newState.guild, member);
-        const executor = log?.executor;
+        if (!user) return;
 
         const voiceStateUpdateEvent: WebhookEvent = {
             id: uuid,
