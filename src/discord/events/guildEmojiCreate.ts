@@ -18,6 +18,7 @@ const event: BotEvent = {
         const uuid = suuid.new();
         const user = log.executor;
         const member = await getMember(emoji.guild, user?.id);
+        const extension = emoji.animated ? 'gif' : 'png';
 
         const guildEmojiCreateEvent: WebhookEvent = {
             id: uuid,
@@ -33,7 +34,7 @@ const event: BotEvent = {
                 fields: [
                     { name: 'Name', value: `\`${emoji.name}\`` },
                     { name: 'Managed', value: `${emoji.managed ? 'Yes' : 'No'}` },
-                    { name: 'Link', value: `${emoji.imageURL()}\n<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>` },
+                    { name: 'Link', value: `${emoji.imageURL({ extension: extension })}\n<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>` },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nEmoji=${emoji.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },

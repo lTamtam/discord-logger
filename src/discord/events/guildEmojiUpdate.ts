@@ -20,6 +20,7 @@ const event: BotEvent = {
         const uuid = suuid.new();
         const user = log.executor;
         const member = await getMember(emoji.guild, user?.id);
+        const extension = emoji.animated ? 'gif' : 'png';
 
         const guildEmojiUpdateEvent: WebhookEvent = {
             id: uuid,
@@ -38,7 +39,7 @@ const event: BotEvent = {
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xD3FA89,
-                thumbnail: { url: emoji.imageURL() }
+                thumbnail: { url: emoji.imageURL({ extension: extension }) }
             }],
         };
 
