@@ -12,7 +12,7 @@ export async function getDbMessage(messageId: Snowflake): Promise<CacheMessageOb
                 id: messageId
             }
         });
-        if (dbMessage) return { ...dbMessage, content: dbMessage.content ? decrypt(dbMessage.content) : '<None>', createdAt: new Date(dbMessage.createdAt) };
+        if (dbMessage) return { ...dbMessage, content: dbMessage.content ? decrypt(dbMessage.content) : '\`<None>\`', createdAt: new Date(dbMessage.createdAt) };
     }
     catch (err) {
         logger.error({
@@ -33,7 +33,7 @@ export async function updateDbMessage(message: Message): Promise<void> {
             },
             data: {
                 authorId: message.author.id,
-                content: encrypt(message.content ?? '<None>'),
+                content: encrypt(message.content ?? '\`<None>\`'),
                 guild: {
                     connectOrCreate: {
                         create: {
