@@ -41,12 +41,13 @@ export async function cacheMessage(message: Message) {
     let totalSize = 0;
     for (const a of attachments) {
         try {
+            if (!a.contentType) a.contentType = 'text/plain';
             const head = await axios.head(a.url);
             const size = parseInt(head.headers['content-length']);
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
             const res = await axios.get(a.url, { responseType: 'arraybuffer' });
             if (res) {
-                const encoding = extensions[a.contentType?.split(';')[0] ?? 'text/plain'][0];
+                const encoding = extensions[a.contentType] ? extensions[a.contentType][0] : extensions['text/plain'][0];
                 let buffer = Buffer.from(res.data, 'binary');
                 b64Attachments.push(`data:${encoding};base64,${buffer.toString('base64')}`);
                 totalSize += size;
