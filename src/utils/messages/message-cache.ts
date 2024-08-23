@@ -13,7 +13,7 @@ const EXT_MAP = Bun.file(`${import.meta.dir.split('src/')[0]}src/utils/file-exte
 // axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
 let batch: CacheMessageArray[] = [];
-(async () => { await redis.get(`messages-batch`).then(c => { if (c) batch = JSON.parse(c).catch(() => { }) }); })();
+(async () => { await redis.get(`messages-batch`).then(c => { if (c) batch = JSON.parse(c).catch(() => { }) }).catch(() => { }); })();
 
 export async function addMessage(messageArray: CacheMessageArray): Promise<void> {
     batch.push(messageArray);
