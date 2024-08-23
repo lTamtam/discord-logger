@@ -1,4 +1,4 @@
-import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { Client, Collection, GatewayIntentBits, Partials } from "discord.js";
 import { readdirSync } from 'fs';
 import path from 'path';
 import { BotEvent, BotSlashCommand } from "./types";
@@ -21,6 +21,13 @@ export const discordClient = new Client({
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildEmojisAndStickers,
         GatewayIntentBits.AutoModerationConfiguration
+    ],
+    partials: [
+        Partials.Channel,
+        Partials.Message,
+        Partials.User,
+        Partials.GuildMember,
+        Partials.ThreadMember
     ]
 });
 
