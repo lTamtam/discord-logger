@@ -1,4 +1,4 @@
-import { AuditLogEvent, ChannelType, Events, Message } from 'discord.js';
+import { AuditLogEvent, ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
 import { MAX_EMBED_FIELD_VALUE } from '../../utils/constants';
@@ -12,8 +12,8 @@ const eventName = 'messageDelete';
 const event: BotEvent = {
     name: Events.MessageDelete,
 
-    execute: async (message: Message) => {
-        if (message.author.bot || !message.guild || message.channel.type === ChannelType.DM) return;
+    execute: async (message: Message | PartialMessage) => {
+        if (message.author?.bot || !message.guild || message.channel.type === ChannelType.DM) return;
 
         let cachedMessage = getCacheMessage(message.id);
         if (!cachedMessage) cachedMessage = await getDbMessage(message.id);
@@ -65,7 +65,7 @@ const event: BotEvent = {
         });
 
         messageDeleteEvent.embeds[0].fields.push(
-            { name: 'ID', value: `\`\`\`ini\n${user !== executor ? `Executor=${executor?.id ?? '???'}\n` : ''}Author=${message.author.id}\nMessage=${cachedMessage.id}\nChannel=${message.channel.id}\`\`\`` }
+            { name: 'ID', value: `\`\`\`ini\n${user !== executor ? `Executor=${executor?.id ?? '???'}\n` : ''}Author=${message.author?.id}\nMessage=${cachedMessage.id}\nChannel=${message.channel.id}\`\`\`` }
         );
 
         await webhookSend(messageDeleteEvent);
