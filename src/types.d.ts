@@ -1,4 +1,4 @@
-import { AttachmentBuilder, Collection, EmbedAssetData, ImageURLOptions, SlashCommandBuilder } from 'discord.js'
+import { AttachmentBuilder, Collection, EmbedAssetData, ImageURLOptions, SlashCommandBuilder, Snowflake } from 'discord.js'
 import { SUUID } from 'short-uuid'
 
 export interface BotSlashCommand {
@@ -57,18 +57,20 @@ export type StoredWebhook = {
 }
 
 export type CacheMessageArray = [
-    string,
-    string,
-    string,
+    Snowflake,
+    Snowflake,
+    Snowflake,
+    Snowflake,
     string,
     string[],
     string
 ]
 
 export type CacheMessageObject = {
-    id: string,
-    guildId: string,
-    authorId: string,
+    id: Snowflake,
+    guildId: Snowflake,
+    channelId: Snowflake,
+    authorId: Snowflake,
     content: string,
     attachmentsB64: string[],
     createdAt: Date

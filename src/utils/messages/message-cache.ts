@@ -15,7 +15,7 @@ let batch: CacheMessageArray[] = [];
 
 export async function addMessage(messageArray: CacheMessageArray): Promise<void> {
     batch.push(messageArray);
-    if (batch.length >= BATCH_SIZE || new Date().getTime() - Date.parse(batch[0][5]) >= BATCH_EXPIRATION) {
+    if (batch.length >= BATCH_SIZE || new Date().getTime() - Date.parse(batch[0][6]) >= BATCH_EXPIRATION) {
         await submitBatch();
     }
 };
@@ -49,7 +49,15 @@ export async function cacheMessage(message: Message) {
             continue;
         }
     }
-    addMessage([message.id, message.guild.id, message.author.id, content, b64Attachments, new Date().toISOString()]);
+    addMessage([
+        message.id,
+        message.guild.id,
+        message.channel.id,
+        message.author.id,
+        content,
+        b64Attachments,
+        new Date().toISOString()
+    ]);
 };
 
 export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null {
@@ -58,17 +66,18 @@ export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null
     return {
         id: message[0],
         guildId: message[1],
-        authorId: message[2],
-        content: decrypt(message[3]),
-        attachmentsB64: message[4],
-        createdAt: new Date(message[5])
+        channelId: message[2],
+        authorId: message[3],
+        content: decrypt(message[4]),
+        attachmentsB64: message[5],
+        createdAt: new Date(message[6])
     };
 };
 
 export function updateCacheMessage(messageId: Snowflake, content: string): void {
     for (let m of batch) {
-        if (m[3] === messageId) {
-            m[3] = encrypt(content ?? '`<None>`');
+        if (m[0] === messageId) {
+            m[0] = encrypt(content ?? '`<None>`');
             break;
         }
     }
@@ -84,7 +93,7 @@ export function deleteCacheMessage(messageId: Snowflake): void {
 };
 
 export function deleteCacheUserMessages(userId: Snowflake): void {
-    batch = batch.filter(m => m[2] !== userId);
+    batch = batch.filter(m => m[3] !== userId);
 };
 
 export function deleteCacheGuildMessages(guildId: Snowflake): void {
@@ -108,10 +117,11 @@ export async function submitBatch(): Promise<void> {
                     }
                 },
                 guildId: m[1],
-                authorId: m[2],
-                content: m[3],
-                attachmentsB64: m[4],
-                createdAt: m[5],
+                channelId: m[2],
+                authorId: m[3],
+                content: m[4],
+                attachmentsB64: m[5],
+                createdAt: m[6],
             }))
         })
     }
