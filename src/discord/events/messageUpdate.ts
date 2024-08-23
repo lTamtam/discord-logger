@@ -14,7 +14,7 @@ const event: BotEvent = {
 
     execute: async (oldMessage: Message | PartialMessage, message: Message) => {
         if (message.content === oldMessage.content) return;
-        if (message.author.bot || !message.guild || message.channel.type === ChannelType.DM || !oldMessage.author?.id || !message.author.id) return;
+        if (message.author.bot || !message.guild || message.channel.type === ChannelType.DM || !message.author.id) return;
 
         let cachedMessage = getCacheMessage(message.id);
         if (cachedMessage) updateCacheMessage(message.id, message.content);
@@ -25,9 +25,10 @@ const event: BotEvent = {
         if (!cachedMessage) cachedMessage = {
             id: oldMessage.id,
             guildId: message.guild.id,
-            authorId: oldMessage.author.id,
+            channelId: message.channel.id,
+            authorId: message.author.id,
             createdAt: oldMessage.createdAt,
-            content: oldMessage.content ?? '`<None>`',
+            content: oldMessage.content ?? '`<Unknown>`',
             attachmentsB64: []
         };
 
