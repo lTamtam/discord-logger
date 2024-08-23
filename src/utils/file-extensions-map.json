@@ -621,5 +621,7 @@
     "application/vnd.zzazz.deck+xml": [".zaz"],
     "application/zip": [".zip"],
     "application/vnd.zul": [".zir", ".zirz"],
-    "application/vnd.handheld-entertainment+xml": [".zmm"]
+    "application/vnd.handheld-entertainment+xml": [".zmm"],
+    "image/heic": [".heic"],
+    "video/hevc": [".hevc"]
 }
