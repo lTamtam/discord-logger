@@ -3,7 +3,7 @@ import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
 import { MAX_EMBED_DESCRIPTION, MAX_EMBED_FIELD_VALUE } from '../../utils/constants';
 import { chunkify, getMember } from '../../utils/helpers';
-import { getCacheMessage, updateCacheMessage } from '../../utils/messages/message-cache';
+import { cacheMessage, getCacheMessage, updateCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage, updateDbMessage } from '../../utils/messages/message-db';
 import { webhookSend } from '../../utils/webhooks';
 
@@ -13,8 +13,7 @@ const event: BotEvent = {
     name: Events.MessageUpdate,
 
     execute: async (oldMessage: Message | PartialMessage, message: Message) => {
-        if (message.content === oldMessage.content) return;
-        if (message.author.bot || !message.guild || message.channel.type === ChannelType.DM || !message.author.id) return;
+        if (message.content === oldMessage.content || message.author.bot || !message.guild || message.channel.type === ChannelType.DM) return;
 
         let cachedMessage = getCacheMessage(message.id);
         if (cachedMessage) updateCacheMessage(message.id, message.content);
@@ -22,15 +21,18 @@ const event: BotEvent = {
             cachedMessage = await getDbMessage(message.id);
             if (cachedMessage) await updateDbMessage(message);
         }
-        if (!cachedMessage) cachedMessage = {
-            id: oldMessage.id,
-            guildId: message.guild.id,
-            channelId: message.channel.id,
-            authorId: message.author.id,
-            createdAt: oldMessage.createdAt,
-            content: oldMessage.content ?? '`<Unknown>`',
-            attachmentsB64: []
-        };
+        if (!cachedMessage) {
+            cachedMessage = {
+                id: oldMessage.id,
+                guildId: message.guild.id,
+                channelId: message.channel.id,
+                authorId: message.author.id,
+                createdAt: oldMessage.createdAt,
+                content: oldMessage.content ?? '`<Unknown>`',
+                attachmentsB64: []
+            };
+            await cacheMessage(message);
+        }
 
         const suuid = short();
         const uuid = suuid.new();
