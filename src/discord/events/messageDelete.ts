@@ -13,7 +13,7 @@ const event: BotEvent = {
     name: Events.MessageDelete,
 
     execute: async (message: Message | PartialMessage) => {
-        if (message.author?.bot || !message.guild || message.channel.type === ChannelType.DM) return;
+        if (!message.author || message.author.bot || !message.guild || message.channel.type === ChannelType.DM) return;
 
         let cachedMessage = getCacheMessage(message.id);
         if (!cachedMessage) cachedMessage = await getDbMessage(message.id);
@@ -65,7 +65,7 @@ const event: BotEvent = {
         });
 
         messageDeleteEvent.embeds[0].fields.push(
-            { name: 'ID', value: `\`\`\`ini\n${user !== executor ? `Executor=${executor?.id ?? '???'}\n` : ''}Author=${message.author?.id}\nMessage=${cachedMessage.id}\nChannel=${message.channel.id}\`\`\`` }
+            { name: 'ID', value: `\`\`\`ini\n${user !== executor ? `Executor=${executor?.id ?? '???'}\n` : ''}Author=${message.author.id}\nMessage=${cachedMessage.id}\nChannel=${message.channel.id}\`\`\`` }
         );
 
         await webhookSend(messageDeleteEvent);
