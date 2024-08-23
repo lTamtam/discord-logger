@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Message, Snowflake } from 'discord.js';
 import prisma from '../../clients/prisma';
+import redis from '../../clients/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
 import { BATCH_EXPIRATION, BATCH_SIZE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../constants';
 import { decrypt, encrypt } from '../encryption';
@@ -12,9 +13,20 @@ const EXT_MAP = Bun.file(`${import.meta.dir.split('src/')[0]}src/utils/file-exte
 // axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
 let batch: CacheMessageArray[] = [];
+(async () => { await redis.get(`messages-batch`).then(c => { if (c) batch = JSON.parse(c).catch(() => { }) }); })();
 
 export async function addMessage(messageArray: CacheMessageArray): Promise<void> {
     batch.push(messageArray);
+    try {
+        redis.set(`messages-batch`, JSON.stringify(batch));
+    }
+    catch (err) {
+        logger.error({
+            app: 'Redis',
+            action: 'add_message',
+            err: err
+        });
+    }
     if (batch.length >= BATCH_SIZE || new Date().getTime() - Date.parse(batch[0][6]) >= BATCH_EXPIRATION) {
         await submitBatch();
     }
@@ -77,7 +89,17 @@ export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null
 export function updateCacheMessage(messageId: Snowflake, content: string): void {
     for (let m of batch) {
         if (m[0] === messageId) {
-            m[0] = encrypt(content ?? '`<None>`');
+            m[4] = encrypt(content ?? '`<None>`');
+            try {
+                redis.set(`messages-batch`, JSON.stringify(batch));
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Redis',
+                    action: 'update_cache_message',
+                    err: err
+                });
+            }
             break;
         }
     }
@@ -87,6 +109,16 @@ export function deleteCacheMessage(messageId: Snowflake): void {
     for (let i = 0; i < batch.length; i++) {
         if (batch[i][0] === messageId) {
             batch = batch.splice(i);
+            try {
+                redis.set(`messages-batch`, JSON.stringify(batch));
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Redis',
+                    action: 'delete_cache_message',
+                    err: err
+                });
+            }
             break;
         }
     }
@@ -94,28 +126,39 @@ export function deleteCacheMessage(messageId: Snowflake): void {
 
 export function deleteCacheUserMessages(userId: Snowflake): void {
     batch = batch.filter(m => m[3] !== userId);
+    try {
+        redis.set(`messages-batch`, JSON.stringify(batch));
+    }
+    catch (err) {
+        logger.error({
+            app: 'Redis',
+            action: 'delete_cache_user_messages',
+            err: err
+        });
+    }
 };
 
 export function deleteCacheGuildMessages(guildId: Snowflake): void {
     batch = batch.filter(m => m[1] !== guildId);
+    try {
+        redis.set(`messages-batch`, JSON.stringify(batch));
+    }
+    catch (err) {
+        logger.error({
+            app: 'Redis',
+            action: 'delete_cache_guild_messages',
+            err: err
+        });
+    }
 };
 
 export async function submitBatch(): Promise<void> {
     const batchToSubmit = batch.splice(0, BATCH_SIZE);
     try {
+        redis.del(`messages-batch`);
         await prisma.message.createMany({
             data: batchToSubmit.map(m => ({
                 id: m[0],
-                guild: {
-                    connectOrCreate: {
-                        create: {
-                            id: m[1]
-                        },
-                        where: {
-                            id: m[1]
-                        }
-                    }
-                },
                 guildId: m[1],
                 channelId: m[2],
                 authorId: m[3],
@@ -123,11 +166,11 @@ export async function submitBatch(): Promise<void> {
                 attachmentsB64: m[5],
                 createdAt: m[6],
             }))
-        })
+        });
     }
     catch (err) {
         logger.error({
-            app: 'Database',
+            app: 'Redis/Database',
             action: 'submit_batch',
             err: err
         });
