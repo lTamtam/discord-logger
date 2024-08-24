@@ -44,7 +44,7 @@ const event: BotEvent = {
         if (actions.length) addField('Actions', `${actions.join('\n')}`);
 
         if (rule.triggerMetadata.keywordFilter.length) addField('Keywords', `\`\`\`${rule.triggerMetadata.keywordFilter.join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
-        if (rule.triggerMetadata.regexPatterns.length) addField('Regex patterns', `**${rule.triggerMetadata.regexPatterns.map(r => `\`${r}\``).join(' ').replace(/\"/g, '"').replace(/`/g, '')}**`);
+        if (rule.triggerMetadata.regexPatterns.length) addField('Regex patterns', `${rule.triggerMetadata.regexPatterns.map(r => `\`${r.replace(/`/g, '')}\``).join(' ').replace(/\"/g, '"')}`);
         if (rule.triggerMetadata.presets.length) addField('Preset keywords', `**Categories:** ${rule.triggerMetadata.presets.map(p => p === 1 ? 'Profanity' : p === 2 ? 'Sexual content' : p === 3 ? 'Slurs' : '').join(', ')}`);
         if (rule.triggerMetadata.allowList.length) addField('Allowed keywords', `\`\`\`${rule.triggerMetadata.allowList.join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
         if (rule.triggerMetadata.mentionTotalLimit) addField('Mentions limit', `**${rule.triggerMetadata.mentionTotalLimit}**`);

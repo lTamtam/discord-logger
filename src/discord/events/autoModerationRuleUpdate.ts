@@ -55,10 +55,10 @@ const event: BotEvent = {
                 addField(`Removed keywords`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
             }
             if (c.key === '$add_regex_patterns') {
-                addField(`Added regexes`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
+                addField(`Added regexes`, `\`\`\`${c.new.map(k => `\`${k.replace(/`/g, '')}\``).join(' ').replace(/\"/g, '"')}\`\`\``);
             }
             if (c.key === '$remove_regex_patterns') {
-                addField(`Removed regexes`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
+                addField(`Removed regexes`, `\`\`\`${c.new.map(k => `\`${k.replace(/`/g, '')}\``).join(' ').replace(/\"/g, '"')}\`\`\``);
             }
             if (c.key === '$add_allow_list') {
                 addField(`Added allowed words`, `\`\`\`${c.new.map(k => k).join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
