@@ -68,7 +68,7 @@ export async function cacheMessage(message: Message) {
         message.author.id,
         content,
         b64Attachments,
-        new Date().toISOString()
+        new Date(message.createdTimestamp).toISOString()
     ]);
 };
 
