@@ -13,7 +13,6 @@ const EXT_MAP = Bun.file(`${import.meta.dir.split('src/')[0]}src/utils/file-exte
 // axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
 let batch: CacheMessageArray[] = [];
-(async () => { await redis.get(`messages-batch`).then(c => { if (c) batch = JSON.parse(c).catch(() => { }) }).catch(() => { }); })();
 
 export async function addMessage(messageArray: CacheMessageArray): Promise<void> {
     batch.push(messageArray);
@@ -177,3 +176,26 @@ export async function submitBatch(): Promise<void> {
         });
     }
 };
+
+(async () => {
+    try {
+        const start = new Date().getTime();
+        const rBatch = await redis.get(`messages-batch`);
+        if (rBatch) {
+            batch = JSON.parse(rBatch);
+            logger.info({
+                app: 'Redis',
+                action: 'recover_cache_messages',
+                duration: `${Math.round(new Date().getTime() - start)}ms`,
+                messages: batch.length
+            });
+        }
+    }
+    catch (err) {
+        logger.error({
+            app: 'Redis',
+            action: 'recover_cache_messages',
+            err: err
+        });
+    }
+})();
