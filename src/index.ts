@@ -18,6 +18,7 @@ export const discordClient = new Client({
         GatewayIntentBits.GuildWebhooks,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildModeration,
         GatewayIntentBits.GuildVoiceStates,
         GatewayIntentBits.GuildEmojisAndStickers,
         GatewayIntentBits.AutoModerationConfiguration
