@@ -39,7 +39,7 @@ const event: BotEvent = {
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xD3FA89,
-                thumbnail: { url: emoji.imageURL() }
+                thumbnail: { url: emoji.imageURL({ extension: extension }) }
             }],
         };
 
