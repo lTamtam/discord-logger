@@ -72,6 +72,7 @@ const event: BotEvent = {
             }
         });
 
+        if (!voiceStateUpdateEvent.embeds[0].fields.length) return;
         await webhookSend(voiceStateUpdateEvent);
     }
 };
