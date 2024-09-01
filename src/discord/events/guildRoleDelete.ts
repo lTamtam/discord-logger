@@ -33,14 +33,20 @@ const event: BotEvent = {
                 fields: [
                     { name: 'Name', value: role.name },
                     { name: 'Permissions', value: (Object.keys(PermissionsBitField.Flags)).filter(p => new PermissionsBitField(role.permissions).has(p as PermissionResolvable)).map(s => `✅ ${s}`).join('\n') ?? '\`<None>\`' },
-                    { name: 'ID', value: `\`\`\`ini\n${auto ? '' : `Executor=${user?.id ?? '???'}\n`}Role=${role.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xFE544A,
                 timestamp: new Date().toISOString()
             }]
         };
+        const addField = (name: string, value: string) => guildRoleDeleteEvent.embeds[0].fields.push({ name: name, value: value });
 
+        if (role.icon) {
+            addField('Icon URL', `${role.iconURL()}`);
+            guildRoleDeleteEvent.embeds[0].thumbnail = { url: role.iconURL()! };
+        }
+
+        addField('ID', `\`\`\`ini\n${auto ? '' : `Executor=${user?.id ?? '???'}\n`}Role=${role.id ?? '???'}\`\`\``);
         await webhookSend(guildRoleDeleteEvent);
     }
 };

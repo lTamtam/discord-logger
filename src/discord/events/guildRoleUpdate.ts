@@ -1,4 +1,4 @@
-import { AuditLogEvent, Events, PermissionResolvable, PermissionsBitField, Role } from 'discord.js';
+import { AuditLogEvent, Events, PartialRoleData, PermissionResolvable, PermissionsBitField, Role } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
 import { getDifference, getMember } from '../../utils/helpers';
@@ -9,7 +9,7 @@ const eventName = 'guildRoleUpdate';
 const event: BotEvent = {
     name: Events.GuildRoleUpdate,
 
-    execute: async (oldRole: Role, role: Role) => {
+    execute: async (oldRole: Role | PartialRoleData, role: Role) => {
         if (role.position !== oldRole.position) return;
 
         const logs = await role.guild.fetchAuditLogs({ type: AuditLogEvent.RoleUpdate, limit: 5 }).catch(err => { });
@@ -50,6 +50,10 @@ const event: BotEvent = {
             if (c.key === 'color') addField('Color', `**Now:** \`#${c.new}\`\n**Was:** \`#${c.old}\``);
             if (c.key === 'hoist') addField('Hoisted', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'mentionable') addField('Mentionnable', `**Now:** ${c.new}\n**Was:** ${c.old}`);
+            if (c.key === 'icon_hash') {
+                addField('Icon URL', `**Now:** ${role.iconURL()}`);
+                guildRoleUpdateEvent.embeds[0].thumbnail = { url: role.iconURL()! };
+            };
         });
 
         if (added.length || removed.length) {
