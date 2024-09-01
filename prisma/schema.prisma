@@ -14,7 +14,7 @@ model Guild {
   id        String    @id
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  webhooks  Webhook[]
+  webhook   Webhook?
   messages  Message[]
 }
 
