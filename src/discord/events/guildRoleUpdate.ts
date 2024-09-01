@@ -47,7 +47,7 @@ const event: BotEvent = {
 
         log?.changes.forEach(c => {
             if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
-            if (c.key === 'color') addField('Color', `**Now:** \`#${c.new}\`\n**Was:** \`#${c.old}\``);
+            if (c.key === 'color') addField('Color', `**Now:** \`#${c.new?.toString(16)}\`\n**Was:** \`#${c.old?.toString(16)}\``);
             if (c.key === 'hoist') addField('Hoisted', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'mentionable') addField('Mentionnable', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'icon_hash') {
