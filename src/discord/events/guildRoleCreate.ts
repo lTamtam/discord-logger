@@ -19,6 +19,7 @@ const event: BotEvent = {
         const user = log.executor;
         const member = await getMember(role.guild, user?.id);
         const auto = role.managed;
+        const permissions = (Object.keys(PermissionsBitField.Flags)).filter(p => new PermissionsBitField(role.permissions).has(p as PermissionResolvable)).map(s => `✅ ${s}`).join('\n');
 
         const guildRoleCreateEvent: WebhookEvent = {
             id: uuid,
@@ -32,7 +33,7 @@ const event: BotEvent = {
                 description: `${auto ? 'Managed role' : 'Role'} ${role} was created`,
                 fields: [
                     { name: 'Name', value: role.name },
-                    { name: 'Permissions', value: (Object.keys(PermissionsBitField.Flags)).filter(p => new PermissionsBitField(role.permissions).has(p as PermissionResolvable)).map(s => `✅ ${s}`).join('\n') ?? '\`<None>\`' }
+                    { name: 'Permissions', value: permissions ? permissions : '\`<None>\`' }
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0x65FDFC,
