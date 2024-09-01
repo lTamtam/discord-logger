@@ -24,7 +24,6 @@ const event: BotEvent = {
             id: uuid,
             guild: emoji.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -39,7 +38,8 @@ const event: BotEvent = {
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xD3FA89,
-                thumbnail: { url: emoji.imageURL({ extension: extension }) }
+                thumbnail: { url: emoji.imageURL({ extension: extension }) },
+                timestamp: new Date().toISOString()
             }],
         };
 

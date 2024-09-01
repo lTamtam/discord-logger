@@ -65,7 +65,6 @@ const event: BotEvent = {
             id: uuid,
             guild: channel.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -76,7 +75,8 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(channel.createdTimestamp! / 1000)}:F>` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xFD963A
+                color: 0xFD963A,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => channelUpdateEvent.embeds[0].fields.push({ name: name, value: value });

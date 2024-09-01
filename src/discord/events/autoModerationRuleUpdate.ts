@@ -25,7 +25,6 @@ const event: BotEvent = {
             id: uuid,
             guild: rule.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -34,7 +33,8 @@ const event: BotEvent = {
                 description: `${AUTOMOD_TRIGGER_TYPE_MAP[rule.triggerType]} automod rule was updated`,
                 fields: [],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x8DBCBE
+                color: 0x8DBCBE,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => automoderationRuleUpdateEvent.embeds[0].fields.push({ name: name, value: value });

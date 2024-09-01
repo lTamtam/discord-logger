@@ -27,7 +27,6 @@ const event: BotEvent = {
             id: uuid,
             guild: thread.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -38,7 +37,8 @@ const event: BotEvent = {
                     { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name ?? '???'})` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xFCA82A
+                color: 0xFCA82A,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => threadUpdateEvent.embeds[0].fields.push({ name: name, value: value });

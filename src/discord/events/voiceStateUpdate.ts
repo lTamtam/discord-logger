@@ -27,7 +27,6 @@ const event: BotEvent = {
             id: uuid,
             guild: newState.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -36,7 +35,8 @@ const event: BotEvent = {
                 description: ``,
                 fields: [],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x74FD77
+                color: 0x74FD77,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => voiceStateUpdateEvent.embeds[0].fields.push({ name: name, value: value });
