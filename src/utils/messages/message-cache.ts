@@ -7,8 +7,6 @@ import { BATCH_EXPIRATION, BATCH_SIZE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } fro
 import { decrypt, encrypt } from '../encryption';
 import logger from '../pino-logger';
 
-const EXT_MAP = Bun.file(`${import.meta.dir.split('src/')[0]}src/utils/file-extensions-map.json`);
-
 // https://github.com/oven-sh/bun/issues/267
 // axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
 
@@ -33,22 +31,22 @@ export async function addMessage(messageArray: CacheMessageArray): Promise<void>
 
 export async function cacheMessage(message: Message) {
     if (!message.guild || message.webhookId) return;
-    const extensions: { [key: string]: string[] } = await EXT_MAP.json();
     const content = encrypt(message.content ?? '`<None>`');
     const attachments = message.attachments.map(a => a);
     const b64Attachments: string[] = [];
     let totalSize = 0;
     for (const a of attachments) {
         try {
-            if (!a.contentType) a.contentType = 'text/plain';
             const head = await axios.head(a.url);
             const size = parseInt(head.headers['content-length']);
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
             const res = await axios.get(a.url, { responseType: 'arraybuffer' });
             if (res) {
-                const encoding = extensions[a.contentType] ? extensions[a.contentType][0] : extensions['text/plain'][0];
+                if (!a.contentType) a.contentType = 'text/plain';
+                const extension = a.name.split('.').at(-1) ?? 'txt';
                 let buffer = Buffer.from(res.data, 'binary');
-                b64Attachments.push(`data:${encoding};base64,${buffer.toString('base64')}`);
+                // <name>.<extension>;type:<fileType>|<extension>;base64,<b64ImageData>
+                b64Attachments.push(`${a.name.replaceAll(';type:', '').replaceAll(';base64,', '')};type:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
                 totalSize += size;
             }
         }
