@@ -24,7 +24,6 @@ const event: BotEvent = {
             id: uuid,
             guild: rule.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -35,7 +34,8 @@ const event: BotEvent = {
                     { name: 'Name', value: rule.name }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xFE544A
+                color: 0xFE544A,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => automoderationRuleDeleteEvent.embeds[0].fields.push({ name: name, value: value });

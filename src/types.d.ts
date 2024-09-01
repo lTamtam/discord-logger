@@ -38,15 +38,18 @@ export interface Embed {
         text: string
     },
     color: number,
+    image?: {
+        url: string
+    },
     files?: AttachmentBuilder[],
-    thumbnail?: EmbedAssetData
+    thumbnail?: EmbedAssetData,
+    timestamp?: string
 }
 
 export interface WebhookEvent {
     id: string,
     guild: Guild,
     eventName?: string,
-    timestamp: Date,
     embeds: Embed[]
 }
 

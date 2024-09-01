@@ -33,7 +33,6 @@ const event: BotEvent = {
             id: uuid,
             guild: member.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -45,7 +44,8 @@ const event: BotEvent = {
                     { name: 'Joined at', value: `<t:${Math.round(member.joinedTimestamp! / 1000)}:F>` },
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x6FFBCB
+                color: 0x6FFBCB,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => guildMemberUpdateEvent.embeds[0].fields.push({ name: name, value: value });

@@ -25,7 +25,6 @@ const event: BotEvent = {
             id: uuid,
             guild: sticker.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -38,8 +37,9 @@ const event: BotEvent = {
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xD3FA89,
-                thumbnail: { url: sticker.url }
-            }],
+                thumbnail: { url: sticker.url },
+                timestamp: new Date().toISOString()
+            }]
         };
 
         await webhookSend(stickerUpdateEvent);

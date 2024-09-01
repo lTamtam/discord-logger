@@ -36,7 +36,6 @@ const event: BotEvent = {
             id: uuid,
             guild: channel.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -48,7 +47,8 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831
+                color: 0xF54831,
+                timestamp: new Date().toISOString()
             }]
         };
 

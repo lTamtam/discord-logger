@@ -29,7 +29,6 @@ const event: BotEvent = {
             id: uuid,
             guild: role.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -40,7 +39,8 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(role.createdTimestamp! / 1000)}:F>` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0x65FDFC
+                color: 0x65FDFC,
+                timestamp: new Date().toISOString()
             }]
         };
         const addField = (name: string, value: string) => guildRoleUpdateEvent.embeds[0].fields.push({ name: name, value: value });

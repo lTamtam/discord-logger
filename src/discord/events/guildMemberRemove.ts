@@ -23,7 +23,6 @@ const event: BotEvent = {
             id: uuid,
             guild: member.guild,
             eventName: eventName,
-            timestamp: new Date(),
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
@@ -35,7 +34,8 @@ const event: BotEvent = {
                     { name: 'Creation date', value: `<t:${Math.round(user.createdTimestamp! / 1000)}:F>`, inline: true }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xFE544A
+                color: 0xFE544A,
+                timestamp: new Date().toISOString()
             }]
         };
         if (member.joinedTimestamp) guildMemberRemoveEvent.embeds[0].fields.push({ name: 'Joined at', value: `<t:${Math.round(member.joinedTimestamp / 1000)}:F>`, inline: true });
