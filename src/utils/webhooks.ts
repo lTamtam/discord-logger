@@ -211,7 +211,7 @@ export async function webhookSend(event: WebhookEvent): Promise<Webhook | void> 
     return event.embeds.forEach(async e => {
         try {
             await webhook.send({
-                embeds: [new EmbedBuilder(e).setTimestamp(event.timestamp)],
+                embeds: [new EmbedBuilder(e)],
                 files: e.files
             });
         }
@@ -220,7 +220,7 @@ export async function webhookSend(event: WebhookEvent): Promise<Webhook | void> 
                 app: 'Bot',
                 action: 'webhook_send',
                 event: event.eventName,
-                timestamp: event.timestamp,
+                timestamp: event.embeds[0].timestamp,
                 uuid: event.id,
                 err: err
             });
