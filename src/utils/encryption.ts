@@ -25,7 +25,8 @@ export function generateMasterKey(size?: number): string {
  * @param masterkey 
  * @returns {string}
  */
-export function encrypt(text: string, masterkey?: string): string {
+export function encrypt(text: string | null, masterkey?: string): string {
+    if (!text) text = '`<None>`';
     if (!masterkey) masterkey = Bun.env.MASTERKEY!;
     const salt = crypto.randomBytes(64);
     const iVector = crypto.randomBytes(16);
