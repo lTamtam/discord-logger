@@ -45,8 +45,8 @@ export async function cacheMessage(message: Message) {
                 if (!a.contentType) a.contentType = 'text/plain';
                 const extension = a.name.split('.').at(-1) ?? 'txt';
                 let buffer = Buffer.from(res.data, 'binary');
-                // <name>.<extension>;type:<fileType>|<extension>;base64,<b64ImageData>
-                b64Attachments.push(`${a.name.replaceAll(';type:', '').replaceAll(';base64,', '')};type:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
+                // <name>.<extension>;data:<fileType>|<extension>;base64,<b64ImageData>
+                b64Attachments.push(`${a.name.replaceAll(';data:', '').replaceAll(';base64,', '')};data:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
                 totalSize += size;
             }
         }
