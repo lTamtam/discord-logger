@@ -122,6 +122,25 @@ export function getDifference<T>(x: T[], y: T[]): T[] {
 };
 
 /**
+ * Returns all duplicates from an array
+ * @param {T[]} array
+ * @returns {{T[]}}
+*/
+export function getDuplicates<T>(array: T[]): T[] {
+    return array.filter((e, i) => array.indexOf(e) !== i);
+};
+
+/**
+ * Returns an array without duplicates
+ * @param {T[]} array
+ * @returns {T}
+*/
+export function removeDuplicates<T>(array: T[]): T[] {
+    return array.filter((e, i) => array.indexOf(e) === i);
+};
+
+
+/**
  * Converts a message to smaller chunks of text
  * @param {string} text 
  * @returns {string[]}
