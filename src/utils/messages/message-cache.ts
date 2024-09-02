@@ -5,6 +5,7 @@ import redis from '../../clients/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
 import { BATCH_EXPIRATION, BATCH_SIZE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../constants';
 import { decrypt, encrypt } from '../encryption';
+import { removeDuplicates } from '../helpers';
 import logger from '../pino-logger';
 
 // https://github.com/oven-sh/bun/issues/267
@@ -155,6 +156,18 @@ export async function submitBatch(): Promise<void> {
     try {
         const start = new Date().getTime();
         redis.del(`messages-batch`);
+        const guilds = removeDuplicates(batchToSubmit.map(b => b[1]));
+        for (let g of guilds) {
+            await prisma.guild.upsert({
+                where: {
+                    id: g
+                },
+                create: {
+                    id: g
+                },
+                update: {}
+            });
+        }
         await prisma.message.createMany({
             data: batchToSubmit.map(m => ({
                 id: m[0],
