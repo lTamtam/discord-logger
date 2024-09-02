@@ -43,9 +43,9 @@ const event: BotEvent = {
             if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'actions') {
                 let actions = (c as ActionsRawtype).new.map(a => a.type === 1 ? '• Block message' : a.type === 2 ? `• Send alert in <#${a.metadata.channel_id}>` : `• Set timeout for **${a.metadata.duration_seconds}**s`);
-                if (!actions.length) actions = ['\`<None>\`'];
+                if (!actions.length) actions = ['`<None>`'];
                 let oldActions = (c as ActionsRawtype).new.map(a => a.type === 1 && a.metadata.custom_message !== undefined ? '• Block message' : a.type === 2 && a.metadata.channel_id !== undefined ? `• Send alert in <#${a.metadata.channel_id}>` : a.type === 3 && a.metadata.duration_seconds !== undefined ? `• Set timeout for **${a.metadata.duration_seconds}**s` : '');
-                if (!oldActions.length) actions = ['\`<None>\`'];
+                if (!oldActions.length) actions = ['`<None>`'];
                 if (actions.toString() !== oldActions.toString()) addField('Actions', `**Now**\n${actions.join('\n')}\n**Was**\n${oldActions.join('\n')}`);
             }
             if (c.key === '$add_keyword_filter' && c.new) {
@@ -70,8 +70,8 @@ const event: BotEvent = {
                 if ((c as TriggerRawtype).new.mention_total_limit !== (c as TriggerRawtype).old.mention_total_limit) addField('Mentions limit', `**Now: ${(c as TriggerRawtype).new.mention_total_limit}**\n**Was: ${(c as TriggerRawtype).old.mention_total_limit}**`);
                 if ((c as TriggerRawtype).new.mention_raid_protection_enabled !== (c as TriggerRawtype).old.mention_raid_protection_enabled) addField('Mentions raid protection', `${(c as TriggerRawtype).new.mention_raid_protection_enabled ? '✅ Enabled' : '❌ Disabled'}`);
             }
-            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptRoles[]).length ? '\`<None>\`' : (c.new as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptRoles[]).length ? '\`<None>\`' : (c.old as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}`);
-            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptChannels[]).length ? '\`<None>\`' : (c.new as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptChannels[]).length ? '\`<None>\`' : (c.old as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptRoles[]).length ? '`<None>`' : (c.new as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptRoles[]).length ? '`<None>`' : (c.old as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptChannels[]).length ? '`<None>`' : (c.new as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptChannels[]).length ? '`<None>`' : (c.old as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}`);
         });
         if (!automoderationRuleUpdateEvent.embeds[0].fields.length) return;
 

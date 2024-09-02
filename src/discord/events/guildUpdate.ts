@@ -44,16 +44,16 @@ const event: BotEvent = {
                     addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
                     break;
                 case 'description':
-                    addField('Description', `**Now:** ${c.new === '' || !c.new ? '\`<None>\`' : c.new}\n**Was:** ${c.old ?? '\`<None>\`'}`);
+                    addField('Description', `**Now:** ${c.new === '' || !c.new ? '`<None>`' : c.new}\n**Was:** ${c.old ?? '`<None>`'}`);
                     break;
                 case 'icon_hash':
-                    addField('Icon', `**Now:** [Image](${guild.iconURL() ?? '\`<None>\`'})\n**Was:** [Image](${oldGuild.iconURL() ?? '\`<None>\`'})`);
+                    addField('Icon', `**Now:** [Image](${guild.iconURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.iconURL() ?? '`<None>`'})`);
                     break;
                 case 'banner_hash':
-                    addField('Icon', `**Now:** [Image](${guild.bannerURL() ?? '\`<None>\`'})\n**Was:** [Image](${oldGuild.bannerURL() ?? '\`<None>\`'})`);
+                    addField('Icon', `**Now:** [Image](${guild.bannerURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.bannerURL() ?? '`<None>`'})`);
                     break;
                 case 'vanity_url_code':
-                    addField('Vanity URL', `**Now:** \`${c.new === '' || !c.new ? '\`<None>\`' : c.new}\`\n**Was:** \`${c.old ?? '\`<None>\`'}\``);
+                    addField('Vanity URL', `**Now:** \`${c.new === '' || !c.new ? '`<None>`' : c.new}\`\n**Was:** \`${c.old ?? '`<None>`'}\``);
                     break;
                 case 'verification_level':
                     addField('Verification', `**Now:** ${VERIFICATION_LEVELS_MAP[c.new as GuildVerificationLevel]}\n**Was:** ${VERIFICATION_LEVELS_MAP[c.old as GuildVerificationLevel]}\n`);
@@ -69,10 +69,10 @@ const event: BotEvent = {
                     break;
 
                 case 'splash_hash':
-                    addField('Server splash', `**Now:** [Image](${guild.splashURL() ?? '\`<None>\`'})\n**Was:** [Image](${oldGuild.splashURL() ?? '\`<None>\`'})`);
+                    addField('Server splash', `**Now:** [Image](${guild.splashURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.splashURL() ?? '`<None>`'})`);
                     break;
                 case 'discovery_splash_hash':
-                    addField('Discovery splash', `**Now:** [Image](${guild.discoverySplashURL() ?? '\`<None>\`'})\n**Was:** [Image](${oldGuild.discoverySplashURL() ?? '\`<None>\`'})`);
+                    addField('Discovery splash', `**Now:** [Image](${guild.discoverySplashURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.discoverySplashURL() ?? '`<None>`'})`);
                     break;
                 case 'default_message_notifications':
                     if ((c.old as { default_message_notifications?: 0 | 1 }).default_message_notifications === undefined) break;
@@ -80,22 +80,22 @@ const event: BotEvent = {
                     break;
 
                 case 'afk_channel_id':
-                    addField('AFK channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '\`<None>\`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '\`<None>\`'}`);
+                    addField('AFK channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
                 case 'afk_timeout':
                     addField('AFK timeout', `**Now:** **${c.new as number / 60}** minute${parseInt(c.new as string) > 1 ? 's' : ''}\n**Was:** **${c.old as number / 60}** minute${parseInt(c.new as string) > 1 ? 's' : ''}`);
                     break;
                 case 'system_channel_id':
-                    addField('System channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '\`<None>\`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '\`<None>\`'}`);
+                    addField('System channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
                 case 'rules_channel_id':
-                    addField('Rules channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '\`<None>\`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '\`<None>\`'}`);
+                    addField('Rules channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
                 case 'widget_channel_id':
-                    addField('Widget channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '\`<None>\`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '\`<None>\`'}`);
+                    addField('Widget channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
                 case 'public_updates_channel_id':
-                    addField('Public updates channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '\`<None>\`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '\`<None>\`'}`);
+                    addField('Public updates channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
             }
         });

@@ -33,7 +33,7 @@ const event: BotEvent = {
                 description: `User ${user} was unbanned`,
                 fields: [
                     { name: 'User', value: `${user} | **${user.tag}**` },
-                    { name: 'Reason', value: `${reason ?? '\`<None>\`'}` },
+                    { name: 'Reason', value: `${reason ?? '`<None>`'}` },
                     { name: 'ID', value: `\`\`\`ini\nExecutor=${executor?.id ?? '???'}\nUser=${user?.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },

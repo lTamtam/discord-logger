@@ -76,14 +76,14 @@ const event: BotEvent = {
                 }
                 else newChunks.push(message.content);
             }
-            else newChunks.push('\`<None>\`');
+            else newChunks.push('`<None>`');
             if (cachedMessage.content) {
                 if (cachedMessage.content.length > MAX_EMBED_FIELD_VALUE) {
                     oldChunks = chunkify(cachedMessage.content.replace(/\"/g, '"').replace(/`/g, ''));
                 }
                 else oldChunks.push(cachedMessage.content);
             }
-            else oldChunks.push('\`<None>\`');
+            else oldChunks.push('`<None>`');
 
             newChunks.forEach((c: string, i) => {
                 messageUpdateEvent.embeds[0].fields.push({

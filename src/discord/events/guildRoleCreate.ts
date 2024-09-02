@@ -34,7 +34,7 @@ const event: BotEvent = {
                 fields: [
                     { name: 'Name', value: role.name },
                     { name: 'Color', value: role.hexColor },
-                    { name: 'Permissions', value: permissions ? permissions : '\`<None>\`' }
+                    { name: 'Permissions', value: permissions ? permissions : '`<None>`' }
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0x65FDFC,
