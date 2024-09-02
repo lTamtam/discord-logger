@@ -25,7 +25,7 @@ export async function getDbMessage(messageId: Snowflake): Promise<CacheMessageOb
 };
 
 export async function updateDbMessage(message: Message): Promise<void> {
-    if (!message.guild || message.createdTimestamp < new Date().getTime() - MESSAGES_EXPIRATION) return;
+    if (!message.guild) return;
     try {
         await prisma.message.update({
             where: {
