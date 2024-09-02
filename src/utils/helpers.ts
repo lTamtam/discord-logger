@@ -142,7 +142,7 @@ export function chunkify(text: string): string[] {
  * @returns {string}
  */
 export function randomColor(s?: string): string {
-    return s + Math.floor(Math.random() * 16777215).toString(16);
+    return s + Math.floor(Math.random() * 16777216).toString(16);
 };
 
 /**
