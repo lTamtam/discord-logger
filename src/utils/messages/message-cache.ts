@@ -153,6 +153,7 @@ export function deleteCacheGuildMessages(guildId: Snowflake): void {
 export async function submitBatch(): Promise<void> {
     const batchToSubmit = batch.splice(0, BATCH_SIZE);
     try {
+        const start = new Date().getTime();
         redis.del(`messages-batch`);
         await prisma.message.createMany({
             data: batchToSubmit.map(m => ({
@@ -164,6 +165,12 @@ export async function submitBatch(): Promise<void> {
                 attachmentsB64: m[5],
                 createdAt: m[6],
             }))
+        });
+        logger.info({
+            app: 'Redis/Database',
+            action: 'submit_batch',
+            duration: `${Math.round(new Date().getTime() - start)}ms`,
+            messages: batchToSubmit.length
         });
     }
     catch (err) {
