@@ -38,8 +38,7 @@ export async function cacheMessage(message: Message) {
     let totalSize = 0;
     for (const a of attachments) {
         try {
-            const head = await axios.head(a.url);
-            const size = parseInt(head.headers['content-length']);
+            const size = a.size;
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
             const res = await axios.get(a.url, { responseType: 'arraybuffer' });
             if (res) {
