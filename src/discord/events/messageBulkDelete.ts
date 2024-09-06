@@ -1,5 +1,4 @@
 import { AttachmentBuilder, AuditLogEvent, Collection, Events, GuildTextBasedChannel, Message, PartialMessage, Snowflake } from 'discord.js';
-import { appendFileSync, unlink } from 'fs';
 import short from 'short-uuid';
 import { BotEvent, CacheMessageObject, WebhookEvent } from '../../types';
 import { getMember } from '../../utils/helpers';
@@ -17,7 +16,7 @@ const event: BotEvent = {
         if (!channel.guild) return;
 
         const logs = await channel.guild.fetchAuditLogs({ type: AuditLogEvent.MessageBulkDelete, limit: 5 }).catch(err => { });
-        const log = logs?.entries.find(e => e.targetId === channel.id && new Date().getTime() - e.createdTimestamp < 5000);
+        const log = logs?.entries.find(e => e.targetId === channel.id);
         if (!log) return;
 
         const suuid = short();
@@ -52,18 +51,24 @@ const event: BotEvent = {
             }]
         };
 
-        let file: AttachmentBuilder[] = [];
         if (cacheMessages.length) {
             messageBulkDeleteEvent.embeds[0].description += `\n\n\`${cacheMessages.length}\` *messages were known in cache*`;
-            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} | Sent by: ${m.authorId} | Date: ${m.createdAt} | Content: ${m.content ?? '<None>'} | Attachments: ${m.attachmentsB64.length}`).join('\n');
-            try { appendFileSync(`./tmp/deleted-messages-${uuid}.txt`, messagesList, 'utf-8') }
-            catch (err) { logger.error({ app: 'Bot', uuid: uuid, event: eventName, err: err }) };
-            file = [new AttachmentBuilder(`./tmp/deleted-messages-${uuid}.txt`)];
-            messageBulkDeleteEvent.embeds[0].files = file;
+            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} | Author: ${m.authorId} | Date: ${m.createdAt} | Content: ${m.content ?? '<None>'} | Attachments: ${m.attachmentsB64.length}`).join('\n');
+            try {
+                const file = [new AttachmentBuilder(Buffer.from(messagesList), { name: `deleted-messages-${uuid}.txt` })];
+                messageBulkDeleteEvent.files = file;
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    uuid: uuid,
+                    event: eventName,
+                    err: err
+                });
+            };
         }
 
-        await webhookSend(messageBulkDeleteEvent)
-            .then(() => unlink(`./tmp/deleted-messages-${uuid}.txt`, (err) => { }));
+        await webhookSend(messageBulkDeleteEvent);
     }
 };
 
