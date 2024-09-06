@@ -46,14 +46,14 @@ const event: BotEvent = {
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
-                color: 0xF54831,
+                color: 0xFE544A,
                 timestamp: new Date().toISOString()
             }]
         };
 
         if (cacheMessages.length) {
             messageBulkDeleteEvent.embeds[0].description += `\n\n\`${cacheMessages.length}\` *messages were known in cache*`;
-            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} | Author: ${m.authorId} | Date: ${m.createdAt} | Content: ${m.content ?? '<None>'} | Attachments: ${m.attachmentsB64.length}`).join('\n');
+            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} │ AuthorId: ${m.authorId} │ Date: ${m.createdAt.toISOString()} │ Attachments: ${m.attachmentsB64.length.toString().padStart(2, '0')} │ Content: ${m.content.replaceAll(/(\r\n|\n|\r)/gm, '\\n ').replace(/\"/g, '"').replace(/`/g, '').replace(/│/g, '|') ?? '`<None>`'}`).join('\n');
             try {
                 const file = [new AttachmentBuilder(Buffer.from(messagesList), { name: `deleted-messages-${uuid}.txt` })];
                 messageBulkDeleteEvent.files = file;
