@@ -10,7 +10,7 @@ const command: BotSlashCommand = {
         .setDMPermission(false)
         .setDescription('Immediately deletes your messages from the database'),
 
-    cooldown: 30,
+    cooldown: 10,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const user = ctx.user;

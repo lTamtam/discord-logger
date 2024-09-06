@@ -9,7 +9,7 @@ const command: BotSlashCommand = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('(pong)'),
 
-    cooldown: 30,
+    cooldown: 10,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const sent = await ctx.reply({ content: 'Pinging...', fetchReply: true, ephemeral: true });

@@ -9,7 +9,7 @@ const command: BotSlashCommand = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('Invite the bot to your server'),
 
-    cooldown: 30,
+    cooldown: 10,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         const embed = new EmbedBuilder()

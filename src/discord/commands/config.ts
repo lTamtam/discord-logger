@@ -29,7 +29,7 @@ const command: BotSlashCommand = {
                 .setDescription('Removes a webhook from the server and the database')
         ),
 
-    cooldown: 30,
+    cooldown: 10,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         if (!ctx.inCachedGuild()) return;
