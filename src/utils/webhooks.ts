@@ -212,7 +212,7 @@ export async function webhookSend(event: WebhookEvent): Promise<Webhook | void> 
         try {
             await webhook.send({
                 embeds: [new EmbedBuilder(e)],
-                files: e.files
+                files: event.files
             });
         }
         catch (err) {

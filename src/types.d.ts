@@ -41,7 +41,6 @@ export interface Embed {
     image?: {
         url: string
     },
-    files?: AttachmentBuilder[],
     thumbnail?: EmbedAssetData,
     timestamp?: string
 }
@@ -50,7 +49,8 @@ export interface WebhookEvent {
     id: string,
     guild: Guild,
     eventName?: string,
-    embeds: Embed[]
+    embeds: Embed[],
+    files?: AttachmentBuilder[]
 }
 
 export type StoredWebhook = {
