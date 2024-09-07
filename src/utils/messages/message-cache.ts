@@ -3,7 +3,7 @@ import { Message, Snowflake } from 'discord.js';
 import prisma from '../../clients/prisma';
 import redis from '../../clients/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
-import { BATCH_EXPIRATION, BATCH_SIZE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../constants';
+import { BATCH_EXPIRATION, BATCH_SIZE, DEFAULT_EXTENSION, DEFAULT_FILETYPE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../constants';
 import { decrypt, encrypt } from '../encryption';
 import { removeDuplicates } from '../helpers';
 import logger from '../pino-logger';
@@ -42,8 +42,9 @@ export async function cacheMessage(message: Message) {
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
             const res = await axios.get(a.url, { responseType: 'arraybuffer' });
             if (res) {
-                if (!a.contentType) a.contentType = 'text/plain';
-                const extension = a.name.split('.').at(-1) ?? 'txt';
+                console.log(a.contentType)
+                if (!a.contentType) a.contentType = DEFAULT_FILETYPE;
+                const extension = a.name.split('.').at(-1) ?? DEFAULT_EXTENSION;
                 let buffer = Buffer.from(res.data, 'binary');
                 // <name>.<extension>;data:<fileType>|<extension>;base64,<b64ImageData>
                 b64Attachments.push(`${a.name.replaceAll(';data:', '').replaceAll(';base64,', '')};data:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
