@@ -9,7 +9,7 @@ const eventName = 'guildMemberUpdate';
 const event: BotEvent = {
     name: Events.GuildMemberUpdate,
 
-    execute: async (oldMember: GuildMember | PartialGuildMember, member: GuildMember) => {
+    execute: async (oldMember: GuildMember | PartialGuildMember, member: GuildMember | PartialGuildMember) => {
         // 0 | AuditLogEvent.MemberUpdate | AuditLogEvent.MemberRoleUpdate
         let auditLogId: 0 | 24 | 25 = 0;
         const addedRoles = getDifference([...oldMember.roles.cache.keys()], [...member.roles.cache.keys()]);
