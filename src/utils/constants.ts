@@ -3,6 +3,8 @@ export const BATCH_SIZE = 1000;                             //
 export const BATCH_EXPIRATION = 1000 * 60 * 30;             // ms
 export const MAX_FILE_SIZE = 4000000;                       // o - any file larger than this limit will be ignored
 export const MAX_ATTACHMENTS_SIZE = 20000000;               // o
+export const DEFAULT_FILETYPE = 'text/plain; charset=utf-8';//
+export const DEFAULT_EXTENSION = '.txt';                    //
 // db messages
 export const MESSAGES_EXPIRATION = 7 * 24 * 3600 * 1000;    // ms
 // embed limits
