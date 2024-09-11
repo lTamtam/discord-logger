@@ -12,7 +12,11 @@ export async function getDbMessage(messageId: Snowflake): Promise<CacheMessageOb
                 id: messageId
             }
         });
-        if (dbMessage) return { ...dbMessage, content: dbMessage.content ? decrypt(dbMessage.content) : '`<None>`', createdAt: new Date(dbMessage.createdAt) };
+        if (dbMessage) return {
+            ...dbMessage,
+            content: dbMessage.content ? decrypt(dbMessage.content) : '`<None>`',
+            createdAt: new Date(dbMessage.createdAt)
+        };
     }
     catch (err) {
         logger.error({

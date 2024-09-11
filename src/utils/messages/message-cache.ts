@@ -42,11 +42,12 @@ export async function cacheMessage(message: Message) {
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
             const res = await axios.get(a.url, { responseType: 'arraybuffer' });
             if (res) {
+                a.name = a.name.replaceAll(';data:', '').replaceAll(';base64,', '');
                 if (!a.contentType) a.contentType = DEFAULT_FILETYPE;
                 const extension = a.name.split('.').at(-1) ?? DEFAULT_EXTENSION;
                 let buffer = Buffer.from(res.data, 'binary');
                 // <name>.<extension>;data:<fileType>|<extension>;base64,<b64ImageData>
-                b64Attachments.push(`${a.name.replaceAll(';data:', '').replaceAll(';base64,', '')};data:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
+                b64Attachments.push(`${a.name};data:${a.contentType}|${extension};base64,${buffer.toString('base64')}`);
                 totalSize += size;
             }
         }
