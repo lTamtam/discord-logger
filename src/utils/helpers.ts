@@ -214,7 +214,9 @@ export async function init(): Promise<void> {
     for (let e = 0; e < entries.length; e++) {
         if (!entries[e]) {
             defined = false;
-            logger.warn({ envVar: Object.entries(env)[e][0] }, `Env variable ${Object.entries(env)[e][0]} is undefined`);
+            logger.warn({
+                envVar: Object.entries(env)[e][0]
+            }, `Env variable ${Object.entries(env)[e][0]} is undefined`);
         }
     }
     if (!defined) process.exit(1);
