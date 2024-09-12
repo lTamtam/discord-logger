@@ -1,8 +1,8 @@
-import { Client, Collection, GatewayIntentBits, Partials } from "discord.js";
+import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { readdirSync } from 'fs';
 import path from 'path';
-import { BotEvent, BotSlashCommand } from "./types";
-import { init } from "./utils/helpers";
+import { BotEvent, BotSlashCommand } from './types';
+import { init } from './utils/helpers';
 
 init();
 

@@ -1,8 +1,8 @@
-import { Channel, ChannelType, EmbedBuilder, Guild, Snowflake, Webhook, WebhookEditOptions } from "discord.js";
-import prisma from "../clients/prisma";
-import redis from "../clients/redis";
-import { StoredWebhook, WebhookEvent } from "../types";
-import logger from "./pino-logger";
+import { Channel, ChannelType, EmbedBuilder, Guild, Snowflake, Webhook, WebhookEditOptions } from 'discord.js';
+import prisma from '../clients/prisma';
+import redis from '../clients/redis';
+import { StoredWebhook, WebhookEvent } from '../types';
+import logger from './pino-logger';
 
 /**
  * 
