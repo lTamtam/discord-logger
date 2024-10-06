@@ -1,6 +1,6 @@
 import { ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { MAX_EMBED_DESCRIPTION, MAX_EMBED_FIELD_VALUE } from '../../utils/constants';
 import { chunkify, getMember } from '../../utils/helpers';
 import { cacheMessage, getCacheMessage, updateCacheMessage } from '../../utils/messages/message-cache';
@@ -44,6 +44,7 @@ const event: BotEvent = {
             id: uuid,
             guild: message.guild,
             eventName: eventName,
+            eventBits: EventsBits.MessageUpdate,
             embeds: [{
                 author: {
                     name: `${user.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

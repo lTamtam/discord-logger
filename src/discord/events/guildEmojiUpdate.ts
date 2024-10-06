@@ -1,6 +1,6 @@
 import { AuditLogEvent, Events, GuildEmoji } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
 
@@ -26,6 +26,7 @@ const event: BotEvent = {
             id: uuid,
             guild: emoji.guild,
             eventName: eventName,
+            eventBits: EventsBits.GuildEmojiUpdate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

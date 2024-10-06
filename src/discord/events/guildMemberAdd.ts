@@ -1,6 +1,6 @@
 import { AuditLogEvent, Events, GuildMember } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { webhookSend } from '../../utils/webhooks';
 
 const eventName = 'guildMemberAdd';
@@ -19,6 +19,7 @@ const event: BotEvent = {
             id: uuid,
             guild: member.guild,
             eventName: eventName,
+            eventBits: EventsBits.GuildMemberAdd,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

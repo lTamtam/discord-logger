@@ -1,6 +1,6 @@
 import { AuditLogEvent, Events, GuildBan } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { webhookSend } from '../../utils/webhooks';
 
 const eventName = 'guildBanRemove';
@@ -25,6 +25,7 @@ const event: BotEvent = {
             id: uuid,
             guild: ban.guild,
             eventName: eventName,
+            eventBits: EventsBits.GuildBanRemove,
             embeds: [{
                 author: {
                     name: `${user.tag ?? 'Unknown user'}`,

@@ -1,6 +1,6 @@
 import { AuditLogEvent, ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { MAX_EMBED_FIELD_VALUE } from '../../utils/constants';
 import { chunkify, getMember, getUser } from '../../utils/helpers';
 import { getCacheMessage } from '../../utils/messages/message-cache';
@@ -34,6 +34,7 @@ const event: BotEvent = {
             id: uuid,
             guild: message.guild,
             eventName: eventName,
+            eventBits: EventsBits.MessageDelete,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

@@ -1,6 +1,6 @@
 import { AttachmentBuilder, AuditLogEvent, Collection, Events, GuildTextBasedChannel, Message, PartialMessage, Snowflake } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, CacheMessageObject, WebhookEvent } from '../../types';
+import { BotEvent, CacheMessageObject, EventsBits, WebhookEvent } from '../../types';
 import { getMember } from '../../utils/helpers';
 import { getCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage } from '../../utils/messages/message-db';
@@ -35,6 +35,7 @@ const event: BotEvent = {
             id: uuid,
             guild: channel.guild,
             eventName: eventName,
+            eventBits: EventsBits.MessageBulkDelete,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

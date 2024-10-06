@@ -1,6 +1,6 @@
 import { APIAuditLogChangeKeyExemptChannels, APIAuditLogChangeKeyExemptRoles, AuditLogChange, AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
 import short from 'short-uuid';
-import { ActionsRawtype, AllowRawType, BotEvent, KeywordRawType, RegexRawType, TriggerRawtype, WebhookEvent } from '../../types';
+import { ActionsRawtype, AllowRawType, BotEvent, EventsBits, KeywordRawType, RegexRawType, TriggerRawtype, WebhookEvent } from '../../types';
 import { AUTOMOD_TRIGGER_TYPE_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
@@ -25,6 +25,7 @@ const event: BotEvent = {
             id: uuid,
             guild: rule.guild,
             eventName: eventName,
+            eventBits: EventsBits.AutoModerationRuleUpdate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

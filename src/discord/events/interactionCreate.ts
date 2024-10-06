@@ -40,13 +40,12 @@ const event: BotEvent = {
                 logger.error({
                     app: 'Bot',
                     event: eventName,
-                    action: 'execute',
+                       action: 'execute_slash_command',
                     command: command,
                     uuid: uuid,
                     err: err
                 }, `Error while executing ${command} command`);
             }
-            //console.timeEnd();
             return;
         }
 
@@ -76,6 +75,35 @@ const event: BotEvent = {
                     uuid: uuid,
                     err: err
                 }, `Error while autocompleting ${command} command`);
+            }
+            return;
+        }
+
+        else if (interaction.isContextMenuCommand()) {
+            let command = interaction.client.commands.get(interaction.commandName);
+            let cooldown = interaction.client.cooldowns.get(`${interaction.commandName}-${interaction.user.username}`);
+            if (!command) return;
+
+            if (command.cooldown && cooldown) {
+                interaction.client.cooldowns.set(`${interaction.commandName}-${interaction.user.username}`, Date.now() + command.cooldown * 1000);
+                setTimeout(() => {
+                    interaction.client.cooldowns.delete(`${interaction.commandName}-${interaction.user.username}`)
+                }, command.cooldown * 1000);
+            } else if (command.cooldown && !cooldown) {
+                interaction.client.cooldowns.set(`${interaction.commandName}-${interaction.user.username}`, Date.now() + command.cooldown * 1000);
+            }
+
+            try {
+                command.execute(interaction, uuid);
+            } catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    event: eventName,
+                    action: 'execute_context_menu_command',
+                    command: command,
+                    uuid: uuid,
+                    err: err
+                }, `Error while executing ${command} command`);
             }
             return;
         }

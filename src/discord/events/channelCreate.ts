@@ -1,6 +1,6 @@
 import { AuditLogEvent, Channel, ChannelType, Events, PermissionResolvable, PermissionsBitField } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, WebhookEvent } from '../../types';
+import { BotEvent, EventsBits, WebhookEvent } from '../../types';
 import { CHANNEL_TYPE_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
@@ -26,6 +26,7 @@ const event: BotEvent = {
             id: uuid,
             guild: channel.guild,
             eventName: eventName,
+            eventBits: EventsBits.ChannelCreate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
