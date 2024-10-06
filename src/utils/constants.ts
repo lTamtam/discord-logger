@@ -19,36 +19,3 @@ export const MAX_EMBED_FOOTER = 2048;                       //
 // guild limits
 export const LARGE_GUILD_MEMBERS = 10000;                   //
 export const LARGE_GUILD_VOICES = 100;                      //
-// discord events
-export const DEFAULT_EVENTS = [                             //
-    'autoModerationRuleCreate',                             //
-    'autoModerationRuleDelete',                             //
-    'autoModerationRuleUpdate',                             //
-    'channelCreate',                                        //
-    'channelDelete',                                        //
-    'channelUpdate',                                        //
-    'guildBanAdd',                                          //
-    'guildBanRemove',                                       //
-    'guildEmojiCreate',                                     //
-    'guildEmojiDelete',                                     //
-    'guildEmojiUpdate',                                     //
-    'guildMemberAdd',                                       //
-    'guildMemberRemove',                                    //
-    'guildMemberUpdate',                                    //
-    'guildRoleCreate',                                      //
-    'guildRoleDelete',                                      //
-    'guildRoleUpdate',                                      //
-    'guildStickerCreate',                                   //
-    'guildStickerDelete',                                   //
-    'guildStickerUpdate',                                   //
-    'guildUpdate',                                          //
-    'inviteCreate',                                         //
-    'inviteDelete',                                         //
-    'messageBulkDelete',                                    //
-    'messageDelete',                                        //
-    'messageUpdate',                                        //
-    'threadCreate',                                         //
-    'threadDelete',                                         //
-    'threadUpdate',                                         //
-    'voiceStateUpdate'                                      //
-];
