@@ -26,7 +26,7 @@ model Webhook {
   guildId   String   @unique
   token     String
   channelId String
-  events    String[]
+  events    Int
 }
 
 model Message {
