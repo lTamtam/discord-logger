@@ -1,6 +1,7 @@
 import { AuditLogEvent, Events, PermissionResolvable, PermissionsBitField, Role } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, EventsBits, WebhookEvent } from '../../types';
+import { BotEvent, WebhookEvent } from '../../types';
+import { EventsBits } from '../../utils/bitfields';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
 
@@ -24,8 +25,8 @@ const event: BotEvent = {
         const guildRoleCreateEvent: WebhookEvent = {
             id: uuid,
             guild: role.guild,
-            eventName: eventName,
-            eventBits: EventsBits.GuildRoleCreate,
+            name: eventName,
+            bits: EventsBits.GuildRoleCreate,
             embeds: [{
                 author: {
                     name: `${auto ? 'Discord' : user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

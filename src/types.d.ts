@@ -54,8 +54,8 @@ export interface Embed {
 export interface WebhookEvent {
     id: string,
     guild: Guild,
-    eventName?: string,
-    eventBits?: number,
+    name: string,
+    bits: number,
     embeds: Embed[],
     files?: AttachmentBuilder[]
 }
@@ -63,7 +63,8 @@ export interface WebhookEvent {
 export type StoredWebhook = {
     id: string,
     token: string,
-    channelId: string
+    channelId: string,
+    events: number
 }
 
 export type DbWebhookEditOptions = {
@@ -136,52 +137,4 @@ export type RegexRawType = {
 export type AllowRawType = {
     key: '$add_allow_list' | '$remove_allow_list',
     new: string[]
-}
-
-export enum EventsBits {
-    AutoModerationRuleCreate = 2 ** 0,
-    AutoModerationRuleDelete = 2 ** 1,
-    AutoModerationRuleUpdate = 2 ** 2,
-    ChannelCreate = 2 ** 3,
-    ChannelDelete = 2 ** 4,
-    ChannelUpdate = 2 ** 5,
-    GuildBanAdd = 2 ** 6,
-    GuildBanRemove = 2 ** 7,
-    GuildEmojiCreate = 2 ** 8,
-    GuildEmojiDelete = 2 ** 9,
-    GuildEmojiUpdate = 2 ** 10,
-    GuildMemberAdd = 2 ** 11,
-    GuildMemberRemove = 2 ** 12,
-    GuildMemberUpdate = 2 ** 13,
-    GuildRoleCreate = 2 ** 14,
-    GuildRoleDelete = 2 ** 15,
-    GuildRoleUpdate = 2 ** 16,
-    GuildStickerCreate = 2 ** 18,
-    GuildStickerDelete = 2 ** 19,
-    GuildStickerUpdate = 2 ** 20,
-    GuildUpdate = 2 ** 21,
-    InviteCreate = 2 ** 22,
-    InviteDelete = 2 ** 23,
-    MessageBulkDelete = 2 ** 24,
-    MessageDelete = 2 ** 25,
-    MessageUpdate = 2 ** 26,
-    ThreadCreate = 2 ** 27,
-    ThreadDelete = 2 ** 28,
-    ThreadUpdate = 2 ** 29,
-    VoiceStateUpdate = 2 ** 30,
-
-    AutoModeration = AutoModerationRuleCreate + AutoModerationRuleDelete + AutoModerationRuleUpdate,
-    Channel = ChannelCreate + ChannelDelete + ChannelUpdate,
-    GuildBan = GuildBanAdd + GuildBanRemove,
-    GuildEmoji = GuildEmojiCreate + GuildEmojiDelete + GuildEmojiUpdate,
-    GuildMember = GuildMemberAdd + GuildMemberRemove + GuildMemberUpdate,
-    GuildRole = GuildRoleCreate + GuildRoleDelete + GuildRoleUpdate,
-    GuildSticker = GuildStickerCreate + GuildStickerDelete + GuildStickerUpdate,
-    Guild = GuildUpdate,
-    Invite = InviteCreate + InviteDelete,
-    Message = MessageBulkDelete + MessageDelete + MessageUpdate,
-    Thread = ThreadCreate + ThreadDelete + ThreadUpdate,
-    Voice = VoiceStateUpdate,
-
-    Default = AutoModeration + Channel + GuildBan + GuildEmoji + GuildMember + GuildRole + GuildSticker + Guild + Invite + Message + Thread + Voice
 }

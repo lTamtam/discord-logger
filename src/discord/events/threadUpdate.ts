@@ -1,6 +1,7 @@
 import { AnyThreadChannel, AuditLogEvent, ChannelType, Events } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, EventsBits, WebhookEvent } from '../../types';
+import { BotEvent, WebhookEvent } from '../../types';
+import { EventsBits } from '../../utils/bitfields';
 import { CHANNEL_TYPE_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
@@ -26,8 +27,8 @@ const event: BotEvent = {
         const threadUpdateEvent: WebhookEvent = {
             id: uuid,
             guild: thread.guild,
-            eventName: eventName,
-            eventBits: EventsBits.ThreadUpdate,
+            name: eventName,
+            bits: EventsBits.ThreadUpdate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

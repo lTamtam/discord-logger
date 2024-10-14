@@ -1,6 +1,7 @@
 import { AuditLogEvent, Events, VoiceState } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, EventsBits, WebhookEvent } from '../../types';
+import { BotEvent, WebhookEvent } from '../../types';
+import { EventsBits } from '../../utils/bitfields';
 import { getUser } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
 
@@ -26,8 +27,8 @@ const event: BotEvent = {
         const voiceStateUpdateEvent: WebhookEvent = {
             id: uuid,
             guild: newState.guild,
-            eventName: eventName,
-            eventBits: EventsBits.VoiceStateUpdate,
+            name: eventName,
+            bits: EventsBits.VoiceStateUpdate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

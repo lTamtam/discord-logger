@@ -1,6 +1,7 @@
 import { AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, EventsBits, WebhookEvent } from '../../types';
+import { BotEvent, WebhookEvent } from '../../types';
+import { EventsBits } from '../../utils/bitfields';
 import { AUTOMOD_TRIGGER_TYPE_MAP } from '../../utils/events-typemaps';
 import { getMember, getUser } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
@@ -23,8 +24,8 @@ const event: BotEvent = {
         const automoderationRuleCreateEvent: WebhookEvent = {
             id: uuid,
             guild: rule.guild,
-            eventName: eventName,
-            eventBits: EventsBits.AutoModerationRuleCreate,
+            name: eventName,
+            bits: EventsBits.AutoModerationRuleCreate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,

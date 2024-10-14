@@ -1,6 +1,7 @@
 import { AuditLogEvent, Events, Guild, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildMFALevel, GuildNSFWLevel, GuildVerificationLevel } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent, EventsBits, WebhookEvent } from '../../types';
+import { BotEvent, WebhookEvent } from '../../types';
+import { EventsBits } from '../../utils/bitfields';
 import { EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, NSFW_LEVELS_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/helpers';
 import { webhookSend } from '../../utils/webhooks';
@@ -23,8 +24,8 @@ const event: BotEvent = {
         const guildUpdateEvent: WebhookEvent = {
             id: uuid,
             guild: guild,
-            eventName: eventName,
-            eventBits: EventsBits.GuildUpdate,
+            name: eventName,
+            bits: EventsBits.GuildUpdate,
             embeds: [{
                 author: {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
