@@ -4,53 +4,6 @@ import path from 'path';
 import logger from './pino-logger';
 
 /**
- * Checks if a member has a specific roles
- * @param {GuildMember} member
- * @param {string[][]} roleLists
- * @returns {boolean}
-*/
-export function hasRole(member: GuildMember | null, ...roleLists: string[][]): boolean {
-    if (!member || !roleLists.length || roleLists.every(i => i === null)) return false;
-    for (let i = 1; i < roleLists.length; i++) {
-        roleLists[0].push(...roleLists[i]);
-    }
-    const roles = roleLists[0];
-    for (let j = 0; j < roles.length; j++) {
-        if (member.roles.cache.has(roles[j])) return true;
-    }
-    return false;
-};
-
-/**
- * Checks if the bot has specific perms
- * @param {Guild} guild
- * @param {bigint[]} perms
- * @returns {boolean}
-*/
-export function hasPerms(guild: Guild, ...perms: bigint[]): boolean {
-    for (const p of perms) {
-        if (!guild.members.me?.permissions.has(p)) return false;
-    }
-    return true;
-};
-
-/**
- * Checks if the bot has specific channel perms
- * @param {Channel | null} channel
- * @param {bigint[]} perms
- * @returns {boolean}
-*/
-export function hasChannelPerms(channel: Channel, ...perms: bigint[]): boolean {
-    if (channel.type === ChannelType.DM || channel.type === ChannelType.GroupDM || channel.isThread()) return false;
-    const member = channel.guild.members.me;
-    if (!member) return false;
-    for (const p of perms) {
-        if (!channel.permissionsFor(member).has(p)) return false;
-    }
-    return true;
-};
-
-/**
  * Returns an user from an id / member
  * @param {Guild} guild
  * @param {GuildMember | string | undefined | null} userId
@@ -63,7 +16,7 @@ export async function getUser(guild: Guild, userId: GuildMember | string | undef
 };
 
 /**
- * Returns a discord member from an id / user
+ * Returns a member from an id / user
  * @param {Guild} guild
  * @param {User | string | undefined | null} user
  * @returns {Promise<GuildMember | null>}
@@ -72,6 +25,53 @@ export async function getMember(guild: Guild, user: User | string | undefined | 
     if (!user) return null;
     const member = user instanceof User ? await guild?.members.fetch(user.id).catch(() => null) : await guild?.members.fetch(user).catch(() => null);
     return member;
+};
+
+/**
+ * Checks if a member has a specific roles
+ * @param {GuildMember} member
+ * @param {string[][]} roleLists
+ * @returns {boolean}
+*/
+export function memberHasRole(member: GuildMember, ...roleLists: string[][]): boolean {
+    if (!member || !roleLists.length || roleLists.every(i => i === null)) return false;
+    for (let i = 1; i < roleLists.length; i++) {
+        roleLists[0].push(...roleLists[i]);
+    }
+    const roles = roleLists[0];
+    for (let j = 0; j < roles.length; j++) {
+        if (member.roles.cache.has(roles[j])) return true;
+    }
+    return false;
+};
+
+/**
+ * Checks if a member has specific perms
+ * @param {GuildMember} member
+ * @param {bigint[]} perms
+ * @returns {boolean}
+*/
+export function memberHasPerms(member: GuildMember, ...perms: bigint[]): boolean {
+    if (!member) return false;
+    for (const p of perms) {
+        if (!member.permissions.has(p)) return false;
+    }
+    return true;
+};
+
+/**
+ * Checks if a member has specific channel perms
+ * @param {Channel | null} channel
+ * @param {bigint[]} perms
+ * @returns {boolean}
+*/
+export function memberHasChannelPerms(member: GuildMember, channel: Channel, ...perms: bigint[]): boolean {
+    if (channel.type === ChannelType.DM || channel.type === ChannelType.GroupDM || channel.isThread()) return false;
+    if (!member) return false;
+    for (const p of perms) {
+        if (!channel.permissionsFor(member).has(p)) return false;
+    }
+    return true;
 };
 
 /**
