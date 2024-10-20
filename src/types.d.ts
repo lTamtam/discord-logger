@@ -60,7 +60,7 @@ export interface WebhookEvent {
     files?: AttachmentBuilder[]
 }
 
-export type StoredWebhook = {
+export type DbWebhook = {
     id: string,
     token: string,
     channelId: string,

@@ -1,7 +1,7 @@
 import { Channel, ChannelType, EmbedBuilder, Guild, Snowflake, Webhook, WebhookEditOptions } from 'discord.js';
 import prisma from '../clients/prisma';
 import redis from '../clients/redis';
-import { DbWebhookEditOptions, StoredWebhook, WebhookEvent } from '../types';
+import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
 import { EventsBits } from './bitfields';
 import logger from './pino-logger';
 
@@ -31,9 +31,9 @@ export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditO
  * 
  * @param webhook 
  * @param newChannel 
- * @returns {Promise<StoredWebhook | null>}
+ * @returns {Promise<DbWebhook | null>}
  */
-export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOptions): Promise<StoredWebhook | null> {
+export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOptions): Promise<DbWebhook | null> {
     if (options.channel && options.channel.type !== ChannelType.GuildText) return null;
     try {
         const db = await prisma.webhook.update({
@@ -57,9 +57,9 @@ export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOpti
 /**
  * 
  * @param guild 
- * @returns {Promise<StoredWebhook | null>}
+ * @returns {Promise<DbWebhook | null>}
  */
-export async function cacheWebhook(guildId: Snowflake): Promise<StoredWebhook | null> {
+export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null> {
     try {
         const cache = await redis.get(`webhook-${guildId}`);
         if (cache?.split('|').length === 4) {
