@@ -49,6 +49,7 @@ const event: BotEvent = {
         if (rule.triggerMetadata.presets.length) addField('Preset keywords', `**Categories:** ${rule.triggerMetadata.presets.map(p => p === 1 ? 'Profanity' : p === 2 ? 'Sexual content' : p === 3 ? 'Slurs' : '').join(', ')}`);
         if (rule.triggerMetadata.allowList.length) addField('Allowed keywords', `\`\`\`${rule.triggerMetadata.allowList.join(', ').replace(/\"/g, '"').replace(/`/g, '')}\`\`\``);
         if (rule.triggerMetadata.mentionTotalLimit) addField('Mentions limit', `**${rule.triggerMetadata.mentionTotalLimit}**`);
+        if (rule.triggerMetadata.mentionRaidProtectionEnabled) addField('Mentions raid protection', `✅ Enabled`);
 
         if (rule.exemptRoles.size) addField('Exempt roles', `${rule.exemptRoles.map(r => `${r} (${r.id})`).join('\n')}`);
         if (rule.exemptChannels.size) addField('Exempt channels', `${rule.exemptChannels.map(c => `${c} (${c.id})`).join('\n')}`);
