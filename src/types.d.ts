@@ -1,4 +1,4 @@
-import { AttachmentBuilder, Collection, EmbedAssetData, ImageURLOptions, MessageContextMenuCommandInteraction, SlashCommandBuilder, Snowflake, TextChannel } from 'discord.js'
+import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction, Collection, ContextMenuCommandBuilder, ContextMenuCommandInteraction, EmbedAssetData, ImageURLOptions, MessageContextMenuCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, Snowflake, TextChannel, UserContextMenuCommandInteraction } from 'discord.js'
 import { SUUID } from 'short-uuid'
 
 export interface BotSlashCommand {
