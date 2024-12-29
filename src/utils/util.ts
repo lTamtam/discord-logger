@@ -5,10 +5,10 @@ import logger from './pino-logger';
 /**
  * Returns an user from a user resolvable
  * @param {Guild} guild
- * @param {UserResolvable | null} u
+ * @param {UserResolvable | null | undefined} u
  * @returns {Promise<User | null>}
  */
-export async function getUser(guild: Guild, u: UserResolvable | null): Promise<User | null> {
+export async function getUser(guild: Guild, u: UserResolvable | null | undefined): Promise<User | null> {
     if (u instanceof User) return Promise.resolve(u);
     if (u instanceof GuildMember || u instanceof ThreadMember) return Promise.resolve(u.user);
     if (u instanceof Message) return Promise.resolve(u.author);
@@ -19,10 +19,10 @@ export async function getUser(guild: Guild, u: UserResolvable | null): Promise<U
 /**
  * Returns a member from an member resolvable
  * @param {Guild} guild
- * @param {UserResolvable | null} u
+ * @param {UserResolvable | null | undefined} u
  * @returns {Promise<GuildMember | null>}
 */
-export async function getMember(guild: Guild, u: UserResolvable | null): Promise<GuildMember | null> {
+export async function getMember(guild: Guild, u: UserResolvable | null | undefined): Promise<GuildMember | null> {
     if (u instanceof GuildMember) return Promise.resolve(u);
     if (u instanceof User || u instanceof ThreadMember) return await guild.members.fetch(u.id).catch(err => null);
     if (u instanceof Message) return await guild.members.fetch(u.author.id).catch(err => null);
