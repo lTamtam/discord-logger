@@ -36,10 +36,10 @@ export async function cacheMessage(message: Message): Promise<void> {
     const attachments = message.attachments.values();
     const b64Attachments: string[] = [];
     let totalSize = 0;
-    for (const a of attachments) {
+    await Promise.all(attachments.map(async a => {
         try {
             const size = a.size;
-            if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) continue;
+            if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) return;
             const b64 = await dataToB64(a.url);
             if (b64) {
                 a.name = a.name.replaceAll(';data:', '').replaceAll(';base64,', '');
@@ -56,9 +56,9 @@ export async function cacheMessage(message: Message): Promise<void> {
                 action: 'cache_new_message',
                 err: err
             });
-            continue;
+            return;
         }
-    }
+    }));
     addMessage([
         message.id,
         message.guild.id,
@@ -167,17 +167,16 @@ export async function submitBatch(): Promise<void> {
     try {
         const start = new Date().getTime();
         const guilds = getUniques(batchToSubmit.map(m => m[1]));
-        for (let g of guilds) {
-            await prisma.guild.upsert({
-                where: {
-                    id: g
-                },
-                create: {
-                    id: g
-                },
-                update: {}
-            });
-        }
+        const upsertGuilds = guilds.map(g => prisma.guild.upsert({
+            where: {
+                id: g
+            },
+            create: {
+                id: g
+            },
+            update: {}
+        }));
+        await Promise.all(upsertGuilds);
         await prisma.message.createMany({
             data: batchToSubmit.map(m => ({
                 id: m[0],
