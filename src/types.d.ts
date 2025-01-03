@@ -2,7 +2,7 @@ import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction
 import { SUUID } from 'short-uuid'
 
 export interface BotSlashCommand {
-    data: Partial<SlashCommandBuilder>,
+    data: Partial<SlashCommandBuilder> & Pick<SlashCommandBuilder, "name">,
     execute: (interaction: ChatInputCommandInteraction, uuid: SUUID) => void,
     autocomplete?: (interaction: AutocompleteInteraction) => void,
     cooldown?: number // s
