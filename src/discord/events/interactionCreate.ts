@@ -1,6 +1,6 @@
 import { Events, Interaction } from 'discord.js';
 import short from 'short-uuid';
-import { BotEvent } from '../../types';
+import { BotEvent, BotSlashCommand, BotUserContextMenuCommand } from '../../types';
 import logger from '../../utils/pino-logger';
 import { errorEmbed } from '../../utils/util';
 
@@ -15,7 +15,7 @@ const event: BotEvent = {
         const uuid = suuid.new();
 
         if (interaction.isChatInputCommand()) {
-            let command = interaction.client.commands.get(interaction.commandName);
+            let command = interaction.client.commands.get(interaction.commandName) as BotSlashCommand;
             let cooldown = interaction.client.cooldowns.get(`${interaction.commandName}-${interaction.user.username}`);
             if (!command) return;
 
@@ -50,7 +50,7 @@ const event: BotEvent = {
         }
 
         else if (interaction.isAutocomplete()) {
-            const command = interaction.client.commands.get(interaction.commandName);
+            const command = interaction.client.commands.get(interaction.commandName) as BotSlashCommand;
 
             if (!command) {
                 logger.error({
@@ -79,8 +79,8 @@ const event: BotEvent = {
             return;
         }
 
-        else if (interaction.isContextMenuCommand()) {
-            let command = interaction.client.commands.get(interaction.commandName);
+        else if (interaction.isUserContextMenuCommand()) {
+            let command = interaction.client.commands.get(interaction.commandName) as BotUserContextMenuCommand;
             let cooldown = interaction.client.cooldowns.get(`${interaction.commandName}-${interaction.user.username}`);
             if (!command) return;
 

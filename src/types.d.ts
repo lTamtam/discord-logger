@@ -22,7 +22,7 @@ export interface BotEvent {
 
 declare module 'discord.js' {
     export interface Client {
-        commands: Collection<string, BotSlashCommand>,
+        commands: Collection<string, BotSlashCommand | BotUserContextMenuCommand>,
         cooldowns: Collection<string, number>,
         events: Collection<string, BotEvent>
     }
