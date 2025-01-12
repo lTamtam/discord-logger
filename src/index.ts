@@ -2,7 +2,7 @@ import { Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
 import { readdirSync } from 'fs';
 import path from 'path';
 import init from './config/init';
-import { BotEvent, BotSlashCommand } from './types';
+import { BotEvent, BotSlashCommand, BotUserContextMenuCommand } from './types';
 
 init();
 
@@ -44,7 +44,7 @@ const eventsFiles = readdirSync(eventsPath).filter(f => f.endsWith('.ts'));
 
 for (const file of commandsFiles) {
     const filePath = path.join(commandsPath, file);
-    const command: BotSlashCommand = require(filePath).default;
+    const command: BotSlashCommand | BotUserContextMenuCommand = require(filePath).default;
     discordClient.commands.set(command.data.name, command);
 }
 
