@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { deleteCacheUserMessages } from '../../utils/messages/message-cache';
@@ -21,7 +21,7 @@ const command: BotSlashCommand = {
             .setColor(0x2DFA60)
             .setDescription(`🎉 All your messages were deleted from the database`)
             .setFooter({ text: `ID: ${uuid}` });
-        await ctx.reply({ embeds: [embed], ephemeral: true });
+        await ctx.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
     }
 };
 

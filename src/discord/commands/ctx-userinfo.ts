@@ -44,7 +44,7 @@ const command: BotUserContextMenuCommand = {
             );
         }
         embed.addFields({ name: 'ID', value: `\`\`\`ini\n${user.bot ? 'Bot' : 'User'}=${user.id ?? '???'}\`\`\`` });
-        await ctx.reply({ embeds: [embed], ephemeral: false });
+        await ctx.reply({ embeds: [embed] });
     }
 };
 

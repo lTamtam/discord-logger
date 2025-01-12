@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 
@@ -12,7 +12,7 @@ const command: BotSlashCommand = {
     cooldown: 10,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
-        const sent = await ctx.reply({ content: 'Pinging...', fetchReply: true, ephemeral: true });
+        const sent = await ctx.reply({ content: 'Pinging...', fetchReply: true, flags: MessageFlags.Ephemeral });
 
         const embed = new EmbedBuilder()
             .setColor(0x2DFA60)
