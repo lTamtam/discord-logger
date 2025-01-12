@@ -1,23 +1,28 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, GuildMember, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, UserContextMenuCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
-import { BotUserContextMenuCommand } from '../../types';
-import { errorEmbed } from '../../utils/util';
+import { BotSlashCommand } from '../../types';
+import { errorEmbed, getMember } from '../../utils/util';
 
-const command: BotUserContextMenuCommand = {
-    data: new ContextMenuCommandBuilder()
+const command: BotSlashCommand = {
+    data: new SlashCommandBuilder()
         .setName('userinfo')
-        .setType(ApplicationCommandType.User)
         .setDMPermission(false)
-        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
+        .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+        .setDescription('Displays infos about a user')
+        .addUserOption(option =>
+            option.setName('user')
+                .setRequired(false)
+                .setDescription('Target @user')
+        ),
 
-    cooldown: 5,
+    cooldown: 2,
 
-    execute: async (ctx: UserContextMenuCommandInteraction, uuid: SUUID) => {
-        if (!ctx.isUserContextMenuCommand()) return;
-        if (!ctx.targetUser) return errorEmbed(ctx, 'User not found');
+    execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
+        if (!ctx.guild) return;
 
-        const user = await ctx.client.users.fetch(ctx.targetUser.id, { force: true });
-        const member = ctx.targetMember as GuildMember;
+        const user = ctx.options.getUser('user') ?? ctx.user;
+        const member = await getMember(ctx.guild, user);
+        if (!user) return errorEmbed(ctx, 'User not found');
 
         const embed = new EmbedBuilder()
             .setColor(user.accentColor ?? 0x2DFA60)
