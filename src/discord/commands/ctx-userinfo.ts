@@ -43,7 +43,7 @@ const command: BotUserContextMenuCommand = {
                 //{ name: 'Permissions', value: `\`\`\`${member.permissions.toArray().join(', ')}\`\`\`` }
             );
         }
-        embed.addFields({ name: 'ID', value: `\`\`\`ini\n${user.bot ? 'Bot' : 'User'}=${user.id ?? '???'}\`\`\`` });
+        embed.addFields({ name: 'ID', value: `\`\`\`ini\n${user.bot ? 'Bot' : 'User'}=${user.id ?? '???'}${member ? `\nPermissions=${member.permissions.bitfield}` : ''}\`\`\`` });
         await ctx.reply({ embeds: [embed] });
     }
 };
