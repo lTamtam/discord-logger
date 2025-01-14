@@ -8,9 +8,6 @@ import logger from '../pino-logger';
 import { deleteStreamKeys } from '../redisUtil';
 import { dataToB64, getUniques } from '../util';
 
-// https://github.com/oven-sh/bun/issues/267
-// axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
-
 let batch: CacheMessageArray[] = [];
 
 export async function addMessage(m: CacheMessageArray): Promise<void> {

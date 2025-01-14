@@ -148,6 +148,8 @@ export function getUniques<T>(array: T[]): T[] {
  * @returns {string}
  */
 export async function dataToB64(url: string): Promise<string | null> {
+    // https://github.com/oven-sh/bun/issues/267
+    // axios.defaults.headers.common['Accept-Encoding'] = 'gzip';
     const res = await axios.get(url, { responseType: 'arraybuffer' });
     if (!res) return null;
     return res.data.toString('base64');
