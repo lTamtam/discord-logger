@@ -1,4 +1,4 @@
-import { APIAuditLogChangeKeyExemptChannels, APIAuditLogChangeKeyExemptRoles, AuditLogChange, AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
+import { AuditLogChange, AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
 import short from 'short-uuid';
 import { APIAutomodActions, APIAutomodAllow, APIAutomodKeyword, APIAutomodRegex, APIAutomodTrigger, BotEvent, WebhookEvent } from '../../types';
 import { AUTOMOD_TRIGGER, EVENTS_BITS } from '../../utils/eventsTypemaps';
@@ -71,8 +71,8 @@ const event: BotEvent = {
                 if ((c as APIAutomodTrigger).new.mention_total_limit !== (c as APIAutomodTrigger).old.mention_total_limit) addField('Mentions limit', `**Now: ${(c as APIAutomodTrigger).new.mention_total_limit}**\n**Was: ${(c as APIAutomodTrigger).old.mention_total_limit}**`);
                 if ((c as APIAutomodTrigger).new.mention_raid_protection_enabled !== (c as APIAutomodTrigger).old.mention_raid_protection_enabled) addField('Mentions raid protection', `${(c as APIAutomodTrigger).new.mention_raid_protection_enabled ? '✅ Enabled' : '❌ Disabled'}`);
             }
-            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptRoles[]).length ? '`<None>`' : (c.new as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptRoles[]).length ? '`<None>`' : (c.old as APIAuditLogChangeKeyExemptRoles[]).map(r => `<#${r}> (${r})`).join('\n')}`);
-            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${!(c.new as APIAuditLogChangeKeyExemptChannels[]).length ? '`<None>`' : (c.new as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${!(c.old as APIAuditLogChangeKeyExemptChannels[]).length ? '`<None>`' : (c.old as APIAuditLogChangeKeyExemptChannels[]).map(r => `<@&${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${c.new === undefined ? '`<None>`' : c.new.map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${c.old === undefined ? '`<None>`' : c.old.map(r => `<#${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${c.new === undefined ? '`<None>`' : c.new.map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${c.old === undefined ? '`<None>`' : c.old.map(r => `<@&${r}> (${r})`).join('\n')}`);
         });
         if (!automoderationRuleUpdateEvent.embeds[0].fields.length) return;
 

@@ -48,8 +48,8 @@ const event: BotEvent = {
             if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'archived') addField('Archived', `**Now:** ${c.new ? 'Yes' : 'No'}\n**Was:** ${c.old ? 'Yes' : 'No'}`);
             if (c.key === 'locked') addField('Locked', `**Now:** ${c.new ? 'Yes' : 'No'}\n**Was:** ${c.old ? 'Yes' : 'No'}`);
-            if (c.key === 'rate_limit_per_user') addField('Cooldown', `**Now:** **${c.new}** second${parseInt(c.new as string) > 1 ? 's' : ''}\n**Was:** **${c.old}** second${parseInt(c.old as string) > 1 ? 's' : ''}`);
-            if (c.key === 'auto_archive_duration') addField('Auto archive', `**Now:** After **${c.new}** second${parseInt(c.new as string) > 1 ? 's' : ''}\n**Was:** After **${c.old}** second${parseInt(c.old as string) > 1 ? 's' : ''}`);
+            if (c.key === 'rate_limit_per_user') addField('Cooldown', `**Now:** **${c.new}** second${c.new as number > 1 ? 's' : ''}\n**Was:** **${c.old}** second${c.old as number > 1 ? 's' : ''}`);
+            if (c.key === 'auto_archive_duration') addField('Auto archive', `**Now:** After **${c.new}** second${c.new as number > 1 ? 's' : ''}\n**Was:** After **${c.old}** second${c.old as number > 1 ? 's' : ''}`);
         });
 
         addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nThread=${thread.id}\nParent=${thread.parent?.id ?? '???'}\`\`\``);

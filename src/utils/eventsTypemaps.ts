@@ -18,7 +18,8 @@ export const AUTOMOD_TRIGGER = {
     1: 'Keyword',
     3: 'Spam',
     4: 'Keyword preset',
-    5: 'Mention spam'
+    5: 'Mention spam',
+    6: 'Member Profile'
 };
 
 export const MESSAGE = {
@@ -74,13 +75,6 @@ export const EXPLICIT_CONTENT_LEVELS_MAP = {
 export const MFA_LEVELS_MAP = {
     0: 'Disabled',
     1: 'Enabled'
-};
-
-export const NSFW_LEVELS_MAP = {
-    0: 'Default',
-    1: 'Explicit',
-    2: 'Safe',
-    3: '18+'
 };
 
 export const NOTIFICATIONS_LEVEL_MAP = {

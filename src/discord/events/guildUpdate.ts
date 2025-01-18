@@ -1,7 +1,7 @@
-import { AuditLogEvent, Events, Guild, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildMFALevel, GuildNSFWLevel, GuildVerificationLevel } from 'discord.js';
+import { AuditLogEvent, Events, Guild, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildMFALevel, GuildVerificationLevel } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
-import { EVENTS_BITS, EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, NSFW_LEVELS_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS, EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/eventsTypemaps';
 import { getMember } from '../../utils/util';
 import { webhookSend } from '../../utils/webhooks';
 
@@ -66,7 +66,7 @@ const event: BotEvent = {
                     addField('MFA level', `**Now:** ${MFA_LEVELS_MAP[c.new as GuildMFALevel]}\n**Was:** ${MFA_LEVELS_MAP[c.old as GuildMFALevel]}\n`);
                     break;
                 case 'nsfw':
-                    addField('NSFW level', `**Now:** ${NSFW_LEVELS_MAP[c.new as GuildNSFWLevel]}\n**Was:** ${NSFW_LEVELS_MAP[c.old as GuildNSFWLevel]}`);
+                    addField('NSFW level', `**Now:** ${guild.nsfwLevel}\n**Was:** ${oldGuild.nsfwLevel}`);
                     break;
 
                 case 'splash_hash':
@@ -76,7 +76,6 @@ const event: BotEvent = {
                     addField('Discovery splash', `**Now:** [Image](${guild.discoverySplashURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.discoverySplashURL() ?? '`<None>`'})`);
                     break;
                 case 'default_message_notifications':
-                    if ((c.old as { default_message_notifications?: 0 | 1 }).default_message_notifications === undefined) break;
                     addField('Default notifications', `**Now:** ${NOTIFICATIONS_LEVEL_MAP[c.new as GuildDefaultMessageNotifications]}\n**Was:** ${NOTIFICATIONS_LEVEL_MAP[c.old as GuildDefaultMessageNotifications]}`);
                     break;
 
@@ -84,7 +83,7 @@ const event: BotEvent = {
                     addField('AFK channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
                     break;
                 case 'afk_timeout':
-                    addField('AFK timeout', `**Now:** **${c.new as number / 60}** minute${parseInt(c.new as string) > 1 ? 's' : ''}\n**Was:** **${c.old as number / 60}** minute${parseInt(c.new as string) > 1 ? 's' : ''}`);
+                    addField('AFK timeout', `**Now:** **${c.new as number / 60}** minute${c.new as number > 1 ? 's' : ''}\n**Was:** **${c.old as number / 60}** minute${c.new as number > 1 ? 's' : ''}`);
                     break;
                 case 'system_channel_id':
                     addField('System channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
