@@ -1,11 +1,15 @@
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('invite')
-        .setDMPermission(false)
+        .setContexts([
+            InteractionContextType.Guild,
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel
+        ])
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('Invite the bot to your server'),
 

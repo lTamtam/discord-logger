@@ -1,4 +1,4 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, GuildMember, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, UserContextMenuCommandInteraction } from 'discord.js';
+import { ContextMenuCommandBuilder, EmbedBuilder, GuildMember, InteractionContextType, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, UserContextMenuCommandInteraction } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotUserContextMenuCommand } from '../../types';
 import { errorEmbed } from '../../utils/util';
@@ -6,8 +6,7 @@ import { errorEmbed } from '../../utils/util';
 const command: BotUserContextMenuCommand = {
     data: new ContextMenuCommandBuilder()
         .setName('user-info')
-        .setType(ApplicationCommandType.User)
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers),
 
     cooldown: 5,

@@ -1,4 +1,4 @@
-import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotSlashCommand } from '../../types';
@@ -9,7 +9,7 @@ import { b64ToData, chunkify, errorEmbed } from '../../utils/util';
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('view')
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('Displays a message stored in database')
         .addStringOption(option => option

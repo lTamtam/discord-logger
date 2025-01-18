@@ -1,4 +1,4 @@
-import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js';
+import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { EVENTS_BITS } from '../../utils/eventsTypemaps';
@@ -8,7 +8,7 @@ import { createWebhook, deleteWebhook, editDbWebhook, editDiscordWebhook, getWeb
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('config')
-        .setDMPermission(false)
+        .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('Basic setup command')
         .addSubcommand(subcommand =>

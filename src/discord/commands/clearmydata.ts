@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { deleteCacheUserMessages } from '../../utils/messages/message-cache';
@@ -7,7 +7,11 @@ import { deleteDbUserMessages } from '../../utils/messages/message-db';
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('clearmydata')
-        .setDMPermission(false)
+        .setContexts([
+            InteractionContextType.Guild,
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel
+        ])
         .setDescription('Immediately deletes your messages from the database'),
 
     cooldown: 10,

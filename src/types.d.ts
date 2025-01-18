@@ -1,8 +1,8 @@
-import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction, Collection, ContextMenuCommandBuilder, EmbedAssetData, ImageURLOptions, SlashCommandBuilder, Snowflake, TextChannel, UserContextMenuCommandInteraction } from 'discord.js'
+import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction, Collection, ContextMenuCommandBuilder, EmbedAssetData, ImageURLOptions, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder, Snowflake, TextChannel, UserContextMenuCommandInteraction } from 'discord.js'
 import { SUUID } from 'short-uuid'
 
 export interface BotSlashCommand {
-    data: Partial<SlashCommandBuilder> & Pick<SlashCommandBuilder, "name">,
+    data: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder,
     execute: (interaction: ChatInputCommandInteraction, uuid: SUUID) => void,
     autocomplete?: (interaction: AutocompleteInteraction) => void,
     cooldown?: number // s

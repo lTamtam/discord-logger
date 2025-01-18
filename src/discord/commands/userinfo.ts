@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { errorEmbed, getMember } from '../../utils/util';
@@ -6,7 +6,11 @@ import { errorEmbed, getMember } from '../../utils/util';
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
         .setName('userinfo')
-        .setDMPermission(false)
+        .setContexts([
+            InteractionContextType.Guild,
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel
+        ])
         .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDescription('Displays infos about a user')
         .addUserOption(option =>
