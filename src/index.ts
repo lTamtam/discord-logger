@@ -20,7 +20,7 @@ export const discordClient = new Client({
         GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildModeration,
         GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.GuildEmojisAndStickers,
+        GatewayIntentBits.GuildExpressions,
         GatewayIntentBits.AutoModerationConfiguration
     ],
     partials: [
