@@ -2,6 +2,7 @@ import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, InteractionCont
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import logger from '../../utils/pino-logger';
 import { errorEmbed } from '../../utils/util';
 import { createWebhook, deleteWebhook, editDbWebhook, editDiscordWebhook, getWebhook } from '../../utils/webhooks';
 
@@ -82,7 +83,17 @@ const command: BotSlashCommand = {
                 .setColor(0x2DFA60)
                 .setDescription(`🔨 Webhook created in ${channel}`)
                 .setFooter({ text: `ID: ${uuid}` });
-            await ctx.reply({ embeds: [embed] });
+
+            try {
+                await ctx.reply({ embeds: [embed] });
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    command: `${command.data.name} ${subcommand}`,
+                    err: err
+                });
+            }
         }
 
         else if (subcommand === 'view-webhook') {
@@ -99,7 +110,17 @@ const command: BotSlashCommand = {
                     \n\* *To remove that webhook, use \`/config delete-webhook\`*
                 `)
                 .setFooter({ text: `ID: ${uuid}` });
-            await ctx.reply({ embeds: [embed] });
+
+            try {
+                await ctx.reply({ embeds: [embed] });
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    command: `${command.data.name} ${subcommand}`,
+                    err: err
+                });
+            }
         }
 
         else if (subcommand === 'edit-webhook') {
@@ -121,7 +142,17 @@ const command: BotSlashCommand = {
                 .setColor(0x2DFA60)
                 .setDescription(`🔨 Webhook \`${webhook.id}\` edited`)
                 .setFooter({ text: `ID: ${uuid}` });
-            await ctx.reply({ embeds: [embed] });
+
+            try {
+                await ctx.reply({ embeds: [embed] });
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    command: `${command.data.name} ${subcommand}`,
+                    err: err
+                });
+            }
         }
 
         else if (subcommand === 'delete-webhook') {
@@ -134,7 +165,17 @@ const command: BotSlashCommand = {
                 .setColor(0x2DFA60)
                 .setDescription(`🗑️ Webhook \`${webhook.id}\` deleted`)
                 .setFooter({ text: `ID: ${uuid}` });
-            await ctx.reply({ embeds: [embed] });
+
+            try {
+                await ctx.reply({ embeds: [embed] });
+            }
+            catch (err) {
+                logger.error({
+                    app: 'Bot',
+                    command: `${command.data.name} ${subcommand}`,
+                    err: err
+                });
+            }
         }
     }
 };

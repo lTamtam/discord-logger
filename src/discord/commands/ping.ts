@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
+import logger from '../../utils/pino-logger';
 
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
@@ -23,7 +24,17 @@ const command: BotSlashCommand = {
             .setTitle(':ping_pong: Pong !')
             .setDescription(`:stopwatch: Uptime: **${Math.round(ctx.client.uptime / 60000)}** minutes\n:sparkling_heart: Websocket heartbeat: \`${ctx.client.ws.ping}\`ms\n:round_pushpin: Rountrip Latency: \`${sent.createdTimestamp - ctx.createdTimestamp}\`ms`)
             .setFooter({ text: `ID: ${uuid}` });
-        await ctx.editReply({ content: null, embeds: [embed] });
+
+        try {
+            await ctx.editReply({ content: null, embeds: [embed] });
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 

@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
+import logger from '../../utils/pino-logger';
 
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
@@ -20,7 +21,17 @@ const command: BotSlashCommand = {
             .setColor(0x50EFFB)
             .setDescription(`📩 [**Invite link :)**](https://discord.com/oauth2/authorize?client_id=${Bun.env.APP_ID}&permissions=${Bun.env.BOT_PERMISSIONS}&integration_type=0&scope=bot+applications.commands)`)
             .setFooter({ text: `ID: ${uuid}` });
-        await ctx.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+
+        try {
+            await ctx.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 

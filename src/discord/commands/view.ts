@@ -4,6 +4,7 @@ import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotSlashCommand } from '../../types';
 import { getCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage } from '../../utils/messages/message-db';
+import logger from '../../utils/pino-logger';
 import { b64ToData, chunkify, errorEmbed } from '../../utils/util';
 
 const command: BotSlashCommand = {
@@ -64,7 +65,17 @@ const command: BotSlashCommand = {
             files: files,
             embeds: [embed]
         };
-        await ctx.editReply(reply);
+
+        try {
+            await ctx.editReply(reply);
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 

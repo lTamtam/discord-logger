@@ -3,6 +3,7 @@ import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
 import { deleteCacheUserMessages } from '../../utils/messages/message-cache';
 import { deleteDbUserMessages } from '../../utils/messages/message-db';
+import logger from '../../utils/pino-logger';
 
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
@@ -25,7 +26,17 @@ const command: BotSlashCommand = {
             .setColor(0x2DFA60)
             .setDescription(`🎉 All your messages were deleted from the database`)
             .setFooter({ text: `ID: ${uuid}` });
-        await ctx.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+
+        try {
+            await ctx.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 
