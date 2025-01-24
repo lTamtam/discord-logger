@@ -88,7 +88,6 @@ export function memberHasChannelPerms(member: GuildMember, channel: Channel, ...
 export async function errorEmbed(ctx: RepliableInteraction, text: string, id?: string | null, ephemeral?: boolean | true): Promise<void | InteractionResponse<boolean> | Message> {
     let options = {
         embeds: [new EmbedBuilder().setColor(0xFA514B).setDescription(`🚫 ${text}`)],
-        ephemeral: typeof ephemeral === 'undefined' ? true : ephemeral,
         flags: ephemeral ? MessageFlags.Ephemeral : 0
     };
     if (id) options.embeds[0].setFooter({ text: `ID: ${id}` });
