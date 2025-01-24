@@ -7,8 +7,8 @@ import logger from './pino-logger';
 
 /**
  * 
- * @param webhook 
- * @param options 
+ * @arg {Webhook} webhook 
+ * @arg {WebhookEditOptions} options 
  * @returns {Promise<Webhook | null>}
  */
 export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditOptions): Promise<Webhook | null> {
@@ -29,8 +29,8 @@ export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditO
 
 /**
  * 
- * @param webhook 
- * @param newChannel 
+ * @arg {Webhook} webhook 
+ * @arg {DbWebhookEditOptions} options 
  * @returns {Promise<DbWebhook | null>}
  */
 export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOptions): Promise<DbWebhook | null> {
@@ -56,7 +56,7 @@ export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOpti
 
 /**
  * 
- * @param guild 
+ * @arg {Snowflake} guildId 
  * @returns {Promise<DbWebhook | null>}
  */
 export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null> {
@@ -87,7 +87,7 @@ export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null
 
 /**
  * 
- * @param guild 
+ * @arg {Guild} guild 
  * @returns {Promise<void>}
  */
 export async function deleteWebhook(guild: Guild): Promise<void> {
@@ -143,7 +143,7 @@ export async function deleteWebhook(guild: Guild): Promise<void> {
 
 /**
  * 
- * @param channel 
+ * @arg {Channel} channel 
  * @returns {Promise<Webhook | null>}
  */
 export async function createWebhook(channel: Channel): Promise<Webhook | null> {
@@ -186,7 +186,7 @@ export async function createWebhook(channel: Channel): Promise<Webhook | null> {
 
 /**
  * 
- * @param guild 
+ * @arg {Guild} guild 
  * @returns {Promise<Webhook | null>}
  */
 export async function getWebhook(guild: Guild): Promise<Webhook | null> {
@@ -205,6 +205,11 @@ export async function getWebhook(guild: Guild): Promise<Webhook | null> {
     return webhook;
 };
 
+/**
+ * 
+ * @arg {WebhookEvent} event 
+ * @returns {Promise<Webhook | void>}
+ */
 export async function webhookSend(event: WebhookEvent): Promise<Webhook | void> {
     const webhook = await getWebhook(event.guild);
     if (!webhook) return;

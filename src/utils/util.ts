@@ -4,8 +4,8 @@ import logger from './pino-logger';
 
 /**
  * Returns an user from a user resolvable
- * @param {Guild} guild
- * @param {UserResolvable | null | undefined} u
+ * @arg {Guild} guild 
+ * @arg {UserResolvable | null | undefined} u 
  * @returns {Promise<User | null>}
  */
 export async function getUser(guild: Guild, u: UserResolvable | null | undefined): Promise<User | null> {
@@ -18,8 +18,8 @@ export async function getUser(guild: Guild, u: UserResolvable | null | undefined
 
 /**
  * Returns a member from an member resolvable
- * @param {Guild} guild
- * @param {UserResolvable | null | undefined} u
+ * @arg {Guild} guild 
+ * @arg {UserResolvable | null | undefined} u 
  * @returns {Promise<GuildMember | null>}
 */
 export async function getMember(guild: Guild, u: UserResolvable | null | undefined): Promise<GuildMember | null> {
@@ -32,8 +32,8 @@ export async function getMember(guild: Guild, u: UserResolvable | null | undefin
 
 /**
  * Checks if a member has a specific roles
- * @param {GuildMember} member
- * @param {string[][]} roleLists
+ * @arg {GuildMember} member 
+ * @arg {string[][]} roleLists 
  * @returns {boolean}
 */
 export function memberHasRole(member: GuildMember, ...roleLists: string[][]): boolean {
@@ -50,8 +50,8 @@ export function memberHasRole(member: GuildMember, ...roleLists: string[][]): bo
 
 /**
  * Checks if a member has specific perms
- * @param {GuildMember} member
- * @param {bigint[]} perms
+ * @arg {GuildMember} member 
+ * @arg {bigint[]} perms 
  * @returns {boolean}
 */
 export function memberHasPerms(member: GuildMember, ...perms: bigint[]): boolean {
@@ -64,8 +64,8 @@ export function memberHasPerms(member: GuildMember, ...perms: bigint[]): boolean
 
 /**
  * Checks if a member has specific channel perms
- * @param {Channel} channel
- * @param {bigint[]} perms
+ * @arg {Channel} channel 
+ * @arg {bigint[]} perms 
  * @returns {boolean}
 */
 export function memberHasChannelPerms(member: GuildMember, channel: Channel, ...perms: bigint[]): boolean {
@@ -79,11 +79,11 @@ export function memberHasChannelPerms(member: GuildMember, channel: Channel, ...
 
 /**
  * Sends an embed message to display some error 
- * @param ctx 
- * @param text 
- * @param id 
- * @param ephemeral 
- * @returns 
+ * @arg {RepliableInteraction} ctx 
+ * @arg {string} text 
+ * @arg {string | null} [id] 
+ * @arg {boolean | true} [ephemeral] 
+ * @returns {Promise<void | InteractionResponse<boolean> | Message>}
  */
 export async function errorEmbed(ctx: RepliableInteraction, text: string, id?: string | null, ephemeral?: boolean | true): Promise<void | InteractionResponse<boolean> | Message> {
     let options = {
@@ -116,9 +116,9 @@ export async function errorEmbed(ctx: RepliableInteraction, text: string, id?: s
  * `getDifference(x, y)` will return the additions from x to y
  * 
  * `getDifference(y, x)` will return the deletions from x to y
- * @param {Array} x 
- * @param {Array} y 
- * @returns {Array}
+ * @arg {T[]} x 
+ * @arg {T[]} y 
+ * @returns {T[]}
  */
 export function getDifference<T>(x: T[], y: T[]): T[] {
     return y.filter(i => !x.includes(i));
@@ -126,7 +126,7 @@ export function getDifference<T>(x: T[], y: T[]): T[] {
 
 /**
  * Returns all duplicates from an array
- * @param {T[]} array
+ * @arg {T[]} array 
  * @returns {{T[]}}
 */
 export function getDuplicates<T>(array: T[]): T[] {
@@ -135,8 +135,8 @@ export function getDuplicates<T>(array: T[]): T[] {
 
 /**
  * Returns an array without duplicates
- * @param {T[]} array
- * @returns {T}
+ * @arg {T[]} array 
+ * @returns {T[]}
 */
 export function getUniques<T>(array: T[]): T[] {
     return array.filter((e, i) => array.indexOf(e) === i);
@@ -144,8 +144,8 @@ export function getUniques<T>(array: T[]): T[] {
 
 /**
  * Converts given url data into base64
- * @param {string} url
- * @returns {string}
+ * @arg {string} url 
+ * @returns {Promise<string | null>}
  */
 export async function dataToB64(url: string): Promise<string | null> {
     // https://github.com/oven-sh/bun/issues/267
@@ -157,7 +157,7 @@ export async function dataToB64(url: string): Promise<string | null> {
 
 /**
  * Converts a base64 string into data
- * @param {string} b64
+ * @arg {string} b64 
  * @returns {Buffer}
  */
 export function b64ToData(b64: string): Buffer {
@@ -166,7 +166,7 @@ export function b64ToData(b64: string): Buffer {
 
 /**
  * Converts a message to smaller chunks of text
- * @param {string} text 
+ * @arg {string} text 
  * @returns {string[]}
  */
 export function chunkify(text: string): string[] {
@@ -181,7 +181,7 @@ export function chunkify(text: string): string[] {
 
 /**
  * Returns a random hex color
- * @param {string} s 
+ * @arg {string} [s] 
  * @returns {string}
  */
 export function randomColor(s?: string): string {

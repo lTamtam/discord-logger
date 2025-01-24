@@ -4,8 +4,9 @@ import logger from './pino-logger';
 
 /**
  * Deletes every key returned by a redis stream
- * @param {ScanStream} stream 
- * @param {{}} loggerArgs 
+ * @arg {ScanStream} stream 
+ * @arg {{}} loggerArgs 
+ * @returns {void}
  */
 export async function deleteStreamKeys(stream: ScanStream, loggerArgs: {}) {
     stream.on('data', (d: string[]) => {
