@@ -1,4 +1,4 @@
-import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotSlashCommand } from '../../types';
@@ -29,7 +29,7 @@ const command: BotSlashCommand = {
         if (!db) return await errorEmbed(ctx, 'This message doesn\'t exist', uuid);
         if (db.guildId !== ctx.guildId) return await errorEmbed(ctx, 'This message is not available', uuid);
 
-        await ctx.deferReply({ ephemeral: true });
+        await ctx.deferReply({ flags: MessageFlags.Ephemeral });
         const embed = new EmbedBuilder()
             .setColor(0x73F3A9)
             .setDescription(`[**Go to message**](https://discord.com/channels/${db.guildId}/${db.channelId}/${db.id})`)
