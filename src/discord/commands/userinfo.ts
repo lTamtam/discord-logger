@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
+import logger from '../../utils/pino-logger';
 import { errorEmbed, getMember } from '../../utils/util';
 
 const command: BotSlashCommand = {
@@ -24,9 +25,10 @@ const command: BotSlashCommand = {
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
         if (!ctx.guild) return;
 
-        const user = ctx.options.getUser('user') ?? ctx.user;
-        const member = await getMember(ctx.guild, user);
+        const target = ctx.options.getUser('user') ?? ctx.user;
+        const user = await ctx.client.users.fetch(target, { force: true }).catch(err => null);
         if (!user) return errorEmbed(ctx, 'User not found');
+        const member = await getMember(ctx.guild, user);
 
         const embed = new EmbedBuilder()
             .setColor(user.accentColor ?? 0x2DFA60)
@@ -53,7 +55,17 @@ const command: BotSlashCommand = {
             );
         }
         embed.addFields({ name: 'ID', value: `\`\`\`ini\n${user.bot ? 'Bot' : 'User'}=${user.id ?? '???'}${member ? `\nPermissions=${member.permissions.bitfield}` : ''}\`\`\`` });
-        await ctx.reply({ embeds: [embed] });
+
+        try {
+            await ctx.reply({ embeds: [embed] });
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 

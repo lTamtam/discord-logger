@@ -1,7 +1,8 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, GuildMember, InteractionContextType, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, UserContextMenuCommandInteraction } from 'discord.js';
+import { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder, InteractionContextType, PermissionFlagsBits, PermissionResolvable, PermissionsBitField, UserContextMenuCommandInteraction } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotUserContextMenuCommand } from '../../types';
-import { errorEmbed } from '../../utils/util';
+import logger from '../../utils/pino-logger';
+import { errorEmbed, getMember } from '../../utils/util';
 
 const command: BotUserContextMenuCommand = {
     data: new ContextMenuCommandBuilder()
@@ -13,11 +14,12 @@ const command: BotUserContextMenuCommand = {
     cooldown: 5,
 
     execute: async (ctx: UserContextMenuCommandInteraction, uuid: SUUID) => {
-        if (!ctx.isUserContextMenuCommand()) return;
+        if (!ctx.isUserContextMenuCommand() || !ctx.inCachedGuild()) return;
         if (!ctx.targetUser) return errorEmbed(ctx, 'User not found');
 
-        const user = await ctx.client.users.fetch(ctx.targetUser.id, { force: true });
-        const member = ctx.targetMember as GuildMember;
+        const user = await ctx.client.users.fetch(ctx.targetUser.id, { force: true }).catch(err => null);
+        if (!user) return errorEmbed(ctx, 'User not found');
+        const member = await getMember(ctx.guild, user);
 
         const embed = new EmbedBuilder()
             .setColor(user.accentColor ?? 0x2DFA60)
@@ -44,7 +46,17 @@ const command: BotUserContextMenuCommand = {
             );
         }
         embed.addFields({ name: 'ID', value: `\`\`\`ini\n${user.bot ? 'Bot' : 'User'}=${user.id ?? '???'}${member ? `\nPermissions=${member.permissions.bitfield}` : ''}\`\`\`` });
-        await ctx.reply({ embeds: [embed] });
+
+        try {
+            await ctx.reply({ embeds: [embed] });
+        }
+        catch (err) {
+            logger.error({
+                app: 'Bot',
+                command: command.data.name,
+                err: err
+            });
+        }
     }
 };
 
