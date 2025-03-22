@@ -1,0 +1,69 @@
+networks:
+  bot:
+    external: false
+
+services:
+  main:
+    platform: linux/arm64
+    build: .
+    restart: always
+    environment:
+      - POSTGRES_URL=${POSTGRES_URL}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+    depends_on:
+      - database
+      - redis
+    networks:
+      - bot
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: package.json
+
+  database:
+    image: postgres
+    ports:
+      - "${POSTGRES_PORT:-5432}:5433"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    command: -p ${POSTGRES_PORT:-5432}
+    volumes:
+      - ./data/postgres_data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+    networks:
+      - bot
+
+  redis:
+    image: redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: >
+      redis-server --requirepass "${REDIS_PASSWORD}" --port ${REDIS_PORT:-6379}
+    volumes:
+      - ./data/redis_data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
+    networks:
+      - bot
+
+volumes:
+  redis_data:
+  postgres_data:
