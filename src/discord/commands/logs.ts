@@ -8,10 +8,10 @@ import { createWebhook, deleteWebhook, editDbWebhook, editDiscordWebhook, getWeb
 
 const command: BotSlashCommand = {
     data: new SlashCommandBuilder()
-        .setName('config')
+        .setName('logs')
         .setContexts(InteractionContextType.Guild)
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .setDescription('Basic setup command')
+        .setDescription('Logging setup command')
         .addSubcommand(subcommand =>
             subcommand.setName('set-webhook')
                 .setDescription('Creates a webhook in a given channel')
@@ -107,7 +107,7 @@ const command: BotSlashCommand = {
                     \n**ID:** \`${webhook.id}\`
                     **Channel:** <#${webhook.channelId}> \`${webhook.channelId}\`
                     \n**Created on** <t:${Math.round(webhook.createdAt.getTime() / 1000)}>
-                    \n\* *To remove that webhook, use \`/config delete-webhook\`*
+                    \n\* *To remove that webhook, use \`/logs delete-webhook\`*
                 `)
                 .setFooter({ text: `ID: ${uuid}` });
 
