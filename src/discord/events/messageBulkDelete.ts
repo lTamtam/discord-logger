@@ -44,7 +44,7 @@ const event: BotEvent = {
                 },
                 description: `**${messages.size}** messages bulk deleted in ${channel} (#${channel.name})`,
                 fields: [
-                    { name: 'Messages IDs', value: `\`\`\`${messages.map(m => `${m.id}`).join('\n')}\`\`\`` },
+                    { name: 'Messages IDs', value: `\`\`\`\n${messages.map(m => `${m.id}`).join('\n')}\`\`\`` },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },
