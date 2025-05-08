@@ -1,4 +1,4 @@
-import { Channel, ChannelType, EmbedBuilder, Guild, Snowflake, Webhook, WebhookEditOptions } from 'discord.js';
+import { Channel, ChannelType, ContainerBuilder, EmbedBuilder, FileBuilder, Guild, MessageFlags, SeparatorSpacingSize, Snowflake, TextDisplayBuilder, Webhook, WebhookEditOptions } from 'discord.js';
 import prisma from '../databases/prisma';
 import redis from '../databases/redis';
 import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
@@ -219,8 +219,25 @@ export async function webhookSend(event: WebhookEvent): Promise<Webhook | void> 
         try {
             await webhook.send({
                 embeds: [new EmbedBuilder(e)],
-                files: event.files
+                //files: event.files
             });
+            if (event.files) {
+                const title = new TextDisplayBuilder().setContent(`**Attached files**`);
+                const files = event.files.map(f => new FileBuilder().setURL(`attachment://${f.name}`));
+                const footer = new TextDisplayBuilder().setContent(`**-# ID: ${event.id}**`);
+                await webhook.send({
+                    components: [
+                        new ContainerBuilder()
+                            .addTextDisplayComponents(title)
+                            .addFileComponents(files)
+                            .addSeparatorComponents(s => s.setSpacing(SeparatorSpacingSize.Small))
+                            .addTextDisplayComponents(footer)
+                            .setAccentColor(event.embeds[0].color)
+                    ],
+                    files: event.files,
+                    flags: MessageFlags.IsComponentsV2
+                });
+            }
         }
         catch (err) {
             logger.error({
