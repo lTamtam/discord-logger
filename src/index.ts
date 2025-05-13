@@ -3,6 +3,7 @@ import { readdirSync } from 'fs';
 import path from 'path';
 import init from './config/init';
 import { BotEvent, BotSlashCommand, BotUserContextMenuCommand } from './types';
+import logger from './utils/pino-logger';
 
 init();
 
@@ -59,5 +60,7 @@ for (const file of eventsFiles) {
         discordClient.on(event.name, (...args: any[]) => event.execute(...args));
     }
 }
+
+discordClient.rest.on('rateLimited', logger.warn);
 
 discordClient.login(TOKEN);
