@@ -1,5 +1,5 @@
 import { Message, Snowflake } from 'discord.js';
-import { BATCH_EXPIRATION, BATCH_SIZE, DEFAULT_EXTENSION, DEFAULT_FILETYPE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../../config/constants';
+import { BATCH_EXPIRATION, BATCH_LENGTH, DEFAULT_EXTENSION, DEFAULT_FILETYPE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../../config/constants';
 import prisma from '../../databases/prisma';
 import redis from '../../databases/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
@@ -22,7 +22,7 @@ export async function addMessage(m: CacheMessageArray): Promise<void> {
             err: err
         });
     }
-    if (batch.length >= BATCH_SIZE || new Date().getTime() - Date.parse(batch[0][6]) >= BATCH_EXPIRATION) {
+    if (batch.length >= BATCH_LENGTH || new Date().getTime() - Date.parse(batch[0][6]) >= BATCH_EXPIRATION) {
         await submitBatch();
     }
 };
@@ -125,7 +125,7 @@ export function deleteCacheGuildMessages(guildId: Snowflake): void {
     const stream = redis.scanStream({
         match: `message:${guildId}:*:*:*`,
         type: 'string',
-        count: BATCH_SIZE
+        count: BATCH_LENGTH
     });
     deleteStreamKeys(stream, { action: 'delete_cache_guild_messages', guildId });
 };
@@ -135,7 +135,7 @@ export function deleteCacheChannelMessages(channelId: Snowflake): void {
     const stream = redis.scanStream({
         match: `message:*:${channelId}:*:*`,
         type: 'string',
-        count: BATCH_SIZE
+        count: BATCH_LENGTH
     });
     deleteStreamKeys(stream, { action: 'delete_cache_channel_messages', channelId });
 };
@@ -145,7 +145,7 @@ export function deleteCacheUserMessages(userId: Snowflake): void {
     const stream = redis.scanStream({
         match: `message:*:*:*:${userId}`,
         type: 'string',
-        count: BATCH_SIZE
+        count: BATCH_LENGTH
     });
     deleteStreamKeys(stream, { action: 'delete_cache_user_messages', userId });
 };
@@ -154,13 +154,13 @@ export function deleteCacheMessages(): void {
     const stream = redis.scanStream({
         match: `message:*:*:*:*`,
         type: 'string',
-        count: BATCH_SIZE
+        count: BATCH_LENGTH
     });
     deleteStreamKeys(stream, { action: 'delete_cache_messages' });
 };
 
 export async function submitBatch(): Promise<void> {
-    const batchToSubmit = batch.splice(0, BATCH_SIZE);
+    const batchToSubmit = batch.splice(0, BATCH_LENGTH);
     try {
         const start = new Date().getTime();
         const guilds = getUniques(batchToSubmit.map(m => m[1]));
@@ -208,7 +208,7 @@ export async function submitBatch(): Promise<void> {
     const stream = redis.scanStream({
         match: `message:*:*:*:*`,
         type: 'string',
-        count: BATCH_SIZE
+        count: BATCH_LENGTH
     });
     stream.on('data', async (d: string[]) => {
         if (d.length) {

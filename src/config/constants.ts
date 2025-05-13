@@ -1,9 +1,10 @@
-// CONSTANTS //
+//------------------------------------------CONSTANTS-------------------------------------------//
 // cache messages -------------------------------------------------------------------------------+
-export const BATCH_SIZE = 1000;                                                                 //
+export const BATCH_LENGTH = 100;                                                                //
 export const BATCH_EXPIRATION = 30 * 60 * 1000; // ms                                           //
-export const MAX_FILE_SIZE = 3000000; // b - any file larger than this limit will be ignored    // 
-export const MAX_ATTACHMENTS_SIZE = 10000000; // b - max attachments size for 1 message         //
+export const MAX_FILE_SIZE = 3000000; // B - any file larger than this limit will be ignored    // 
+export const MAX_ATTACHMENTS_SIZE = 10000000; // B - max attachments size for 1 message         //
+export const MAX_BATCH_SIZE = BATCH_LENGTH * MAX_ATTACHMENTS_SIZE * 1.33 // B - theorical max   //
 export const DEFAULT_FILETYPE = 'text/plain; charset=utf-8';                                    //
 export const DEFAULT_EXTENSION = '.txt';                                                        //
 // db messages  ---------------------------------------------------------------------------------+
