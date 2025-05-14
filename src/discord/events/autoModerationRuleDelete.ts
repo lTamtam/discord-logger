@@ -1,7 +1,7 @@
 import { AuditLogEvent, AutoModerationRule, Events } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
-import { AUTOMOD_TRIGGER, EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { AUTOMOD_TRIGGER, EVENTS_BITS } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
 import { webhookSend } from '../../utils/webhooks';
 

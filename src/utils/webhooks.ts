@@ -2,7 +2,7 @@ import { Channel, ChannelType, ContainerBuilder, EmbedBuilder, FileBuilder, Guil
 import prisma from '../databases/prisma';
 import redis from '../databases/redis';
 import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
-import { EVENTS_BITS } from './eventsTypemaps';
+import { EVENTS_BITS } from './events-typemaps';
 import logger from './pino-logger';
 
 /**

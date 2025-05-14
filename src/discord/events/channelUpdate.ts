@@ -1,7 +1,7 @@
 import { BaseGuildTextChannel, BaseGuildVoiceChannel, Channel, ChannelType, Events } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
-import { CHANNEL, EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { CHANNEL, EVENTS_BITS } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
 import { webhookSend } from '../../utils/webhooks';
 

@@ -1,7 +1,7 @@
 import { ChannelType, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from 'discord.js';
 import { SUUID } from 'short-uuid';
 import { BotSlashCommand } from '../../types';
-import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS } from '../../utils/events-typemaps';
 import logger from '../../utils/pino-logger';
 import { errorEmbed } from '../../utils/util';
 import { createWebhook, deleteWebhook, editDbWebhook, editDiscordWebhook, getWebhook } from '../../utils/webhooks';

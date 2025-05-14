@@ -5,7 +5,7 @@ import redis from '../../databases/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
 import { decrypt, encrypt } from '../encryption';
 import logger from '../pino-logger';
-import { deleteStreamKeys } from '../redisUtil';
+import { deleteStreamKeys } from '../redis-util';
 import { dataToB64, getUniques } from '../util';
 
 let batch: CacheMessageArray[] = [];

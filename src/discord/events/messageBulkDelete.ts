@@ -1,7 +1,7 @@
 import { AttachmentBuilder, AuditLogEvent, Collection, Events, GuildTextBasedChannel, Message, PartialMessage, Snowflake } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, CacheMessageObject, WebhookEvent } from '../../types';
-import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage } from '../../utils/messages/message-db';
 import logger from '../../utils/pino-logger';

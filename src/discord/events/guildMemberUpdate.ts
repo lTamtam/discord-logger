@@ -1,7 +1,7 @@
 import { Events, GuildMember, PartialGuildMember } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
-import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getDifference, getUser } from '../../utils/util';
 import { webhookSend } from '../../utils/webhooks';
 

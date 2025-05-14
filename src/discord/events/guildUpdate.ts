@@ -1,7 +1,7 @@
 import { AuditLogEvent, Events, Guild, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildMFALevel, GuildVerificationLevel } from 'discord.js';
 import short from 'short-uuid';
 import { BotEvent, WebhookEvent } from '../../types';
-import { EVENTS_BITS, EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS, EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
 import { webhookSend } from '../../utils/webhooks';
 

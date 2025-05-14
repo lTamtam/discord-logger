@@ -2,7 +2,7 @@ import { ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
 import { MAX_EMBED_DESCRIPTION, MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
-import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { cacheMessage, getCacheMessage, updateCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage, updateDbMessage } from '../../utils/messages/message-db';
 import { chunkify, getMember } from '../../utils/util';

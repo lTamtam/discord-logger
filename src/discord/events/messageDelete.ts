@@ -2,7 +2,7 @@ import { AuditLogEvent, ChannelType, Events, Message, PartialMessage } from 'dis
 import short from 'short-uuid';
 import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
-import { EVENTS_BITS } from '../../utils/eventsTypemaps';
+import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage } from '../../utils/messages/message-db';
 import { chunkify, getMember, getUser } from '../../utils/util';
