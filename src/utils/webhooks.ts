@@ -1,4 +1,4 @@
-import { Channel, ChannelType, ContainerBuilder, EmbedBuilder, FileBuilder, Guild, MessageFlags, SeparatorSpacingSize, Snowflake, TextDisplayBuilder, Webhook, WebhookEditOptions } from 'discord.js';
+import { Channel, ChannelType, ContainerBuilder, DiscordAPIError, EmbedBuilder, FileBuilder, Guild, MessageFlags, SeparatorSpacingSize, Snowflake, TextDisplayBuilder, Webhook, WebhookEditOptions } from 'discord.js';
 import prisma from '../databases/prisma';
 import redis from '../databases/redis';
 import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
@@ -192,8 +192,14 @@ export async function createWebhook(channel: Channel): Promise<Webhook | null> {
 export async function getWebhook(guild: Guild): Promise<Webhook | null> {
     let cache = await cacheWebhook(guild.id);
     if (!cache) return null;
-    let webhook = await guild.client.fetchWebhook(cache.id, cache.token)
-        .catch(err => null);
+    let webhook: Webhook | null;
+    try {
+        webhook = await guild.client.fetchWebhook(cache.id, cache.token);
+    }
+    catch (err) {
+        if (err instanceof DiscordAPIError && err.code === 10015) await deleteWebhook(guild);
+        webhook = null;
+    }
     if (!webhook) {
         const channel = guild.channels.cache.get(cache.channelId);
         if (!channel) return null;
