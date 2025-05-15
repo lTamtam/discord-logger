@@ -17,6 +17,7 @@ const command: BotSlashCommand = {
                 .setDescription('Creates a webhook in a given channel')
                 .addChannelOption(option =>
                     option.setName('channel')
+                        .addChannelTypes(ChannelType.GuildText)
                         .setRequired(false)
                         .setDescription('Target #channel')
                 )
