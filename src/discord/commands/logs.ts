@@ -13,7 +13,7 @@ const command: BotSlashCommand = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription('Logging setup command')
         .addSubcommand(subcommand =>
-            subcommand.setName('set-webhook')
+            subcommand.setName('add-webhook')
                 .setDescription('Creates a webhook in a given channel')
                 .addChannelOption(option =>
                     option.setName('channel')
@@ -60,7 +60,7 @@ const command: BotSlashCommand = {
         if (!ctx.inCachedGuild()) return;
         const subcommand = ctx.options.getSubcommand();
 
-        if (subcommand === 'set-webhook') {
+        if (subcommand === 'add-webhook') {
             const channel = ctx.options.getChannel('channel') ?? ctx.channel;
             if (!channel || channel.type !== ChannelType.GuildText) return errorEmbed(ctx, `${channel} is not a valid channel`, uuid);
 
