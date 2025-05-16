@@ -1,4 +1,5 @@
 import { Channel, ChannelType, ContainerBuilder, DiscordAPIError, EmbedBuilder, FileBuilder, Guild, MessageFlags, SeparatorSpacingSize, Snowflake, TextDisplayBuilder, Webhook, WebhookEditOptions } from 'discord.js';
+import { REDIS_WEBHOOK_EXPIRATION } from '../config/constants';
 import prisma from '../databases/prisma';
 import redis from '../databases/redis';
 import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
@@ -42,7 +43,7 @@ export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOpti
             },
             data: options
         });
-        redis.set(`webhook:${db.guildId}`, `${db.id}|${db.token}|${db.channelId}|${db.events}`, 'EX', 2592000);
+        redis.set(`webhook:${db.guildId}`, `${db.id}|${db.token}|${db.channelId}|${db.events}`, 'EX', REDIS_WEBHOOK_EXPIRATION);
         return { id: db.id, token: db.token!, channelId: db.channelId, events: db.events };
     }
     catch (err) {
@@ -172,7 +173,7 @@ export async function createWebhook(channel: Channel): Promise<Webhook | null> {
                 }
             }
         });
-        redis.set(`webhook:${channel.guildId}`, `${webhook.id}|${webhook.token}|${channel.id}|${EVENTS_BITS.Default}`, 'EX', 2592000);
+        redis.set(`webhook:${channel.guildId}`, `${webhook.id}|${webhook.token}|${channel.id}|${EVENTS_BITS.Default}`, 'EX', REDIS_WEBHOOK_EXPIRATION);
         return webhook;
     }
     catch (err) {

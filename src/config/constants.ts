@@ -7,6 +7,9 @@ export const MAX_ATTACHMENTS_SIZE = 10000000; // B - max attachments size for 1 
 export const MAX_BATCH_SIZE = BATCH_LENGTH * MAX_ATTACHMENTS_SIZE * 1.33 // B - theorical max   //
 export const DEFAULT_FILETYPE = 'text/plain; charset=utf-8';                                    //
 export const DEFAULT_EXTENSION = '.txt';                                                        //
+// redis ----------------------------------------------------------------------------------------+
+export const REDIS_EMPTY_VALUE = '<empty>';                                                     //
+export const REDIS_WEBHOOK_EXPIRATION = 2592000; //s                                            //
 // db messages  ---------------------------------------------------------------------------------+
 export const MESSAGES_EXPIRATION = 7 * 24 * 3600 * 1000; // ms                                  //
 // embed limits  --------------------------------------------------------------------------------+
