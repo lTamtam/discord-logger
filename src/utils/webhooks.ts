@@ -1,5 +1,5 @@
 import { Channel, ChannelType, ContainerBuilder, DiscordAPIError, EmbedBuilder, FileBuilder, Guild, MessageFlags, SeparatorSpacingSize, Snowflake, TextDisplayBuilder, Webhook, WebhookEditOptions } from 'discord.js';
-import { REDIS_WEBHOOK_EXPIRATION } from '../config/constants';
+import { REDIS_EMPTY_VALUE, REDIS_WEBHOOK_EXPIRATION } from '../config/constants';
 import prisma from '../databases/prisma';
 import redis from '../databases/redis';
 import { DbWebhook, DbWebhookEditOptions, WebhookEvent } from '../types';
@@ -63,9 +63,12 @@ export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOpti
 export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null> {
     try {
         const cache = await redis.get(`webhook:${guildId}`);
-        if (cache?.split('|').length === 4) {
+        if (cache === REDIS_EMPTY_VALUE) return null;
+        if (cache) {
             const webhook = cache.split('|');
-            return { id: webhook[0], token: webhook[1], channelId: webhook[2], events: parseInt(webhook[3]) };
+            if (webhook.length === 4) {
+                return { id: webhook[0], token: webhook[1], channelId: webhook[2], events: parseInt(webhook[3]) };
+            }
         }
         const db = await prisma.webhook.findUnique({
             where: {
@@ -75,6 +78,9 @@ export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null
         if (db) {
             redis.set(`webhook:${guildId}`, `${db.id}|${db.token}|${db.channelId}|${db.events}`, 'EX', REDIS_WEBHOOK_EXPIRATION);
             return { id: db.id, token: db.token, channelId: db.channelId, events: db.events };
+        }
+        else {
+            redis.set(`webhook:${guildId}`, REDIS_EMPTY_VALUE, 'EX', REDIS_WEBHOOK_EXPIRATION);
         }
     }
     catch (err) {
