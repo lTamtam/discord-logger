@@ -73,7 +73,7 @@ export async function cacheWebhook(guildId: Snowflake): Promise<DbWebhook | null
             }
         });
         if (db) {
-            redis.set(`webhook:${guildId}`, `${db.id}|${db.token}|${db.channelId}|${db.events}`);
+            redis.set(`webhook:${guildId}`, `${db.id}|${db.token}|${db.channelId}|${db.events}`, 'EX', REDIS_WEBHOOK_EXPIRATION);
             return { id: db.id, token: db.token, channelId: db.channelId, events: db.events };
         }
     }
