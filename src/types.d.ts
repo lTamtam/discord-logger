@@ -1,4 +1,4 @@
-import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction, Collection, ContextMenuCommandBuilder, EmbedAssetData, ImageURLOptions, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder, Snowflake, TextChannel, UserContextMenuCommandInteraction } from 'discord.js'
+import { AttachmentBuilder, AutocompleteInteraction, ChatInputCommandInteraction, Collection, ContextMenuCommandBuilder, EmbedAssetData, ImageURLOptions, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder, Snowflake, UserContextMenuCommandInteraction } from 'discord.js'
 import { SUUID } from 'short-uuid'
 
 export interface BotSlashCommand {
@@ -68,7 +68,7 @@ export type DbWebhook = {
 }
 
 export type DbWebhookEditOptions = {
-    channel?: TextChannel,
+    channelId?: Snowflake,
     events?: number
 }
 

@@ -72,7 +72,7 @@ const command: BotSlashCommand = {
             else if (webhook && webhook.channelId !== channel.id) {
                 const discord = await editDiscordWebhook(webhook, { channel: channel });
                 if (!discord) return errorEmbed(ctx, `Discord error when editing the webhook`, uuid);
-                const db = await editDbWebhook(webhook, { channel });
+                const db = await editDbWebhook(webhook, { channelId: channel.id });
                 if (!db) return errorEmbed(ctx, `Database error when editing the webhook`, uuid);
             }
             else {
@@ -133,7 +133,7 @@ const command: BotSlashCommand = {
 
             if (channel) {
                 await editDiscordWebhook(webhook, { channel });
-                await editDbWebhook(webhook, { channel });
+                await editDbWebhook(webhook, { channelId: channel.id });
             }
             if (events) {
                 await editDbWebhook(webhook, { events });

@@ -35,7 +35,6 @@ export async function editDiscordWebhook(webhook: Webhook, options: WebhookEditO
  * @returns {Promise<DbWebhook | null>}
  */
 export async function editDbWebhook(webhook: Webhook, options: DbWebhookEditOptions): Promise<DbWebhook | null> {
-    if (options.channel && options.channel.type !== ChannelType.GuildText) return null;
     try {
         const db = await prisma.webhook.update({
             where: {
@@ -213,7 +212,7 @@ export async function getWebhook(guild: Guild): Promise<Webhook | null> {
         webhook = await createWebhook(channel);
     }
     else if (webhook.channelId !== cache.channelId && webhook.channel?.type === ChannelType.GuildText) {
-        editDbWebhook(webhook, { channel: webhook.channel! });
+        editDbWebhook(webhook, { channelId: webhook.channel.id });
     }
     return webhook;
 };
