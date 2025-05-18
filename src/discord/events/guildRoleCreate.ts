@@ -36,7 +36,7 @@ const event: BotEvent = {
                 description: `${auto ? 'Managed role' : 'Role'} ${role} was created`,
                 fields: [
                     { name: 'Name', value: role.name },
-                    { name: 'Color', value: role.hexColor },
+                    { name: 'Color', value: `${role.hexColor}` },
                     { name: 'Permissions', value: permissions ? permissions : EMPTY_STRING }
                 ],
                 footer: { text: `ID: ${uuid}` },
