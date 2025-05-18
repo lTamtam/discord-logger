@@ -23,7 +23,7 @@ const command: BotSlashCommand = {
                 )
         )
         .addSubcommand(subcommand =>
-            subcommand.setName('view-webhook')
+            subcommand.setName('info')
                 .setDescription('Shows information about the log webhook')
         )
         .addSubcommand(subcommand =>
@@ -97,7 +97,7 @@ const command: BotSlashCommand = {
             }
         }
 
-        else if (subcommand === 'view-webhook') {
+        else if (subcommand === 'info') {
             const webhook = await getWebhook(ctx.guild);
             if (!webhook) return errorEmbed(ctx, `There is no webhook on this server`, uuid);
 
