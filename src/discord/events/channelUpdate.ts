@@ -1,5 +1,6 @@
 import { BaseGuildTextChannel, BaseGuildVoiceChannel, Channel, ChannelType, Events } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { CHANNEL, EVENTS_BITS } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
@@ -85,7 +86,7 @@ const event: BotEvent = {
         if (auditLogId === 11) {
             log.changes.forEach(c => {
                 if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
-                if (c.key === 'topic') addField('Topic', `**Now:** \`${c.new ? (c.new as string).replace(/\"/g, '"').replace(/`/g, '') : '`<None>`'}\`\n**Was:** \`${c.old ? (c.old as string).replace(/\"/g, '"').replace(/`/g, '') : '`<None>`'}\``);
+                if (c.key === 'topic') addField('Topic', `**Now:** \`${c.new ? (c.new as string).replace(/\"/g, '"').replace(/`/g, '') : EMPTY_STRING}\`\n**Was:** \`${c.old ? (c.old as string).replace(/\"/g, '"').replace(/`/g, '') : EMPTY_STRING}\``);
                 if (c.key === 'rate_limit_per_user') addField('Cooldown', `**Now:** **${c.new}** second${c.new as number > 1 ? 's' : ''}\n**Was:** **${c.old}** second${c.new as number > 1 ? 's' : ''}`);
                 if (c.key === 'nsfw') addField('Nsfw', `**Now:** ${c.new}\n**Was:** ${c.old}`);
                 if (c.key === 'bitrate') addField('Bitrate', `**Now:** **${c.new}** kbps\n**Was:** **${c.old}** kbps`);

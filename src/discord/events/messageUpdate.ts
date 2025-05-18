@@ -1,6 +1,6 @@
 import { ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
-import { MAX_EMBED_DESCRIPTION, MAX_EMBED_FIELD_VALUE } from '../../config/constants';
+import { EMPTY_STRING, MAX_EMBED_DESCRIPTION, MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { cacheMessage, getCacheMessage, updateCacheMessage } from '../../utils/messages/message-cache';
@@ -78,14 +78,14 @@ const event: BotEvent = {
                 }
                 else newChunks.push(message.content);
             }
-            else newChunks.push('`<None>`');
+            else newChunks.push(EMPTY_STRING);
             if (cachedMessage.content) {
                 if (cachedMessage.content.length > MAX_EMBED_FIELD_VALUE) {
                     oldChunks = chunkify(cachedMessage.content.replace(/\"/g, '"').replace(/`/g, ''));
                 }
                 else oldChunks.push(cachedMessage.content);
             }
-            else oldChunks.push('`<None>`');
+            else oldChunks.push(EMPTY_STRING);
 
             newChunks.forEach((c: string, i) => {
                 messageUpdateEvent.embeds[0].fields.push({

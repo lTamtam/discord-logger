@@ -1,5 +1,5 @@
 import { Message, Snowflake } from 'discord.js';
-import { MESSAGES_EXPIRATION } from '../../config/constants';
+import { EMPTY_STRING, MESSAGES_EXPIRATION } from '../../config/constants';
 import prisma from '../../databases/prisma';
 import { CacheMessageObject } from '../../types';
 import { decrypt, encrypt } from '../encryption';
@@ -14,7 +14,7 @@ export async function getDbMessage(messageId: Snowflake): Promise<CacheMessageOb
         });
         if (dbMessage) return {
             ...dbMessage,
-            content: dbMessage.content ? decrypt(dbMessage.content) : '`<None>`',
+            content: dbMessage.content ? decrypt(dbMessage.content) : EMPTY_STRING,
             createdAt: new Date(dbMessage.createdAt)
         };
     }
@@ -37,7 +37,7 @@ export async function updateDbMessage(message: Message): Promise<void> {
             },
             data: {
                 authorId: message.author.id,
-                content: encrypt(message.content ?? '`<None>`'),
+                content: encrypt(message.content ?? EMPTY_STRING),
                 guild: {
                     connectOrCreate: {
                         create: {

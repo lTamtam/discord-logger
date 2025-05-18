@@ -1,5 +1,6 @@
 import { AuditLogEvent, Events, Guild, GuildDefaultMessageNotifications, GuildExplicitContentFilter, GuildMFALevel, GuildVerificationLevel } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS, EXPLICIT_CONTENT_LEVELS_MAP, MFA_LEVELS_MAP, NOTIFICATIONS_LEVEL_MAP, VERIFICATION_LEVELS_MAP } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
@@ -45,16 +46,16 @@ const event: BotEvent = {
                     addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
                     break;
                 case 'description':
-                    addField('Description', `**Now:** ${c.new === '' || !c.new ? '`<None>`' : c.new}\n**Was:** ${c.old ?? '`<None>`'}`);
+                    addField('Description', `**Now:** ${c.new === '' || !c.new ? EMPTY_STRING : c.new}\n**Was:** ${c.old ?? EMPTY_STRING}`);
                     break;
                 case 'icon_hash':
-                    addField('Icon', `**Now:** [Image](${guild.iconURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.iconURL() ?? '`<None>`'})`);
+                    addField('Icon', `**Now:** [Image](${guild.iconURL() ?? EMPTY_STRING})\n**Was:** [Image](${oldGuild.iconURL() ?? EMPTY_STRING})`);
                     break;
                 case 'banner_hash':
-                    addField('Icon', `**Now:** [Image](${guild.bannerURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.bannerURL() ?? '`<None>`'})`);
+                    addField('Icon', `**Now:** [Image](${guild.bannerURL() ?? EMPTY_STRING})\n**Was:** [Image](${oldGuild.bannerURL() ?? EMPTY_STRING})`);
                     break;
                 case 'vanity_url_code':
-                    addField('Vanity URL', `**Now:** \`${c.new === '' || !c.new ? '`<None>`' : c.new}\`\n**Was:** \`${c.old ?? '`<None>`'}\``);
+                    addField('Vanity URL', `**Now:** \`${c.new === '' || !c.new ? EMPTY_STRING : c.new}\`\n**Was:** \`${c.old ?? EMPTY_STRING}\``);
                     break;
                 case 'verification_level':
                     addField('Verification', `**Now:** ${VERIFICATION_LEVELS_MAP[c.new as GuildVerificationLevel]}\n**Was:** ${VERIFICATION_LEVELS_MAP[c.old as GuildVerificationLevel]}\n`);
@@ -70,32 +71,32 @@ const event: BotEvent = {
                     break;
 
                 case 'splash_hash':
-                    addField('Server splash', `**Now:** [Image](${guild.splashURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.splashURL() ?? '`<None>`'})`);
+                    addField('Server splash', `**Now:** [Image](${guild.splashURL() ?? EMPTY_STRING})\n**Was:** [Image](${oldGuild.splashURL() ?? EMPTY_STRING})`);
                     break;
                 case 'discovery_splash_hash':
-                    addField('Discovery splash', `**Now:** [Image](${guild.discoverySplashURL() ?? '`<None>`'})\n**Was:** [Image](${oldGuild.discoverySplashURL() ?? '`<None>`'})`);
+                    addField('Discovery splash', `**Now:** [Image](${guild.discoverySplashURL() ?? EMPTY_STRING})\n**Was:** [Image](${oldGuild.discoverySplashURL() ?? EMPTY_STRING})`);
                     break;
                 case 'default_message_notifications':
                     addField('Default notifications', `**Now:** ${NOTIFICATIONS_LEVEL_MAP[c.new as GuildDefaultMessageNotifications]}\n**Was:** ${NOTIFICATIONS_LEVEL_MAP[c.old as GuildDefaultMessageNotifications]}`);
                     break;
 
                 case 'afk_channel_id':
-                    addField('AFK channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
+                    addField('AFK channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : EMPTY_STRING}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : EMPTY_STRING}`);
                     break;
                 case 'afk_timeout':
                     addField('AFK timeout', `**Now:** **${c.new as number / 60}** minute${c.new as number > 1 ? 's' : ''}\n**Was:** **${c.old as number / 60}** minute${c.new as number > 1 ? 's' : ''}`);
                     break;
                 case 'system_channel_id':
-                    addField('System channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
+                    addField('System channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : EMPTY_STRING}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : EMPTY_STRING}`);
                     break;
                 case 'rules_channel_id':
-                    addField('Rules channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
+                    addField('Rules channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : EMPTY_STRING}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : EMPTY_STRING}`);
                     break;
                 case 'widget_channel_id':
-                    addField('Widget channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
+                    addField('Widget channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : EMPTY_STRING}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : EMPTY_STRING}`);
                     break;
                 case 'public_updates_channel_id':
-                    addField('Public updates channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : '`<None>`'}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : '`<None>`'}`);
+                    addField('Public updates channel', `**Now:** ${c.new ? `<#${c.new}> (${c.new})` : EMPTY_STRING}\n**Was:** ${c.old ? `<#${c.old}> (${c.old})` : EMPTY_STRING}`);
                     break;
             }
         });

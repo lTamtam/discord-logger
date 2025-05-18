@@ -1,6 +1,6 @@
 import { AttachmentBuilder, ChatInputCommandInteraction, EmbedBuilder, InteractionContextType, MessageFlags, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import { SUUID } from 'short-uuid';
-import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
+import { EMPTY_STRING, MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotSlashCommand } from '../../types';
 import { getCacheMessage } from '../../utils/messages/message-cache';
 import { getDbMessage } from '../../utils/messages/message-db';
@@ -44,7 +44,7 @@ const command: BotSlashCommand = {
             }
             else chunks.push(db.content);
         }
-        else chunks.push('`<None>`');
+        else chunks.push(EMPTY_STRING);
         chunks.forEach((c: string, i) => {
             embed.addFields({
                 name: `Content ${chunks.length > 1 ? `(${i + 1}/${chunks.length})` : ''}`,

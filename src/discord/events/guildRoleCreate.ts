@@ -1,5 +1,6 @@
 import { AuditLogEvent, Events, PermissionResolvable, PermissionsBitField, Role } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getMember } from '../../utils/util';
@@ -36,7 +37,7 @@ const event: BotEvent = {
                 fields: [
                     { name: 'Name', value: role.name },
                     { name: 'Color', value: role.hexColor },
-                    { name: 'Permissions', value: permissions ? permissions : '`<None>`' }
+                    { name: 'Permissions', value: permissions ? permissions : EMPTY_STRING }
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0x65FDFC,

@@ -1,5 +1,6 @@
 import { AuditLogEvent, Events, GuildBan } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { webhookSend } from '../../utils/webhooks';
@@ -35,7 +36,7 @@ const event: BotEvent = {
                 description: `User ${user} was banned`,
                 fields: [
                     { name: 'User', value: `${user} | **${user.tag}**` },
-                    { name: 'Reason', value: `${reason ?? '`<None>`'}` },
+                    { name: 'Reason', value: `${reason ?? EMPTY_STRING}` },
                     { name: 'ID', value: `\`\`\`ini\nExecutor=${executor?.id ?? '???'}\nUser=${user?.id ?? '???'}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },

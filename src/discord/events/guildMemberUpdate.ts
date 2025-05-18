@@ -1,5 +1,6 @@
 import { Events, GuildMember, PartialGuildMember } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getDifference, getUser } from '../../utils/util';
@@ -54,7 +55,7 @@ const event: BotEvent = {
 
         if (auditLogId === 24) {
             log.changes.forEach(c => {
-                if (c.key === 'nick') addField('Nickname', `**Now:** ${c.new ?? '`<None>`'}\n**Was:** ${c.old ?? '`<None>`'}`);
+                if (c.key === 'nick') addField('Nickname', `**Now:** ${c.new ?? EMPTY_STRING}\n**Was:** ${c.old ?? EMPTY_STRING}`);
                 if (c.key === 'communication_disabled_until') addField('Timeout', `**Until:** <t:${Math.round(member.communicationDisabledUntilTimestamp! / 1000)}> (<t:${Math.round(member.communicationDisabledUntilTimestamp! / 1000)}:R>)`)
             });
             if (timeout) guildMemberUpdateEvent.embeds[0].color = 0xF54831;

@@ -1,6 +1,6 @@
 import { AuditLogEvent, ChannelType, Events, Message, PartialMessage } from 'discord.js';
 import short from 'short-uuid';
-import { MAX_EMBED_FIELD_VALUE } from '../../config/constants';
+import { EMPTY_STRING, MAX_EMBED_FIELD_VALUE } from '../../config/constants';
 import { BotEvent, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getCacheMessage } from '../../utils/messages/message-cache';
@@ -58,7 +58,7 @@ const event: BotEvent = {
             }
             else chunks.push(cachedMessage.content);
         }
-        else chunks.push('`<None>`');
+        else chunks.push(EMPTY_STRING);
 
         chunks.forEach((c: string, i) => {
             messageDeleteEvent.embeds[0].fields.push({

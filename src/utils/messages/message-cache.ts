@@ -1,5 +1,5 @@
 import { Message, Snowflake } from 'discord.js';
-import { BATCH_EXPIRATION, BATCH_LENGTH, DEFAULT_EXTENSION, DEFAULT_FILETYPE, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../../config/constants';
+import { BATCH_EXPIRATION, BATCH_LENGTH, DEFAULT_EXTENSION, DEFAULT_FILETYPE, EMPTY_STRING, MAX_ATTACHMENTS_SIZE, MAX_FILE_SIZE } from '../../config/constants';
 import prisma from '../../databases/prisma';
 import redis from '../../databases/redis';
 import { CacheMessageArray, CacheMessageObject } from '../../types';
@@ -29,7 +29,7 @@ export async function addMessage(m: CacheMessageArray): Promise<void> {
 
 export async function cacheMessage(message: Message): Promise<void> {
     if (!message.guild || message.webhookId) return;
-    const content = encrypt(message.content ?? '`<None>`');
+    const content = encrypt(message.content ?? EMPTY_STRING);
     const attachments = message.attachments.values();
     const b64Attachments: string[] = [];
     let totalSize = 0;
@@ -84,7 +84,7 @@ export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null
 export function updateCacheMessage(messageId: Snowflake, content: string): void {
     for (let m of batch) {
         if (m[0] === messageId) {
-            m[4] = encrypt(content ?? '`<None>`');
+            m[4] = encrypt(content ?? EMPTY_STRING);
             try {
                 redis.set(`message:${m[0]}:${m[1]}:${m[2]}:${m[3]}`, JSON.stringify(m));
             }

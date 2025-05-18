@@ -1,4 +1,5 @@
 import { createCipheriv, createDecipheriv, pbkdf2Sync, randomBytes } from 'crypto';
+import { EMPTY_STRING } from '../config/constants';
 
 const ALGO = 'aes-256-gcm';
 const ITERS = 9999;
@@ -26,7 +27,7 @@ export function generateMasterKey(size?: number): string {
  * @returns {string}
  */
 export function encrypt(text: string | null, masterkey?: string): string {
-    if (!text) text = '`<None>`';
+    if (!text) text = EMPTY_STRING;
     if (!masterkey) masterkey = Bun.env.MASTERKEY!;
     const salt = randomBytes(64);
     const iVector = randomBytes(16);

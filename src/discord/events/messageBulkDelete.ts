@@ -1,5 +1,6 @@
 import { AttachmentBuilder, AuditLogEvent, Collection, Events, GuildTextBasedChannel, Message, PartialMessage, Snowflake } from 'discord.js';
 import short from 'short-uuid';
+import { EMPTY_STRING } from '../../config/constants';
 import { BotEvent, CacheMessageObject, WebhookEvent } from '../../types';
 import { EVENTS_BITS } from '../../utils/events-typemaps';
 import { getCacheMessage } from '../../utils/messages/message-cache';
@@ -55,7 +56,7 @@ const event: BotEvent = {
 
         if (cacheMessages.length) {
             messageBulkDeleteEvent.embeds[0].description += `\n\n\`${cacheMessages.length}\` *messages were known in cache*`;
-            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} │ AuthorId: ${m.authorId} │ Date: ${m.createdAt.toISOString()} │ Attachments: ${m.attachmentsB64.length.toString().padStart(2, '0')} │ Content: ${m.content.replaceAll(/(\r\n|\n|\r)/gm, '\\n ').replace(/\"/g, '"').replace(/`/g, '').replace(/│/g, '|') ?? '`<None>`'}`).join('\n');
+            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} │ AuthorId: ${m.authorId} │ Date: ${m.createdAt.toISOString()} │ Attachments: ${m.attachmentsB64.length.toString().padStart(2, '0')} │ Content: ${m.content.replaceAll(/(\r\n|\n|\r)/gm, '\\n ').replace(/\"/g, '"').replace(/`/g, '').replace(/│/g, '|') ?? EMPTY_STRING}`).join('\n');
             try {
                 const file = [new AttachmentBuilder(Buffer.from(messagesList), { name: `deleted-messages-${uuid}.txt` })];
                 messageBulkDeleteEvent.files = file;
