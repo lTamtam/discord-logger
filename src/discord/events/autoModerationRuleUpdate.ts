@@ -21,6 +21,7 @@ const event: BotEvent = {
         const user = log.executor;
         const member = await getMember(rule.guild, user?.id);
         const extendedLog = logs?.entries.filter(e => e.targetId === rule.id && e.executorId === user?.id && new Date().getTime() - e.createdTimestamp < 3000).map(l => l.changes).flat();
+        if (!extendedLog) return;
 
         const automoderationRuleUpdateEvent: WebhookEvent = {
             id: uuid,
@@ -40,13 +41,14 @@ const event: BotEvent = {
             }]
         };
         const addField = (name: string, value: string) => automoderationRuleUpdateEvent.embeds[0].fields.push({ name: name, value: value });
+        const removeKeyDuplicates = (array: AuditLogChange[]) => array.filter((o, i, a) => !a.slice(0, i).some(x => x.key === o.key));
 
-        extendedLog?.forEach((c: AuditLogChange | APIAutomodKeyword | APIAutomodRegex | APIAutomodAllow) => {
+        removeKeyDuplicates(extendedLog).forEach((c: AuditLogChange | APIAutomodKeyword | APIAutomodRegex | APIAutomodAllow) => {
             if (c.key === 'name') addField('Name', `**Now:** ${c.new}\n**Was:** ${c.old}`);
             if (c.key === 'actions') {
                 let actions = (c as APIAutomodActions).new.map(a => a.type === 1 ? '• Block message' : a.type === 2 ? `• Send alert in <#${a.metadata.channel_id}>` : `• Set timeout for **${a.metadata.duration_seconds}**s`);
                 if (!actions.length) actions = [EMPTY_STRING];
-                let oldActions = (c as APIAutomodActions).new.map(a => a.type === 1 && a.metadata.custom_message !== undefined ? '• Block message' : a.type === 2 && a.metadata.channel_id !== undefined ? `• Send alert in <#${a.metadata.channel_id}>` : a.type === 3 && a.metadata.duration_seconds !== undefined ? `• Set timeout for **${a.metadata.duration_seconds}**s` : '');
+                let oldActions = (c as APIAutomodActions).old.map(a => a.type === 1 && a.metadata.custom_message ? '• Block message' : a.type === 2 && a.metadata.channel_id ? `• Send alert in <#${a.metadata.channel_id}>` : a.type === 3 && a.metadata.duration_seconds ? `• Set timeout for **${a.metadata.duration_seconds}**s` : EMPTY_STRING).filter(a => a !== EMPTY_STRING);
                 if (!oldActions.length) actions = [EMPTY_STRING];
                 if (actions.toString() !== oldActions.toString()) addField('Actions', `**Now**\n${actions.join('\n')}\n**Was**\n${oldActions.join('\n')}`);
             }
@@ -72,8 +74,8 @@ const event: BotEvent = {
                 if ((c as APIAutomodTrigger).new.mention_total_limit !== (c as APIAutomodTrigger).old.mention_total_limit) addField('Mentions limit', `**Now: ${(c as APIAutomodTrigger).new.mention_total_limit}**\n**Was: ${(c as APIAutomodTrigger).old.mention_total_limit}**`);
                 if ((c as APIAutomodTrigger).new.mention_raid_protection_enabled !== (c as APIAutomodTrigger).old.mention_raid_protection_enabled) addField('Mentions raid protection', `${(c as APIAutomodTrigger).new.mention_raid_protection_enabled ? '✅ Enabled' : '❌ Disabled'}`);
             }
-            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${c.new === undefined ? EMPTY_STRING : c.new.map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${c.old === undefined ? EMPTY_STRING : c.old.map(r => `<#${r}> (${r})`).join('\n')}`);
-            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${c.new === undefined ? EMPTY_STRING : c.new.map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${c.old === undefined ? EMPTY_STRING : c.old.map(r => `<@&${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_channels') addField('Exempt channels', `**Now**\n${!c.new?.length ? EMPTY_STRING : c.new.map(r => `<#${r}> (${r})`).join('\n')}\n**Was**\n${!c.old?.length ? EMPTY_STRING : c.old.map(r => `<#${r}> (${r})`).join('\n')}`);
+            if (c.key === 'exempt_roles') addField('Exempt roles', `**Now**\n${!c.new?.length ? EMPTY_STRING : c.new.map(r => `<@&${r}> (${r})`).join('\n')}\n**Was**\n${!c.old?.length ? EMPTY_STRING : c.old.map(r => `<@&${r}> (${r})`).join('\n')}`);
         });
         if (!automoderationRuleUpdateEvent.embeds[0].fields.length) return;
 
