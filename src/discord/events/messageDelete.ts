@@ -64,8 +64,15 @@ const event: BotEvent = {
             messageDeleteEvent.embeds[0].fields.push({
                 name: `Content ${chunks.length > 1 ? `(${i + 1}/${chunks.length})` : ''}`,
                 value: c
-            })
+            });
         });
+
+        if (cachedMessage.attachmentsB64.length) {
+            messageDeleteEvent.embeds[0].fields.push({
+                name: `Attachments`,
+                value: `**${cachedMessage.attachmentsB64.length}**\n${cachedMessage.attachmentsB64.map(a => `\`${a.split(';')[0]}\``).join(' ')}`
+            });
+        }
 
         messageDeleteEvent.embeds[0].fields.push(
             { name: 'ID', value: `\`\`\`ini\n${user !== executor ? `Executor=${executor?.id ?? '???'}\n` : ''}Author=${user?.id ?? '???'}\nMessage=${cachedMessage.id}\nChannel=${message.channel.id}\`\`\`` }
