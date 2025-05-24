@@ -22,15 +22,16 @@ const command: BotSlashCommand = {
     cooldown: 1,
 
     execute: async (ctx: ChatInputCommandInteraction, uuid: SUUID) => {
-        const messageId = ctx.options.getString('id');
-        if (!messageId || isNaN(parseInt(messageId)) || !Number.isInteger(+messageId)) return errorEmbed(ctx, 'Invalid snowflake');
+        const id = ctx.options.getString('id');
+        if (!id || isNaN(Number(id)) || Number(id) <= 4194303 || !Number.isInteger(+id)) return errorEmbed(ctx, 'Invalid snowflake');
 
-        const date = new Date(Number(BigInt(messageId) >> 22n) + 1420070400000);
+        // https://discord.com/developers/docs/reference#snowflakes
+        const date = new Date(Number(BigInt(id) >> 22n) + 1420070400000);
         const dateStr = `\`${date.toISOString().replace(/[TZ]/g, ' ')}GMT\``;
 
         const embed = new EmbedBuilder()
             .setColor(0x65FDFC)
-            .setDescription(`[:snowflake:](https://discord.com/developers/docs/reference#snowflakes) Timestamp of **${messageId}**\n\n${dateStr}`)
+            .setDescription(`[:snowflake:](https://discord.com/developers/docs/reference#snowflakes) Timestamp of **${id}**\n\n${dateStr}`)
             .setFooter({ text: `ID: ${uuid}` });
 
         try {
