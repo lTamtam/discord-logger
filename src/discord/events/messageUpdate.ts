@@ -36,6 +36,7 @@ const event: BotEvent = {
                 authorId: message.author.id,
                 createdAt: oldMessage.createdAt,
                 content: oldMessage.content ?? '`<Unknown>`',
+                attachments: oldMessage.attachments.size,
                 attachmentsB64: []
             };
             await cacheMessage(message);

@@ -42,6 +42,7 @@ model Message {
   channelId      String
   authorId       String
   content        String?
+  attachments    Int
   attachmentsB64 String[]
 
   @@map("messages")

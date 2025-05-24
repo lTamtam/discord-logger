@@ -51,6 +51,19 @@ const command: BotSlashCommand = {
                 value: c
             });
         });
+        if (db.attachmentsB64.length) {
+            embed.addFields({
+                name: `Attachments`,
+                value: `**${db.attachments}**\n${db.attachmentsB64.map(a => `\`${a.split(';')[0]}\``).join(' ')}
+                ${db.attachments > db.attachmentsB64.length ? `**+${db.attachments - db.attachmentsB64.length}**` : ''}`
+            });
+        }
+        else if (db.attachments) {
+            embed.addFields({
+                name: `Attachments`,
+                value: `**${db.attachments}**`
+            });
+        }
         embed.addFields({ name: 'ID', value: `\`\`\`ini\nAuthor=${db.authorId}\nMessage=${db.id}\nChannel=${db.channelId}\nGuild=${db.guildId}\`\`\`` });
 
         let files: AttachmentBuilder[] = [];

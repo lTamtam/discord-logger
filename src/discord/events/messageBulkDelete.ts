@@ -56,7 +56,7 @@ const event: BotEvent = {
 
         if (cacheMessages.length) {
             messageBulkDeleteEvent.embeds[0].description += `\n\n\`${cacheMessages.length}\` *messages were known in cache*`;
-            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} │ AuthorId: ${m.authorId} │ Date: ${m.createdAt.toISOString()} │ Attachments: ${m.attachmentsB64.length.toString().padStart(2, '0')} │ Content: ${m.content.replaceAll(/(\r\n|\n|\r)/gm, '\\n ').replace(/\"/g, '"').replace(/`/g, '').replace(/│/g, '|') ?? EMPTY_STRING}`).join('\n');
+            const messagesList = cacheMessages.map(m => `MessageId: ${m.id} │ AuthorId: ${m.authorId} │ Date: ${m.createdAt.toISOString()} │ Attachments: ${m.attachments.toString().padStart(2, '0')} │ Content: ${m.content.replaceAll(/(\r\n|\n|\r)/gm, '\\n ').replace(/\"/g, '"').replace(/`/g, '').replace(/│/g, '|') ?? EMPTY_STRING}`).join('\n');
             try {
                 const file = [new AttachmentBuilder(Buffer.from(messagesList), { name: `deleted-messages-${uuid}.txt` })];
                 messageBulkDeleteEvent.files = file;

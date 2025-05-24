@@ -22,7 +22,7 @@ export async function addMessage(m: CacheMessageArray): Promise<void> {
             err: err
         });
     }
-    if (batch.length >= BATCH_LENGTH || new Date().getTime() - Date.parse(batch[0][6]) >= BATCH_EXPIRATION) {
+    if (batch.length >= BATCH_LENGTH || new Date().getTime() - Date.parse(batch[0][7]) >= BATCH_EXPIRATION) {
         await submitBatch();
     }
 };
@@ -62,6 +62,7 @@ export async function cacheMessage(message: Message): Promise<void> {
         message.channel.id,
         message.author.id,
         content,
+        message.attachments.size,
         b64Attachments,
         new Date(message.createdTimestamp).toISOString()
     ]);
@@ -76,8 +77,9 @@ export function getCacheMessage(messageId: Snowflake): CacheMessageObject | null
         channelId: message[2],
         authorId: message[3],
         content: decrypt(message[4]),
-        attachmentsB64: message[5],
-        createdAt: new Date(message[6])
+        attachments: message[5],
+        attachmentsB64: message[6],
+        createdAt: new Date(message[7])
     };
 };
 
@@ -181,8 +183,9 @@ export async function submitBatch(): Promise<void> {
                 channelId: m[2],
                 authorId: m[3],
                 content: m[4],
-                attachmentsB64: m[5],
-                createdAt: m[6],
+                attachments: m[5],
+                attachmentsB64: m[6],
+                createdAt: m[7],
             }))
         });
         deleteCacheMessages();

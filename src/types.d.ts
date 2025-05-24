@@ -78,6 +78,7 @@ export type CacheMessageArray = [
     Snowflake,
     Snowflake,
     string,
+    number,
     string[],
     string
 ]
@@ -88,6 +89,7 @@ export type CacheMessageObject = {
     channelId: Snowflake,
     authorId: Snowflake,
     content: string,
+    attachments: number,
     attachmentsB64: string[],
     createdAt: Date
 }

@@ -70,7 +70,14 @@ const event: BotEvent = {
         if (cachedMessage.attachmentsB64.length) {
             messageDeleteEvent.embeds[0].fields.push({
                 name: `Attachments`,
-                value: `**${cachedMessage.attachmentsB64.length}**\n${cachedMessage.attachmentsB64.map(a => `\`${a.split(';')[0]}\``).join(' ')}`
+                value: `**${cachedMessage.attachments}**\n${cachedMessage.attachmentsB64.map(a => `\`${a.split(';')[0]}\``).join(' ')}
+                ${cachedMessage.attachments > cachedMessage.attachmentsB64.length ? `**+${cachedMessage.attachments - cachedMessage.attachmentsB64.length}**` : ''}`
+            });
+        }
+        else if (cachedMessage.attachments) {
+            messageDeleteEvent.embeds[0].fields.push({
+                name: `Attachments`,
+                value: `**${cachedMessage.attachments}**`
             });
         }
 
