@@ -61,6 +61,8 @@ for (const file of eventsFiles) {
     }
 }
 
-discordClient.rest.on('rateLimited', logger.warn);
+discordClient.rest.on('rateLimited', e => {
+    logger.error(e, `WARNING : A rate limit was reached`);
+});
 
 discordClient.login(TOKEN);
