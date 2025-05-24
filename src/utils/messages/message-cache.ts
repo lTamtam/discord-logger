@@ -39,7 +39,7 @@ export async function cacheMessage(message: Message): Promise<void> {
             if (!size || size > MAX_FILE_SIZE || totalSize + size > MAX_ATTACHMENTS_SIZE) return;
             const b64 = await dataToB64(a.url);
             if (b64) {
-                a.name = a.name.replaceAll(';data:', '').replaceAll(';base64,', '');
+                a.name = a.name.replaceAll(';data:', '').replaceAll(';base64,', '').replaceAll('|', '').replaceAll(';', '');
                 if (!a.contentType) a.contentType = DEFAULT_FILETYPE;
                 const extension = a.name.split('.').at(-1) ?? DEFAULT_EXTENSION;
                 // <name>.<extension>;data:<fileType>|<extension>;base64,<b64ImageData>
