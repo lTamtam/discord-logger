@@ -33,9 +33,9 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `${CHANNEL[thread.type]} ${thread} (#${thread.name}) was updated`,
+                description: `${CHANNEL[thread.type]} ${thread} (\`#${thread.name}\`) was updated`,
                 fields: [
-                    { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name ?? '???'})` }
+                    { name: 'Parent channel', value: `${thread.parent} (\`#${thread.parent?.name ?? '???'}\`)` }
                 ],
                 footer: { text: `ID: ${uuid}` },
                 color: 0xFCA82A,

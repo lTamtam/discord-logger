@@ -72,7 +72,7 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `${CHANNEL[channel.type]} ${channel} (#${channel.name}) was updated`,
+                description: `${CHANNEL[channel.type]} ${channel} (\`#${channel.name}\`) was updated`,
                 fields: [
                     { name: 'Creation date', value: `<t:${Math.round(channel.createdTimestamp! / 1000)}:F>` }
                 ],

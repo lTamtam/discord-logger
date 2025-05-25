@@ -52,7 +52,7 @@ const event: BotEvent = {
                     name: `${user.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `Message updated in ${message.channel} (#${message.channel.name})`,
+                description: `Message updated in ${message.channel} (\`#${message.channel.name}\`)`,
                 fields: [
                     { name: `${message.channel.isThread() ? 'Thread' : 'Channel'}`, value: `${message.channel} [**Go to message**](${message.url})` },
                     { name: 'Creation date', value: `<t:${Math.round(message.createdAt.getTime() / 1000)}:F>` }

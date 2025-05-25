@@ -32,10 +32,10 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `${CHANNEL[thread.type]} ${thread} was created`,
+                description: `${CHANNEL[thread.type]} ${thread} (\`#${thread.name}\`) was created`,
                 fields: [
                     { name: 'Name', value: thread.name },
-                    { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name})` },
+                    { name: 'Parent channel', value: `${thread.parent} (\`#${thread.parent?.name}\`)` },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nThread=${thread.id}\nParent=${thread.parent?.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },

@@ -46,18 +46,18 @@ const event: BotEvent = {
         if (!oldState.channel && newState.channel) {
             voiceStateUpdateEvent.embeds[0].color = 0x74FD77;
             voiceStateUpdateEvent.embeds[0].description = `**${user}** ${member && member.nickname ? `(${member.nickname})` : ''} joined a voice channel`;
-            addField('Channel', `${newState.channel} (#${newState.channel.name})`);
+            addField('Channel', `${newState.channel} (\`#${newState.channel.name}\`)`);
             addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${newState.channel.id}\`\`\``);
         }
         else if (oldState.channel && !newState.channel) {
             voiceStateUpdateEvent.embeds[0].color = 0xFE544A;
             voiceStateUpdateEvent.embeds[0].description = `**${user}** ${member && member.nickname ? `(${member.nickname})` : ''} left a voice channel`;
-            addField('Channel', `${oldState.channel} (#${oldState.channel.name})`);
+            addField('Channel', `${oldState.channel} (\`#${oldState.channel.name}\`)`);
             addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${oldState.channel.id}\`\`\``);
         }
         else if (oldState.channel && newState.channel && oldState.channel !== newState.channel) {
             voiceStateUpdateEvent.embeds[0].description = `**${user}** ${member && member.nickname ? `(${member.nickname})` : ''} switched voice channel`;
-            addField('Channel', `**Now:** ${newState.channel} (#${newState.channel?.name})\n**Was:** ${oldState.channel} (#${oldState.channel?.name})`);
+            addField('Channel', `**Now:** ${newState.channel} (\`#${newState.channel?.name}\`)\n**Was:** ${oldState.channel} (\`#${oldState.channel?.name}\`)`);
             addField('ID', `\`\`\`ini\nUser=${user?.id ?? '???'}\nNew channel=${newState.channel?.id}\nOld channel=${oldState.channel?.id}\`\`\``);
         }
 

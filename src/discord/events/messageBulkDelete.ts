@@ -43,7 +43,7 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `**${messages.size}** messages bulk deleted in ${channel} (#${channel.name})`,
+                description: `**${messages.size}** messages bulk deleted in ${channel} (\`#${channel.name}\`)`,
                 fields: [
                     { name: 'Messages IDs', value: `\`\`\`\n${messages.map(m => `${m.id}`).join('\n')}\`\`\`` },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id}\`\`\`` }

@@ -35,7 +35,7 @@ const event: BotEvent = {
                 description: `${CHANNEL[thread.type]} #${thread.name} was deleted`,
                 fields: [
                     { name: 'Name', value: thread.name },
-                    { name: 'Parent channel', value: `${thread.parent} (#${thread.parent?.name})` },
+                    { name: 'Parent channel', value: `${thread.parent} (\`#${thread.parent?.name}\`)` },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nThread=${thread.id}\nParent=${thread.parent?.id}\`\`\`` }
                 ],
                 footer: { text: `ID: ${uuid}` },

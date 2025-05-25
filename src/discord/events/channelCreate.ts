@@ -32,7 +32,7 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `${CHANNEL[channel.type]} ${channel} was created`,
+                description: `${CHANNEL[channel.type]} ${channel} (\`#${channel.name}\`) was created`,
                 fields: [
                     { name: 'Name', value: channel.name },
                     { name: 'ID', value: `\`\`\`ini\nUser=${user?.id ?? '???'}\nChannel=${channel.id ?? '???'}\`\`\`` }

@@ -41,7 +41,7 @@ const event: BotEvent = {
                     name: `${user?.tag ?? 'Unknown user'} ${member && member.nickname ? `(${member.nickname})` : ''}`,
                     iconURL: user?.avatarURL() ?? Bun.env.USER_DEFAULT_AVATAR!
                 },
-                description: `Message deleted in ${message.channel} (#${message.channel.name})`,
+                description: `Message deleted in ${message.channel} (\`#${message.channel.name}\`)`,
                 fields: [
                     { name: 'Creation date', value: `<t:${Math.round(cachedMessage.createdAt.getTime() / 1000)}:F>` }
                 ],
